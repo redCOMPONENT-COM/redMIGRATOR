@@ -1,14 +1,13 @@
 /**
- * redmigrator
+ * @package     redMIGRATOR.Backend
+ * @subpackage  Controller
  *
- * @version		    $Id$
- * @package		    MatWare
- * @subpackage    com_redmigrator
- * @author        Matias Aguirre <maguirre@matware.com.ar>
- * @link          http://www.matware.com.ar
- * @copyright		  Copyright 2004 - 2013 Matias Aguirre. All rights reserved.
- * @license		    GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ * 
+ *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+ 
 var redmigrator = new Class({
 
   Implements: [Options, Events],

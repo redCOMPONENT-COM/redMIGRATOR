@@ -1,15 +1,13 @@
 <?php
 /**
-* redMigrator
-*
-* @version $Id:
-* @package redMigrator
-* @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
-* @author Matias Aguirre
-* @email maguirre@matware.com.ar
-* @link http://www.matware.com.ar/
-* @license GNU General Public License version 2 or later; see LICENSE
-*/
+ * @package     redMIGRATOR.Backend
+ * @subpackage  Controller
+ *
+ * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ * 
+ *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
+ */
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 

@@ -1,50 +1,13 @@
-/*
-Script: Request.Multiple.js
-	Controls several instances of Request and its variants to run only one request at a time.
-
-	License:
-		MIT-style license.
-
-	Authors:
-		IvÃ¡n RodrÃ­guez
-
-	Modified (Mootools 1.3 compatibility):
-		Matias Aguirre
-		
-	Example:
-		var rm = new Request.Multiple({
-			onRequest : function() {
-				console.log('request init');
-			},
-			onComplete : function() {
-				console.log('complete');
-			}
-		});
-		rm.addRequests({
-			r1 : new Request({
-				url : 'serverAction.php',
-				onComplete : function() {
-					if(!confirm('quieres seguir?')){
-						this.cancel();
-					} else {
-						console.log('r1 complete');
-					}
-				}
-			}),
-	
-			r2 : new Request({
-				url : 'serverAction.php',
-				onComplete : function() {
-					if(!confirm('quieres seguir?')){
-						this.cancel();
-					} else {
-						console.log('r2 complete');
-					}
-				}
-			})
-		});
-		rm.runAll();
-*/
+/**
+ * @package     redMIGRATOR.Backend
+ * @subpackage  Controller
+ *
+ * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ * 
+ *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
+ */
+ 
 Request.Multiple = new Class({
 	Implements : [Options, Chain],
 	
