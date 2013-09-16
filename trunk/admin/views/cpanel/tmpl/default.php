@@ -1,15 +1,14 @@
 <?php
 /**
-* redmigrator
-*
-* @version $Id:
-* @package redmigrator
-* @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
-* @author Matias Aguirre
-* @email maguirre@matware.com.ar
-* @link http://www.matware.com.ar/
-* @license GNU General Public License version 2 or later; see LICENSE
-*/
+ * @package     redMIGRATOR.Backend
+ * @subpackage  Controller
+ *
+ * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ * 
+ *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
+ */
+
 // No direct access.
 defined('_JEXEC') or die;
 
@@ -110,11 +109,8 @@ window.addEvent('domready', function() {
 							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.matware.com.ar/">Matware &#169;</a></i>  Copyleft 2006-2013<br />
 							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br />
 						</p>
-						<h3>
-							<a href="http://redcomponent.com/redcomponent/redmigrator">Project Site</a> /
-							<a href="http://redcomponent.com/forum/redmigrator-forum">Community</a> /
-							<a href="https://github.com/fastslack/redmigrator">GitHub</a> /
-							<a href="https://github.com/fastslack/redmigrator/wiki">Wiki</a><br />
+						<h3>							
+							<a href="http://wiki.redcomponent.com/index.php?title=RedMIGRATOR:Table_of_Contents">Wiki</a><br />
 						</h3>
 					</div>
 				</div>
