@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redmigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redmigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -19,17 +19,17 @@ $version = "v{$this->version}";
 $params	= $this->params;
 // get document to add scripts
 $document	= JFactory::getDocument();
-$document->addScript('components/com_jupgradepro/js/dwProgressBar.js');
-$document->addScript("components/com_jupgradepro/js/migrate.js");
-$document->addScript('components/com_jupgradepro/js/requestmultiple.js');
-$document->addStyleSheet("components/com_jupgradepro/css/jupgradepro.css");
+$document->addScript('components/com_redmigrator/js/dwProgressBar.js');
+$document->addScript("components/com_redmigrator/js/migrate.js");
+$document->addScript('components/com_redmigrator/js/requestmultiple.js');
+$document->addStyleSheet("components/com_redmigrator/css/redmigrator.css");
 ?>
 <script type="text/javascript">
 
 window.addEvent('domready', function() {
 
-	/* Init jUpgradePro */
-	var jUpgradePro = new jUpgradepro({
+	/* Init redmigrator */
+	var redMigrator = new redmigrator({
 		method: '<?php echo $params->method ? $params->method : 0; ?>',
 		positions: <?php echo $params->positions ? $params->positions : 0; ?>,
 		skip_checks: <?php echo $params->skip_checks ? $params->skip_checks : 0; ?>,
@@ -50,11 +50,11 @@ window.addEvent('domready', function() {
 				<div id="error" class="error"></div>
 
 				<div id="warning" class="warning">
-					<?php echo JText::_('COM_JUPGRADEPRO_WARNING_SLOW'); ?>
+					<?php echo JText::_('COM_REDMIGRATOR_WARNING_SLOW'); ?>
 				</div>
 
 				<div id="update">
-					<br /><img src="components/com_jupgradepro/images/update.png" align="middle" border="0"/><br />
+					<br /><img src="components/com_redmigrator/images/update.png" align="middle" border="0"/><br />
 					<h2><?php echo JText::_('START UPGRADE'); ?></h2><br />
 				</div>
 
@@ -104,17 +104,17 @@ window.addEvent('domready', function() {
 				</div>
 
 				<div id="info">
-					<div id="info_version"><i><?php echo JText::_('jUpgradePro'); ?></i> <?php echo JText::_('Version').' <b>'.$this->version.'</b>'; ?></div>
+					<div id="info_version"><i><?php echo JText::_('redmigrator'); ?></i> <?php echo JText::_('Version').' <b>'.$this->version.'</b>'; ?></div>
 					<div id="info_thanks">
 						<p>
 							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.matware.com.ar/">Matware &#169;</a></i>  Copyleft 2006-2013<br />
 							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br />
 						</p>
 						<h3>
-							<a href="http://redcomponent.com/redcomponent/jupgradepro">Project Site</a> /
-							<a href="http://redcomponent.com/forum/jupgradepro-forum">Community</a> /
-							<a href="https://github.com/fastslack/jUpgradePro">GitHub</a> /
-							<a href="https://github.com/fastslack/jUpgradePro/wiki">Wiki</a><br />
+							<a href="http://redcomponent.com/redcomponent/redmigrator">Project Site</a> /
+							<a href="http://redcomponent.com/forum/redmigrator-forum">Community</a> /
+							<a href="https://github.com/fastslack/redmigrator">GitHub</a> /
+							<a href="https://github.com/fastslack/redmigrator/wiki">Wiki</a><br />
 						</h3>
 					</div>
 				</div>
@@ -128,7 +128,7 @@ window.addEvent('domready', function() {
 	</tbody>
 </table>
 
-<form action="index.php?option=com_jupgradepro" method="post" name="adminForm">
-	<input type="hidden" name="option" value="com_jupgradepro" />
+<form action="index.php?option=com_redmigrator" method="post" name="adminForm">
+	<input type="hidden" name="option" value="com_redmigrator" />
 	<input type="hidden" name="task" value="" />
 </form>

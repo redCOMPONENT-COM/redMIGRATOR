@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -17,7 +17,7 @@
  *
  * @since	0.4.5
  */
-class jUpgradeContent extends jUpgrade
+class redMigratorContent extends redMigrator
 {
 	/**
 	 * Get the raw data for this part of the upgrade.
@@ -110,7 +110,7 @@ class jUpgradeContent extends jUpgrade
 		$table	= $this->getDestinationTable();
 
 		// Get category mapping
-		$query = "SELECT * FROM #__jupgradepro_categories WHERE section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$' AND old > 0";
+		$query = "SELECT * FROM #__redmigrator_categories WHERE section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$' AND old > 0";
 		$this->_db->setQuery($query);
 		$catidmap = $this->_db->loadObjectList('old');
 		

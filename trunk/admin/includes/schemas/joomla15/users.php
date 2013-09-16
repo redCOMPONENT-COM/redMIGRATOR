@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -11,7 +11,7 @@
 * @license GNU General Public License version 2 or later; see LICENSE
 */
 
-JLoader::register("jUpgradeUsersDefault", JPATH_COMPONENT_ADMINISTRATOR."/includes/jupgrade.users.class.php");
+JLoader::register("redMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR."/includes/redmigrator.users.class.php");
 
 /**
  * Upgrade class for Users
@@ -20,7 +20,7 @@ JLoader::register("jUpgradeUsersDefault", JPATH_COMPONENT_ADMINISTRATOR."/includ
  *
  * @since	0.4.4
  */
-class jUpgradeUsers extends jUpgradeUsersDefault
+class redMigratorUsers extends redMigratorUsersDefault
 {
 	/**
 	 * Get the raw data for this part of the upgrade.

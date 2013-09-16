@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -14,10 +14,10 @@
  * Upgrade class for banners clients 
  *
  * @package		MatWare
- * @subpackage	com_jupgrade
+ * @subpackage	com_redmigrator
  * @since		2.5.2
  */
-class jUpgradeBannersClients extends jUpgrade
+class redMigratorBannersClients extends redMigrator
 {
 	/**
 	 * Setting the conditions hook

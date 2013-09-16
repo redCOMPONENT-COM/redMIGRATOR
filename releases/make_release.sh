@@ -8,7 +8,7 @@
 # * @license     GNU/GPL
 # 
 
-PROJECT="jupgradepro"
+PROJECT="redmigrator"
 VERSION="3.1.0"
 
 DIR="com_$PROJECT"
@@ -28,7 +28,7 @@ find $DIR -name ".DS_Store" -exec rm -rf {} \;
 #rm $DIR/TODO
 
 # Zipping plugin
-cd $DIR/plugins/plg_jupgradepro-1.5
+cd $DIR/plugins/plg_redmigrator-1.5
 zip -rq plg_${PROJECT}-restful-${VERSION}-j1.5.zip .
 mv plg_${PROJECT}-restful-${VERSION}-j1.5.zip ../../../.
 cd ../../..

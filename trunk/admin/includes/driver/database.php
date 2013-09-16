@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -14,11 +14,11 @@
 defined('_JEXEC') or die;
 
 /**
- * jUpgradePro database utility class
+ * redMigrator database utility class
  *
- * @package		jUpgradePro
+ * @package		redMigrator
  */
-class jUpgradeDriverDatabase extends jUpgradeDriver
+class redMigratorDriverDatabase extends redMigratorDriver
 {
 	/**
 	 * @var      
@@ -37,17 +37,17 @@ class jUpgradeDriverDatabase extends jUpgradeDriver
 	 */
 	private $extensions_steps = array('extensions', 'ext_components', 'ext_modules', 'ext_plugins');
 
-	function __construct(jUpgradeStep $step = null)
+	function __construct(redMigratorStep $step = null)
 	{
 		parent::__construct($step);
 
-		$class = (!empty($step->class)) ? $step->class : 'jUpgrade';
+		$class = (!empty($step->class)) ? $step->class : 'redMigrator';
 		$name = (!empty($step->name)) ? $step->name : '';
 		$xmlpath = (!empty($step->xmlpath)) ? $step->xmlpath : '';
 
-		JLoader::import('helpers.jupgradepro', JPATH_COMPONENT_ADMINISTRATOR);
+		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 
-		jUpgradeProHelper::requireClass($name, $xmlpath, $class);
+		redMigratorHelper::requireClass($name, $xmlpath, $class);
 
 		// @@ Fix bug using PHP < 5.2.3 version
 		$this->_conditions = call_user_func($class .'::getConditionsHook');

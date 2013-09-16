@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -17,7 +17,7 @@
  *
  * @since	3.0.0
  */
-class jUpgradeExtensionsPlugins extends jUpgrade
+class redMigratorExtensionsPlugins extends redMigrator
 {
 	/**
 	 * @var		string	The name of the source database table.

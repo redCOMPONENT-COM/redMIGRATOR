@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -13,19 +13,19 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('jUpgrade', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php');
-JLoader::register('jUpgradeDriver', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.driver.class.php');
-JLoader::register('jUpgradeStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.step.class.php');
+JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
+JLoader::register('redMigratorDriver', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.driver.class.php');
+JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
 
 /**
- * jUpgradePro Model
+ * redMigrator Model
  *
- * @package		jUpgradePro
+ * @package		redMigrator
  */
-class jUpgradeProModelChecks extends JModelLegacy
+class redMigratorModelChecks extends JModelLegacy
 {
 	/**
-	 * Initial checks in jUpgradePro
+	 * Initial checks in redMigrator
 	 *
 	 * @return	none
 	 * @since	1.2.0
@@ -33,10 +33,10 @@ class jUpgradeProModelChecks extends JModelLegacy
 	function checks()
 	{
 		// Loading the helper
-		JLoader::import('helpers.jupgradepro', JPATH_COMPONENT_ADMINISTRATOR);
+		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 
 		// Getting the component parameter with global settings
-		$params = jUpgradeProHelper::getParams();
+		$params = redMigratorHelper::getParams();
 
 		// Checking tables
 		$tables = $this->_db->getTableList();
@@ -57,13 +57,13 @@ class jUpgradeProModelChecks extends JModelLegacy
 		$tablesComp[] = 'steps';
 
 		foreach ($tablesComp as $table) {
-			if (!in_array($this->_db->getPrefix() . 'jupgradepro_' . $table, $tables)) {
-				if (jUpgradeProHelper::isCli()) {
+			if (!in_array($this->_db->getPrefix() . 'redmigrator_' . $table, $tables)) {
+				if (redMigratorHelper::isCli()) {
 					print("\n\033[1;37m-------------------------------------------------------------------------------------------------\n");
-					print("\033[1;37m|  \033[0;34m	Installing jUpgradePro tables\n");
+					print("\033[1;37m|  \033[0;34m	Installing redMigrator tables\n");
 				}
 
-				jUpgradeProHelper::populateDatabase($this->_db, JPATH_COMPONENT_ADMINISTRATOR.'/sql/install.sql');
+				redMigratorHelper::populateDatabase($this->_db, JPATH_COMPONENT_ADMINISTRATOR.'/sql/install.sql');
 				break;
 			}
 		}
@@ -75,53 +75,53 @@ class jUpgradeProModelChecks extends JModelLegacy
 		// Getting the data
 		$query = $this->_db->getQuery(true);
 		$query->select('COUNT(id)');
-		$query->from("`#__jupgradepro_steps`");
+		$query->from("`#__redmigrator_steps`");
 		$this->_db->setQuery($query);
 		$nine = $this->_db->loadResult();
 
 		if ($nine < 10) {
-			throw new Exception('COM_JUPGRADEPRO_ERROR_TABLE_STEPS_NOT_VALID');
+			throw new Exception('COM_REDMIGRATOR_ERROR_TABLE_STEPS_NOT_VALID');
 		}
 
 		// Check safe_mode_gid
 		if (@ini_get('safe_mode_gid') && @ini_get('safe_mode')) {
-			throw new Exception('COM_JUPGRADEPRO_ERROR_DISABLE_SAFE_GID');
+			throw new Exception('COM_REDMIGRATOR_ERROR_DISABLE_SAFE_GID');
 		}
 
 		// Check for bad configurations
 		if ($params->method == "rest") {
 
 			if (!isset($params->rest_hostname) || !isset($params->rest_username) || !isset($params->rest_password) || !isset($params->rest_key) ) {
-				throw new Exception('COM_JUPGRADEPRO_ERROR_REST_CONFIG');
+				throw new Exception('COM_REDMIGRATOR_ERROR_REST_CONFIG');
 			}
 
 			if ($params->rest_hostname == 'http://www.example.org/' || $params->rest_hostname == '' || 
 					$params->rest_username == '' || $params->rest_password == '' || $params->rest_key == '') {
-				throw new Exception('COM_JUPGRADEPRO_ERROR_REST_CONFIG');
+				throw new Exception('COM_REDMIGRATOR_ERROR_REST_CONFIG');
 			}
 
 			// Checking the RESTful connection
-			$driver = JUpgradeDriver::getInstance();
+			$driver = redMigratorDriver::getInstance();
 			$code = $driver->requestRest('check');
 
 			switch ($code) {
 				case 401:
-					throw new Exception('COM_JUPGRADEPRO_ERROR_REST_501');
+					throw new Exception('COM_REDMIGRATOR_ERROR_REST_501');
 				case 402:
-					throw new Exception('COM_JUPGRADEPRO_ERROR_REST_502');
+					throw new Exception('COM_REDMIGRATOR_ERROR_REST_502');
 				case 403:
-					throw new Exception('COM_JUPGRADEPRO_ERROR_REST_503');
+					throw new Exception('COM_REDMIGRATOR_ERROR_REST_503');
 				case 405:
-					throw new Exception('COM_JUPGRADEPRO_ERROR_REST_505');
+					throw new Exception('COM_REDMIGRATOR_ERROR_REST_505');
 				case 406:
-					throw new Exception('COM_JUPGRADEPRO_ERROR_REST_506');
+					throw new Exception('COM_REDMIGRATOR_ERROR_REST_506');
 			}
 		}
 
 		// Check for bad configurations
 		if ($params->method == "database") {
 			if ($params->old_hostname == '' || $params->old_username == '' || $params->old_db == '' || $params->old_dbprefix == '' ) {
-				throw new Exception('COM_JUPGRADEPRO_ERROR_DATABASE_CONFIG');
+				throw new Exception('COM_REDMIGRATOR_ERROR_DATABASE_CONFIG');
 			}
 		}
 
@@ -142,7 +142,7 @@ class jUpgradeProModelChecks extends JModelLegacy
 		}
 
 		if ($flag === false) {
-			throw new Exception('COM_JUPGRADEPRO_ERROR_SKIPS_ALL');				
+			throw new Exception('COM_REDMIGRATOR_ERROR_SKIPS_ALL');				
 		}		
 
 		// Checking tables
@@ -154,7 +154,7 @@ class jUpgradeProModelChecks extends JModelLegacy
 			$content_count = $this->_db->loadResult();
 
 			if ($content_count > 0) {
-				throw new Exception('COM_JUPGRADEPRO_ERROR_DATABASE_CONTENT');
+				throw new Exception('COM_REDMIGRATOR_ERROR_DATABASE_CONTENT');
 			}
 		}
 
@@ -167,12 +167,12 @@ class jUpgradeProModelChecks extends JModelLegacy
 			$users_count = $this->_db->loadResult();
 
 			if ($users_count > 1) {
-				throw new Exception('COM_JUPGRADEPRO_ERROR_DATABASE_USERS');
+				throw new Exception('COM_REDMIGRATOR_ERROR_DATABASE_USERS');
 			}
 		}
 
 		// Done checks
-		if (!jUpgradeProHelper::isCli())
+		if (!redMigratorHelper::isCli())
 			$this->returnError (100, 'DONE');
 	}
 

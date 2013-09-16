@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -17,9 +17,9 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
  
 /**
- * General Controller of jUpgradePro component
+ * General Controller of redMigrator component
  */
-class jUpgradeProController extends JControllerLegacy
+class redMigratorController extends JControllerLegacy
 {
 	/**
 	 * display task

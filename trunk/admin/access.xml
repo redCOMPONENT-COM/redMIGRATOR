@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<access component="com_jupgradepro">
+<access component="com_redmigrator">
 	<section name="component">
 		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
 		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
@@ -8,7 +8,7 @@
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 	</section>
 	<section name="message">
-		<action name="core.delete" title="JACTION_DELETE" description="COM_JUPGRADEPRO_ACCESS_DELETE_DESC" />
-		<action name="core.edit" title="JACTION_EDIT" description="COM_JUPGRADEPRO_ACCESS_EDIT_DESC" />
+		<action name="core.delete" title="JACTION_DELETE" description="COM_REDMIGRATOR_ACCESS_DELETE_DESC" />
+		<action name="core.edit" title="JACTION_EDIT" description="COM_REDMIGRATOR_ACCESS_EDIT_DESC" />
 	</section>
 </access>

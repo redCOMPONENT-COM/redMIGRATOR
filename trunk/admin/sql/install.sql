@@ -1,11 +1,11 @@
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_categories`
+-- Table structure for table `#__redmigrator_categories`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_categories`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_categories` (
+DROP TABLE IF EXISTS `#__redmigrator_categories`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_categories` (
   `old` int(11) NOT NULL,
   `new` int(11) NOT NULL,
   `section` varchar(255) NOT NULL DEFAULT '0'
@@ -14,11 +14,11 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_categories` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_errors`
+-- Table structure for table `#__redmigrator_errors`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_errors`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_errors` (
+DROP TABLE IF EXISTS `#__redmigrator_errors`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_errors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `method` varchar(255) NOT NULL,
   `step` varchar(255) NOT NULL,
@@ -29,11 +29,11 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_errors` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_extensions`
+-- Table structure for table `#__redmigrator_extensions`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_extensions`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_extensions` (
+DROP TABLE IF EXISTS `#__redmigrator_extensions`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_extensions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
@@ -49,23 +49,23 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_extensions` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
--- Dumping data for table `#__jupgradepro_extensions`
+-- Dumping data for table `#__redmigrator_extensions`
 --
 
-INSERT INTO `#__jupgradepro_extensions` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `class`, `status`, `cache`, `xmlpath`) VALUES
-(1, 'extensions', 'Check extensions', '', '', '', 0, 'jUpgradeCheckExtensions', 0, 0, ''),
-(2, 'ext_components', 'Check components', 'id', 'components', 'extensions', 0, 'jUpgradeExtensionsComponents', 0, 0, ''),
-(3, 'ext_modules', 'Check modules', 'id', 'modules', 'extensions', 0, 'jUpgradeExtensionsModules', 0, 0, ''),
-(4, 'ext_plugins', 'Check plugins', 'id', 'plugins', 'extensions', 0, 'jUpgradeExtensionsPlugins', 0, 0, '');
+INSERT INTO `#__redmigrator_extensions` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `class`, `status`, `cache`, `xmlpath`) VALUES
+(1, 'extensions', 'Check extensions', '', '', '', 0, 'redMigratorCheckExtensions', 0, 0, ''),
+(2, 'ext_components', 'Check components', 'id', 'components', 'extensions', 0, 'redMigratorExtensionsComponents', 0, 0, ''),
+(3, 'ext_modules', 'Check modules', 'id', 'modules', 'extensions', 0, 'redMigratorExtensionsModules', 0, 0, ''),
+(4, 'ext_plugins', 'Check plugins', 'id', 'plugins', 'extensions', 0, 'redMigratorExtensionsPlugins', 0, 0, '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_extensions_tables`
+-- Table structure for table `#__redmigrator_extensions_tables`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_extensions_tables`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_extensions_tables` (
+DROP TABLE IF EXISTS `#__redmigrator_extensions_tables`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_extensions_tables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `eid` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -88,11 +88,11 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_extensions_tables` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_files_images`
+-- Table structure for table `#__redmigrator_files_images`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_files_images`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_files_images` (
+DROP TABLE IF EXISTS `#__redmigrator_files_images`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_files_images` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -101,11 +101,11 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_files_images` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_files_media`
+-- Table structure for table `#__redmigrator_files_media`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_files_media`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_files_media` (
+DROP TABLE IF EXISTS `#__redmigrator_files_media`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_files_media` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -114,11 +114,11 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_files_media` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_files_templates`
+-- Table structure for table `#__redmigrator_files_templates`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_files_templates`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_files_templates` (
+DROP TABLE IF EXISTS `#__redmigrator_files_templates`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_files_templates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -127,30 +127,30 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_files_templates` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_menus`
+-- Table structure for table `#__redmigrator_menus`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_menus`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_menus` (
+DROP TABLE IF EXISTS `#__redmigrator_menus`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_menus` (
   `old` int(11) NOT NULL,
   `new` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `#__jupgradepro_menus`
+-- Dumping data for table `#__redmigrator_menus`
 --
 
-INSERT INTO `#__jupgradepro_menus` (`old`, `new`) VALUES
+INSERT INTO `#__redmigrator_menus` (`old`, `new`) VALUES
 (0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_modules`
+-- Table structure for table `#__redmigrator_modules`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_modules`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_modules` (
+DROP TABLE IF EXISTS `#__redmigrator_modules`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_modules` (
   `old` int(11) NOT NULL,
   `new` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -158,11 +158,11 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_modules` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_steps`
+-- Table structure for table `#__redmigrator_steps`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_steps`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_steps` (
+DROP TABLE IF EXISTS `#__redmigrator_steps`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_steps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
@@ -182,27 +182,27 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_steps` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
--- Dumping data for table `#__jupgradepro_steps`
+-- Dumping data for table `#__redmigrator_steps`
 --
 
-INSERT INTO `#__jupgradepro_steps` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `class`, `status`, `cache`, `extension`, `total`, `start`, `stop`, `first`) VALUES
-(1, 'users', 'Users', 'id', 'users', 'users', 0, 'jUpgradeUsers', 0, 0, 0, 0, 0, 0, 0),
-(2, 'arogroup', 'Users Groups', 'id', 'core_acl_aro_groups', 'usergroups', 0, 'jUpgradeUsergroups', 0, 0, 0, 0, 0, 0, 0),
-(3, 'usergroupmap', 'Users Groups', 'aro_id', 'core_acl_groups_aro_map', 'user_usergroup_map', 0, 'jUpgradeUsergroupMap', 0, 0, 0, 0, 0, 0, 0),
-(4, 'categories', 'Categories', 'id', 'categories', 'categories', 0, 'jUpgradeCategories', 0, 0, 0, 0, 0, 0, 0),
-(5, 'sections', 'Sections', 'id', 'sections', 'categories', 0, 'jUpgradeSections', 0, 0, 0, 0, 0, 0, 0),
-(6, 'contents', 'Contents', 'id', 'content', 'content', 0, 'jUpgradeContent', 0, 0, 0, 0, 0, 0, 0),
-(7, 'contents_frontpage', 'FrontPage Contents', 'content_id', 'content_frontpage', 'content_frontpage', 0, 'jUpgradeContentFrontpage', 0, 0, 0, 0, 0, 0, 0),
-(8, 'menus', 'Menus', 'id', 'menu', 'menu', 0, 'jUpgradeMenu', 0, 0, 0, 0, 0, 0, 0),
-(9, 'menus_types', 'Menus Types', 'id', 'menu_types', 'menu_types', 0, 'jUpgradeMenusTypes', 0, 0, 0, 0, 0, 0, 0),
-(10, 'modules', 'Core Modules', 'id', 'modules', 'modules', 0, 'jUpgradeModules', 0, 0, 0, 0, 0, 0, 0),
-(11, 'modules_menu', 'Modules Menus', 'moduleid', 'modules_menu', 'modules_menu', 0, 'jUpgradeModulesMenu', 0, 0, 0, 0, 0, 0, 0),
-(12, 'banners', 'Banners', 'id', 'banner', 'banners', 0, 'jUpgradeBanners', 0, 0, 0, 0, 0, 0, 0),
-(13, 'banners_clients', 'Banners Clients', 'cid', 'bannerclient', 'banner_clients', 0, 'jUpgradeBannersClients', 0, 0, 0, 0, 0, 0, 0),
-(14, 'banners_tracks', 'Banners Tracks', 'banner_id', 'bannertrack', 'banner_tracks', 0, 'jUpgradeBannersTracks', 0, 0, 0, 0, 0, 0, 0),
-(15, 'contacts', 'Contacts', 'id', 'contact_details', 'contact_details', 0, 'jUpgradeContacts', 0, 0, 0, 0, 0, 0, 0),
-(16, 'newsfeeds', 'NewsFeeds', 'id', 'newsfeeds', 'newsfeeds', 0, 'jUpgradeNewsfeeds', 0, 0, 0, 0, 0, 0, 0),
-(17, 'weblinks', 'Weblinks', 'id', 'weblinks', 'weblinks', 0, 'jUpgradeWeblinks', 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `#__redmigrator_steps` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `class`, `status`, `cache`, `extension`, `total`, `start`, `stop`, `first`) VALUES
+(1, 'users', 'Users', 'id', 'users', 'users', 0, 'redMigratorUsers', 0, 0, 0, 0, 0, 0, 0),
+(2, 'arogroup', 'Users Groups', 'id', 'core_acl_aro_groups', 'usergroups', 0, 'redMigratorUsergroups', 0, 0, 0, 0, 0, 0, 0),
+(3, 'usergroupmap', 'Users Groups', 'aro_id', 'core_acl_groups_aro_map', 'user_usergroup_map', 0, 'redMigratorUsergroupMap', 0, 0, 0, 0, 0, 0, 0),
+(4, 'categories', 'Categories', 'id', 'categories', 'categories', 0, 'redMigratorCategories', 0, 0, 0, 0, 0, 0, 0),
+(5, 'sections', 'Sections', 'id', 'sections', 'categories', 0, 'redMigratorSections', 0, 0, 0, 0, 0, 0, 0),
+(6, 'contents', 'Contents', 'id', 'content', 'content', 0, 'redMigratorContent', 0, 0, 0, 0, 0, 0, 0),
+(7, 'contents_frontpage', 'FrontPage Contents', 'content_id', 'content_frontpage', 'content_frontpage', 0, 'redMigratorContentFrontpage', 0, 0, 0, 0, 0, 0, 0),
+(8, 'menus', 'Menus', 'id', 'menu', 'menu', 0, 'redMigratorMenu', 0, 0, 0, 0, 0, 0, 0),
+(9, 'menus_types', 'Menus Types', 'id', 'menu_types', 'menu_types', 0, 'redMigratorMenusTypes', 0, 0, 0, 0, 0, 0, 0),
+(10, 'modules', 'Core Modules', 'id', 'modules', 'modules', 0, 'redMigratorModules', 0, 0, 0, 0, 0, 0, 0),
+(11, 'modules_menu', 'Modules Menus', 'moduleid', 'modules_menu', 'modules_menu', 0, 'redMigratorModulesMenu', 0, 0, 0, 0, 0, 0, 0),
+(12, 'banners', 'Banners', 'id', 'banner', 'banners', 0, 'redMigratorBanners', 0, 0, 0, 0, 0, 0, 0),
+(13, 'banners_clients', 'Banners Clients', 'cid', 'bannerclient', 'banner_clients', 0, 'redMigratorBannersClients', 0, 0, 0, 0, 0, 0, 0),
+(14, 'banners_tracks', 'Banners Tracks', 'banner_id', 'bannertrack', 'banner_tracks', 0, 'redMigratorBannersTracks', 0, 0, 0, 0, 0, 0, 0),
+(15, 'contacts', 'Contacts', 'id', 'contact_details', 'contact_details', 0, 'redMigratorContacts', 0, 0, 0, 0, 0, 0, 0),
+(16, 'newsfeeds', 'NewsFeeds', 'id', 'newsfeeds', 'newsfeeds', 0, 'redMigratorNewsfeeds', 0, 0, 0, 0, 0, 0, 0),
+(17, 'weblinks', 'Weblinks', 'id', 'weblinks', 'weblinks', 0, 'redMigratorWeblinks', 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -210,11 +210,11 @@ INSERT INTO `#__jupgradepro_steps` (`id`, `name`, `title`, `tbl_key`, `source`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_default_menus`
+-- Table structure for table `#__redmigrator_default_menus`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_default_menus`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_default_menus` (
+DROP TABLE IF EXISTS `#__redmigrator_default_menus`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_default_menus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `menutype` varchar(24) NOT NULL COMMENT 'The type of menu this item belongs to. FK to #__menu_types.menutype',
   `title` varchar(255) NOT NULL COMMENT 'The display title of the menu item.',
@@ -241,10 +241,10 @@ CREATE TABLE IF NOT EXISTS `#__jupgradepro_default_menus` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=101 ;
 
 --
--- Dumping data for table `#__jupgradepro_default_menus`
+-- Dumping data for table `#__redmigrator_default_menus`
 --
 
-INSERT INTO `#__jupgradepro_default_menus` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `home`, `language`, `client_id`) VALUES
+INSERT INTO `#__redmigrator_default_menus` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `home`, `language`, `client_id`) VALUES
 (1, 'menu', 'com_banners', 'Banners', '', 'Banners', 'index.php?option=com_banners', 'component', 0, 1, 4, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners', 0, '', 0, '*', 1),
 (2, 'menu', 'com_banners', 'Banners', '', 'Banners/Banners', 'index.php?option=com_banners', 'component', 0, 2, 4, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners', 0, '', 0, '*', 1),
 (3, 'menu', 'com_banners_categories', 'Categories', '', 'Banners/Categories', 'index.php?option=com_categories&extension=com_banners', 'component', 0, 2, 6, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners-cat', 0, '', 0, '*', 1),
@@ -271,11 +271,11 @@ INSERT INTO `#__jupgradepro_default_menus` (`id`, `menutype`, `title`, `alias`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__jupgradepro_default_categories`
+-- Table structure for table `#__redmigrator_default_categories`
 --
 
-DROP TABLE IF EXISTS `#__jupgradepro_default_categories`;
-CREATE TABLE IF NOT EXISTS `#__jupgradepro_default_categories` (
+DROP TABLE IF EXISTS `#__redmigrator_default_categories`;
+CREATE TABLE IF NOT EXISTS `#__redmigrator_default_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(10) unsigned NOT NULL DEFAULT '0',
   `path` varchar(255) NOT NULL DEFAULT '',

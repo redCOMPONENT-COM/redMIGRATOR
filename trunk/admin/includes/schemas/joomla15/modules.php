@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -17,7 +17,7 @@
  *
  * @since	0.4.5
  */
-class jUpgradeModules extends jUpgrade
+class redMigratorModules extends redMigrator
 {
 	/**
 	 * Setting the conditions hook
@@ -130,7 +130,7 @@ class jUpgradeModules extends jUpgrade
 			$oldlist->new = $this->_db->insertid();
 
 			// Save old and new id
-			if (!$this->_db->insertObject('#__jupgradepro_modules', $oldlist)) {
+			if (!$this->_db->insertObject('#__redmigrator_modules', $oldlist)) {
 				throw new Exception($this->_db->getErrorMsg());
 			}
 
@@ -152,8 +152,8 @@ class jUpgradeModules extends jUpgrade
 		$map = array(
 			// Old	=> // New
 			'search'				=> 'position-0',
-			'top'						=> 'position-1',
-			'breadcrumbs'		=> 'position-2',
+			'top'					=> 'position-1',
+			'breadcrumbs'			=> 'position-2',
 			'left'					=> 'position-7',
 			'right'					=> 'position-6',
 			'search'				=> 'position-8',
