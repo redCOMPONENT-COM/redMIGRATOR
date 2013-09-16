@@ -1,15 +1,15 @@
 /**
- * jUpgradePro
+ * redmigrator
  *
  * @version		    $Id$
  * @package		    MatWare
- * @subpackage    com_jupgradepro
+ * @subpackage    com_redmigrator
  * @author        Matias Aguirre <maguirre@matware.com.ar>
  * @link          http://www.matware.com.ar
  * @copyright		  Copyright 2004 - 2013 Matias Aguirre. All rights reserved.
  * @license		    GNU General Public License version 2 or later; see LICENSE.txt
  */
-var jUpgradepro = new Class({
+var redmigrator = new Class({
 
   Implements: [Options, Events],
 
@@ -43,14 +43,14 @@ var jUpgradepro = new Class({
 	},
 
 	/**
-	 * Fix needed!! Internal function to get jUpgradePro settings
+	 * Fix needed!! Internal function to get redmigrator settings
 	 *
 	 * @return	bool
 	 * @since	1.2.0
 	 */
 	updateSettings: function(e) {
 		var request = new Request({
-			url: 'index.php?option=com_jupgradepro&format=raw&controller=ajax&task=getParams',
+			url: 'index.php?option=com_redmigrator&format=raw&controller=ajax&task=getParams',
 			method: 'get',
 			noCache: true,
 			onComplete: function(response) {
@@ -105,7 +105,7 @@ var jUpgradepro = new Class({
 			// Cleanup call
 			//
 			var cleanup = new Request({
-				url: 'index.php?option=com_jupgradepro&format=raw&task=ajax.cleanup',
+				url: 'index.php?option=com_redmigrator&format=raw&task=ajax.cleanup',
 				method: 'get',
 				noCache: true
 			}); // end Request		
@@ -133,7 +133,7 @@ var jUpgradepro = new Class({
 			// Checks
 			//
 			var checks = new Request({
-				url: 'index.php?option=com_jupgradepro&format=raw&task=ajax.checks',
+				url: 'index.php?option=com_redmigrator&format=raw&task=ajax.checks',
 				method: 'get',
 				noCache: true
 			}); // end Request		
@@ -263,7 +263,7 @@ var jUpgradepro = new Class({
 		//
 		var step = new Request({
 			link: 'chain',
-			url: 'index.php?option=com_jupgradepro&format=raw&task=ajax.step',
+			url: 'index.php?option=com_redmigrator&format=raw&task=ajax.step',
 			method: 'get'
 		}); // end Request		
 
@@ -303,7 +303,7 @@ var jUpgradepro = new Class({
 				totalItems.innerHTML = object.total;
 
 				// Start the checks
-				row.options.url = 'index.php?option=com_jupgradepro&format=raw&task=ajax.migrate&table='+object.name;	
+				row.options.url = 'index.php?option=com_redmigrator&format=raw&task=ajax.migrate&table='+object.name;	
 
 				// Running the request[s]
 				if (self.options.method == 'database') {
@@ -403,7 +403,7 @@ var jUpgradepro = new Class({
 		//
 		var ext_step = new Request({
 			link: 'chain',
-			url: 'index.php?option=com_jupgradepro&format=raw&task=ajax.step&extensions=tables',
+			url: 'index.php?option=com_redmigrator&format=raw&task=ajax.step&extensions=tables',
 			method: 'get'
 		}); // end Request		
 
@@ -438,7 +438,7 @@ var jUpgradepro = new Class({
 				ext_totalItems.innerHTML = object.total;
 
 				// Start the checks
-				ext_row.options.url = 'index.php?option=com_jupgradepro&format=raw&task=ajax.migrate&extensions=tables&table='+object.name;	
+				ext_row.options.url = 'index.php?option=com_redmigrator&format=raw&task=ajax.migrate&extensions=tables&table='+object.name;	
 
 				// Running the request[s]
 				if (self.options.method == 'database') {
@@ -460,7 +460,7 @@ var jUpgradepro = new Class({
 		//
 		var check = new Request({
 			link: 'chain',
-			url: 'index.php?option=com_jupgradepro&format=raw&task=ajax.extensions',
+			url: 'index.php?option=com_redmigrator&format=raw&task=ajax.extensions',
 			method: 'get'
 		}); // end Request
 
@@ -555,7 +555,7 @@ var jUpgradepro = new Class({
 		//
 		var step = new Request({
 			link: 'chain',
-			url: 'index.php?option=com_jupgradepro&format=raw&view='+method+'&task=imageslist',
+			url: 'index.php?option=com_redmigrator&format=raw&view='+method+'&task=imageslist',
 			method: 'get'
 		}); // end Request		
 
@@ -590,7 +590,7 @@ var jUpgradepro = new Class({
 				});
 				
 				// Start the checks
-				file.options.url = 'index.php?option=com_jupgradepro&format=raw&view='+method+'&task=image&files=images';			
+				file.options.url = 'index.php?option=com_redmigrator&format=raw&view='+method+'&task=image&files=images';			
 				
 				for (i=1;i<=object.total;i++) {
 					rm.addRequest(i, file);			
@@ -638,7 +638,7 @@ var jUpgradepro = new Class({
 		// Templates Files
 		//
 		var templates_files = new Request({
-			url: 'index.php?option=com_jupgradepro&format=raw&view=ajax&task=templatesfiles',
+			url: 'index.php?option=com_redmigrator&format=raw&view=ajax&task=templatesfiles',
 			method: 'get',
 			noCache: true
 		}); // end Request		
@@ -668,7 +668,7 @@ var jUpgradepro = new Class({
 		// Templates 
 		//
 		var templates = new Request({
-			url: 'index.php?option=com_jupgradepro&format=raw&view=ajax&task=templates',
+			url: 'index.php?option=com_redmigrator&format=raw&view=ajax&task=templates',
 			method: 'get',
 			noCache: true
 		}); // end Request		

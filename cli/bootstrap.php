@@ -12,7 +12,7 @@
 */
 
 // User define for Joomla! 2.5 / 3.0 / 3.1 path
-define('JPATH_SITE', dirname(dirname(dirname(__FILE__))).'/joomla-cms');
+define('JPATH_SITE', dirname(dirname(dirname(__FILE__))).'/Joomla_2.5.9');
 
 // @@@ DONT TOUCH BELOW THIS @@@
 // Setup the base path related constant.

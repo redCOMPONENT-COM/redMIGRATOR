@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -17,7 +17,7 @@
  *
  * @since	0.4.5
  */
-class jUpgradeCheckExtensions extends jUpgradeExtensions
+class redMigratorCheckExtensions extends redMigratorExtensions
 {
 	/**
 	 * count adapters
@@ -54,10 +54,10 @@ class jUpgradeCheckExtensions extends jUpgradeExtensions
 	protected function upgradeComponents()
 	{
 		// Getting the step
-		$step = jUpgradeStep::getInstance('ext_components', true);
+		$step = redMigratorStep::getInstance('ext_components', true);
 
-		// Get jUpgradeExtensionsComponents instance
-		$components = jUpgrade::getInstance($step);
+		// Get redMigratorExtensionsComponents instance
+		$components = redMigrator::getInstance($step);
 		$rows = $components->dataSwitch();
 
 		$this->_addExtensions ( $rows, 'com' );
@@ -78,10 +78,10 @@ class jUpgradeCheckExtensions extends jUpgradeExtensions
 	protected function upgradeModules()
 	{
 		// Getting the step
-		$step = jUpgradeStep::getInstance('ext_modules', true);
+		$step = redMigratorStep::getInstance('ext_modules', true);
 
-		// Get jUpgradeExtensionsModules instance
-		$modules = jUpgrade::getInstance($step);
+		// Get redMigratorExtensionsModules instance
+		$modules = redMigrator::getInstance($step);
 		$rows = $modules->dataSwitch();
 
 		$this->_addExtensions ( $rows, 'mod' );
@@ -102,10 +102,10 @@ class jUpgradeCheckExtensions extends jUpgradeExtensions
 	protected function upgradePlugins()
 	{
 		// Getting the step
-		$step = jUpgradeStep::getInstance('ext_plugins', true);
+		$step = redMigratorStep::getInstance('ext_plugins', true);
 
-		// Get jUpgradeExtensionsPlugins instance
-		$plugins = jUpgrade::getInstance($step);
+		// Get redMigratorExtensionsPlugins instance
+		$plugins = redMigrator::getInstance($step);
 		$rows = $plugins->dataSwitch();
 
 		$this->_addExtensions ( $rows, 'plg' );
@@ -188,17 +188,17 @@ class jUpgradeCheckExtensions extends jUpgradeExtensions
 			'/^tpl_(.+)$/e');									// tpl_templatename
 
 		$classes = array(
-			"'jUpgradeComponent'.ucfirst('\\1')",				// jUpgradeComponentComponentname
-			"'jUpgradeModule'.ucfirst('\\1')",					// jUpgradeModuleModulename
-			"'jUpgradePlugin'.ucfirst('\\1').ucfirst('\\2')",	// jUpgradePluginPluginname
-			"'jUpgradeTemplate'.ucfirst('\\1')");				// jUpgradeTemplateTemplatename
+			"'redMigratorComponent'.ucfirst('\\1')",				// redMigratorComponentComponentname
+			"'redMigratorModule'.ucfirst('\\1')",					// redMigratorModuleModulename
+			"'redMigratorPlugin'.ucfirst('\\1').ucfirst('\\2')",	// redMigratorPluginPluginname
+			"'redMigratorTemplate'.ucfirst('\\1')");				// redMigratorTemplateTemplatename
 
 		// Getting the plugins list
 		$query = $this->_db->getQuery(true);
 		$query->select('*');
 		$query->from('#__extensions');
 		$query->where("type = 'plugin'");
-		$query->where("folder = 'jupgradepro'");
+		$query->where("folder = 'redmigrator'");
 		$query->where("enabled = 1");
 
 		// Setting the query and getting the result
@@ -209,7 +209,7 @@ class jUpgradeCheckExtensions extends jUpgradeExtensions
 		foreach ($plugins as $plugin)
 		{
 			// Looking for xml files
-			$files = (array) JFolder::files(JPATH_PLUGINS."/jupgradepro/{$plugin->element}/extensions", '\.xml$', true, true);
+			$files = (array) JFolder::files(JPATH_PLUGINS."/redmigrator/{$plugin->element}/extensions", '\.xml$', true, true);
 
 			foreach ($files as $xmlfile)
 			{
@@ -229,7 +229,7 @@ class jUpgradeCheckExtensions extends jUpgradeExtensions
 							$phpfile = JPATH_ROOT.'/'.trim($xml->installer->file[0]);
 						}
 						if (empty($phpfile)) {
-							$default_phpfile = JPATH_PLUGINS."/jupgradepro/{$plugin->element}/extensions/{$element}.php";
+							$default_phpfile = JPATH_PLUGINS."/redmigrator/{$plugin->element}/extensions/{$element}.php";
 							$phpfile = file_exists($default_phpfile) ? $default_phpfile : null;
 						}
 
@@ -252,8 +252,8 @@ class jUpgradeCheckExtensions extends jUpgradeExtensions
 
 							$xmlpath = "{$plugin->element}/extensions/{$element}.xml";
 
-							// Inserting the step to #__jupgradepro_extensions table
-							$query->insert('#__jupgradepro_extensions')->columns('`name`, `title`, `class`, `xmlpath`')->values("'{$element}', '{$xml->name}', '{$class}', '{$xmlpath}'");
+							// Inserting the step to #__redMigrator_extensions table
+							$query->insert('#__redmigrator_extensions')->columns('`name`, `title`, `class`, `xmlpath`')->values("'{$element}', '{$xml->name}', '{$class}', '{$xmlpath}'");
 							$this->_db->setQuery($query);
 							$this->_db->execute();
 
@@ -297,7 +297,7 @@ class jUpgradeCheckExtensions extends jUpgradeExtensions
 									$exists = $this->_driver->tableExists($table->name);
 
 									if ($exists == 'YES'){
-										if (!$this->_db->insertObject('#__jupgradepro_extensions_tables', $table)) {
+										if (!$this->_db->insertObject('#__redmigrator_extensions_tables', $table)) {
 											throw new Exception($this->_db->getErrorMsg());
 										}
 									}

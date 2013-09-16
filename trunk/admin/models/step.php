@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -13,18 +13,18 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('jUpgrade', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php');
-JLoader::register('jUpgradeStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.step.class.php');
+JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
+JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
 
 /**
- * jUpgradePro Model
+ * redMigrator Model
  *
- * @package		jUpgradePro
+ * @package		redMigrator
  */
-class jUpgradeProModelStep extends JModelLegacy
+class redMigratorModelStep extends JModelLegacy
 {
 	/**
-	 * Initial checks in jUpgradePro
+	 * Initial checks in redMigrator
 	 *
 	 * @return	none
 	 * @since	1.2.0
@@ -34,8 +34,8 @@ class jUpgradeProModelStep extends JModelLegacy
 		// Check if extensions exists if not get it from URI request
 		$extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
 
-		// Getting the jUpgradeStep instance
-		$step = jUpgradeStep::getInstance(null, $extensions);
+		// Getting the redMigratorStep instance
+		$step = redMigratorStep::getInstance(null, $extensions);
 
 		// Check if name exists
 		$name = !empty($name) ? $name : $step->name;
@@ -43,7 +43,7 @@ class jUpgradeProModelStep extends JModelLegacy
 		// Get the next step
 		$step->getStep($name);
 
-		if (!jUpgradeProHelper::isCli()) {
+		if (!redMigratorHelper::isCli()) {
 			echo $step->getParameters();
 		}else{
 			return $step->getParameters();

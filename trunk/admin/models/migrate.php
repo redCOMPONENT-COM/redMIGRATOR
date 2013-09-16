@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -13,15 +13,15 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('jUpgrade', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php');
-JLoader::register('jUpgradeStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.step.class.php');
+JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
+JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
 
 /**
- * jUpgradePro Model
+ * redMigrator Model
  *
- * @package		jUpgradePro
+ * @package		redMigrator
  */
-class jUpgradeProModelMigrate extends JModelLegacy
+class redMigratorModelMigrate extends JModelLegacy
 {
 	/**
 	 * Migrate
@@ -34,20 +34,20 @@ class jUpgradeProModelMigrate extends JModelLegacy
 		$table = (bool) ($table != false) ? $table : JRequest::getCmd('table', '');
 		$extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
 
-		// Init the jUpgrade instance
-		$step = jUpgradeStep::getInstance($table, $extensions);
-		$jupgrade = jUpgrade::getInstance($step);
+		// Init the redMigrator instance
+		$step = redMigratorStep::getInstance($table, $extensions);
+		$redmigrator = redMigrator::getInstance($step);
 
 		// Get the database structure
 		if ($step->first == true && $extensions == 'tables') {
-			$structure = $jupgrade->getTableStructure();
+			$structure = $redmigrator->getTableStructure();
 		}
 
 		// Run the upgrade
 		if ($step->total > 0) {
 			try
 			{
-				$jupgrade->upgrade();
+				$redmigrator->upgrade();
 			}
 			catch (Exception $e)
 			{
@@ -72,7 +72,7 @@ class jUpgradeProModelMigrate extends JModelLegacy
 			$step->stop = -1;
 		}
 
-		// Update #__jupgradepro_steps table if id = last_id
+		// Update #__redMigrator_steps table if id = last_id
 		if ( ( ($step->total <= $step->cid) || ($step->stop == -1) && ($empty == false) ) )
 		{
 			$step->next = true;
@@ -81,7 +81,7 @@ class jUpgradeProModelMigrate extends JModelLegacy
 			$step->_updateStep();
 		}
 
-		if (!jUpgradeProHelper::isCli()) {
+		if (!redMigratorHelper::isCli()) {
 			echo $step->getParameters();
 		}else{
 			return $step->getParameters();

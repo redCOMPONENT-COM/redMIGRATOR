@@ -1,9 +1,9 @@
 /**
- * jUpgradePro
+ * redMigrator
  *
  * @version		    $Id$
  * @package		    MatWare
- * @subpackage    com_jupgradepro
+ * @subpackage    com_redMigrator
  * @author        Matias Aguirre <maguirre@matware.com.ar>
  * @link          http://www.matware.com.ar
  * @copyright		  Copyright 2004 - 2013 Matias Aguirre. All rights reserved.
@@ -61,7 +61,7 @@ var dwProgressBar = new Class({
   },
 
 	finish: function() {
-    $(this.options.percentageID).setStyle('background-image', 'url(components/com_jupgradepro/images/progress-bar-finish.png)');
+    $(this.options.percentageID).setStyle('background-image', 'url(components/com_redmigrator/images/progress-bar-finish.png)');
 	},
 
   //sets the percentage from its current state to desired percentage

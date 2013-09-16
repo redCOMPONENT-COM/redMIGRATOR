@@ -8,8 +8,8 @@
 # * @license     GNU/GPL
 # 
 
-PROJECT="jUpgradePro"
-USER="fastslack"
+PROJECT="redMIGRATOR"
+USER="khairedweb"
 FILE=~/path/to/file
 LINK="http://github.com/${USER}/${PROJECT}/commit/%H"
 

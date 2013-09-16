@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -11,7 +11,7 @@
 * @license GNU General Public License version 2 or later; see LICENSE
 */
 // Require the category class
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.category.class.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.category.class.php';
 
 /**
  * Upgrade class for categories
@@ -20,7 +20,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.category.class.ph
  *
  * @since	0.4.5
  */
-class jUpgradeCategories extends jUpgradeCategory
+class redMigratorCategories extends redMigratorCategory
 {
 	/**
 	 * Setting the conditions hook

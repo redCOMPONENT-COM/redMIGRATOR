@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -14,14 +14,14 @@
 defined('_JEXEC') or die;
 
 /**
- * jUpgradePro RESTful utility class
+ * redMigrator RESTful utility class
  *
- * @package		jUpgradePro
+ * @package		redMigrator
  */
-class jUpgradeDriverRest extends jUpgradeDriver
+class redMigratorDriverRest extends redMigratorDriver
 {	
 
-	function __construct(jUpgradeStep $step = null)
+	function __construct(redMigratorStep $step = null)
 	{
 		parent::__construct($step);
 	}
@@ -84,7 +84,7 @@ class jUpgradeDriverRest extends jUpgradeDriver
 		$code = $request->code;
 
 		if ($code == 500) {
-			throw new Exception('COM_JUPGRADEPRO_JUPGRADEPRO_ERROR_REST_REQUEST');
+			throw new Exception('COM_REDMIGRATOR_REDMIGRATOR_ERROR_REST_REQUEST');
 		} else {
 			return ($code == 200 || $code == 301) ? $request->body : $code;
 		}

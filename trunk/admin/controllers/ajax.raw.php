@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -13,19 +13,19 @@
 defined('_JEXEC') or die;
 
 /**
- * The jUpgradePro ajax controller 
+ * The redMigrator ajax controller 
  *
- * @package     jUpgradePro
- * @subpackage  com_jupgradepro
+ * @package     redMigrator
+ * @subpackage  com_redMigrator
  * @since       3.0.3
  */
-class jUpgradeProControllerAjax extends JControllerLegacy
+class redMigratorControllerAjax extends JControllerLegacy
 {
 	/**
 	 * @var		string	The context for persistent state.
 	 * @since   3.0.3
 	 */
-	protected $context = 'com_jupgradepro.ajax';
+	protected $context = 'com_redmigrator.ajax';
 
 	/**
 	 * Proxy for getModel.
@@ -33,17 +33,17 @@ class jUpgradeProControllerAjax extends JControllerLegacy
 	 * @param   string	$name	The name of the model.
 	 * @param   string	$prefix	The prefix for the model class name.
 	 *
-	 * @return  jUpgradeProModel
+	 * @return  redMigratorModel
 	 * @since   3.0.3
 	 */
-	public function getModel($name = '', $prefix = 'jUpgradeProModel', $config = array())
+	public function getModel($name = '', $prefix = 'redMigratorModel', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
 	}
 
 	/**
-	 * Run the jUpgradePro checks
+	 * Run the redMigrator checks
 	 */
 	public function checks()
 	{
@@ -60,7 +60,7 @@ class jUpgradeProControllerAjax extends JControllerLegacy
 	}
 
 	/**
-	 * Run the jUpgradePro cleanup
+	 * Run the redMigrator cleanup
 	 */
 	public function cleanup()
 	{
@@ -76,7 +76,7 @@ class jUpgradeProControllerAjax extends JControllerLegacy
 	}
 
 	/**
-	 * Run jUpgradePro step
+	 * Run redMigrator step
 	 */
 	public function step()
 	{
@@ -92,7 +92,7 @@ class jUpgradeProControllerAjax extends JControllerLegacy
 	}
 
 	/**
-	 * Run jUpgradePro migrate
+	 * Run redMigrator migrate
 	 */
 	public function migrate()
 	{
@@ -108,7 +108,7 @@ class jUpgradeProControllerAjax extends JControllerLegacy
 	}
 
 	/**
-	 * Run jUpgradePro extensions
+	 * Run redMigrator extensions
 	 */
 	public function extensions()
 	{

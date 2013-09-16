@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -14,9 +14,9 @@
  * Upgrade class for FrontEnd content
  *
  * @package		MatWare
- * @subpackage	com_jupgrade
+ * @subpackage	com_redmigrator
  * @since		0.4.4
  */
-class jUpgradeContentFrontpage extends jUpgrade
+class redMigratorContentFrontpage extends redMigrator
 {
 }

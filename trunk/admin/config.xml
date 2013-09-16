@@ -4,27 +4,27 @@
 
 	<fieldset
 		name="global"
-		label="COM_JUPGRADEPRO_CONFIG_GLOBAL_TITLE"
-		description="COM_JUPGRADEPRO_CONFIG_GLOBAL_TITLE_DESC">
+		label="COM_REDMIGRATOR_CONFIG_GLOBAL_TITLE"
+		description="COM_REDMIGRATOR_CONFIG_GLOBAL_TITLE_DESC">
 
 		<field
 			name="method"
 			type="list"
-			label="COM_JUPGRADEPRO_CONFIG_METHOD"
-			description="COM_JUPGRADEPRO_CONFIG_METHOD_DESC"
+			label="COM_REDMIGRATOR_CONFIG_METHOD"
+			description="COM_REDMIGRATOR_CONFIG_METHOD_DESC"
 			default="database">
 			<option
-				value="database">COM_JUPGRADEPRO_CONFIG_DATABASE_TITLE</option>
+				value="database">COM_REDMIGRATOR_CONFIG_DATABASE_TITLE</option>
 			<option
-				value="rest">COM_JUPGRADEPRO_CONFIG_REST_TITLE</option>
+				value="rest">COM_REDMIGRATOR_CONFIG_REST_TITLE</option>
 		</field>
 
 		<field
 			name="chunk_limit"
 			type="text"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_LIMIT"
-			description="COM_JUPGRADEPRO_CONFIG_LIMIT_DESC"
+			label="COM_REDMIGRATOR_CONFIG_LIMIT"
+			description="COM_REDMIGRATOR_CONFIG_LIMIT_DESC"
 			default="100"
 		/>
 
@@ -32,15 +32,15 @@
 
 	<fieldset
 		name="rest"
-		label="COM_JUPGRADEPRO_CONFIG_REST_TITLE"
-		description="COM_JUPGRADEPRO_CONFIG_REST_TITLE_DESC">
+		label="COM_REDMIGRATOR_CONFIG_REST_TITLE"
+		description="COM_REDMIGRATOR_CONFIG_REST_TITLE_DESC">
 
 		<field
 			name="rest_hostname"
 			type="text"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_HOSTNAME"
-			description="COM_JUPGRADEPRO_CONFIG_HOSTNAME_DESC"
+			label="COM_REDMIGRATOR_CONFIG_HOSTNAME"
+			description="COM_REDMIGRATOR_CONFIG_HOSTNAME_DESC"
 			default="http://www.example.org/"
 		/>
 
@@ -48,8 +48,8 @@
 			name="rest_username"
 			type="text"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_USERNAME"
-			description="COM_JUPGRADEPRO_CONFIG_USERNAME_DESC"
+			label="COM_REDMIGRATOR_CONFIG_USERNAME"
+			description="COM_REDMIGRATOR_CONFIG_USERNAME_DESC"
 			default=""
 		/>
 
@@ -57,8 +57,8 @@
 			name="rest_password"
 			type="password"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_PASSWORD"
-			description="COM_JUPGRADEPRO_CONFIG_PASSWORD_DESC"
+			label="COM_REDMIGRATOR_CONFIG_PASSWORD"
+			description="COM_REDMIGRATOR_CONFIG_PASSWORD_DESC"
 			default=""
 		/>
 
@@ -66,8 +66,8 @@
 			name="rest_key"
 			type="password"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_KEY"
-			description="COM_JUPGRADEPRO_CONFIG_KEY_DESC"
+			label="COM_REDMIGRATOR_CONFIG_KEY"
+			description="COM_REDMIGRATOR_CONFIG_KEY_DESC"
 			default=""
 		/>
 
@@ -75,8 +75,8 @@
 
 	<fieldset
 		name="database"
-		label="COM_JUPGRADEPRO_CONFIG_DATABASE_TITLE"
-		description="COM_JUPGRADEPRO_CONFIG_DATABASE_TITLE_DESC">
+		label="COM_REDMIGRATOR_CONFIG_DATABASE_TITLE"
+		description="COM_REDMIGRATOR_CONFIG_DATABASE_TITLE_DESC">
 
 		<field name="old_dbtype" type="list" default="mysql" label="Database driver" description="Database driver">
 			<option value="mysql">MySQL</option>
@@ -87,8 +87,8 @@
 			name="old_hostname"
 			type="text"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_HOSTNAME"
-			description="COM_JUPGRADEPRO_CONFIG_HOSTNAME_DB_DESC"
+			label="COM_REDMIGRATOR_CONFIG_HOSTNAME"
+			description="COM_REDMIGRATOR_CONFIG_HOSTNAME_DB_DESC"
 			default="localhost"
 		/>
 
@@ -96,8 +96,8 @@
 			name="old_username"
 			type="text"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_USERNAME"
-			description="COM_JUPGRADEPRO_CONFIG_USERNAME_DB_DESC"
+			label="COM_REDMIGRATOR_CONFIG_USERNAME"
+			description="COM_REDMIGRATOR_CONFIG_USERNAME_DB_DESC"
 			default=""
 		/>
 
@@ -105,8 +105,8 @@
 			name="old_password"
 			type="password"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_PASSWORD"
-			description="COM_JUPGRADEPRO_CONFIG_PASSWORD_DB_DESC"
+			label="COM_REDMIGRATOR_CONFIG_PASSWORD"
+			description="COM_REDMIGRATOR_CONFIG_PASSWORD_DB_DESC"
 			default=""
 		/>
 
@@ -114,8 +114,8 @@
 			name="old_db"
 			type="text"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_DATABASE"
-			description="COM_JUPGRADEPRO_CONFIG_DATABASE_DB_DESC"
+			label="COM_REDMIGRATOR_CONFIG_DATABASE"
+			description="COM_REDMIGRATOR_CONFIG_DATABASE_DB_DESC"
 			default=""
 		/>
 
@@ -123,8 +123,8 @@
 			name="old_dbprefix"
 			type="text"
 			size="60"
-			label="COM_JUPGRADEPRO_CONFIG_PREFIX"
-			description="COM_JUPGRADEPRO_CONFIG_PREFIX_DESC"
+			label="COM_REDMIGRATOR_CONFIG_PREFIX"
+			description="COM_REDMIGRATOR_CONFIG_PREFIX_DESC"
 			default="jos_"
 		/>
 
@@ -132,7 +132,7 @@
 
 	<fieldset
 		name="skips"
-		label="COM_JUPGRADEPRO_CONFIG_SKIPS_TITLE">
+		label="COM_REDMIGRATOR_CONFIG_SKIPS_TITLE">
 
 		<field name="spacer1" type="spacer" class="text" label="&lt;b&gt;Core skips&lt;/b&gt;" />
 
@@ -202,14 +202,14 @@
 
 	<fieldset
 		name="templates"
-		label="COM_JUPGRADEPRO_CONFIG_TEMPLATE_TITLE"
-		description="COM_JUPGRADEPRO_CONFIG_TEMPLATE_TITLE_DESC">
+		label="COM_REDMIGRATOR_CONFIG_TEMPLATE_TITLE"
+		description="COM_REDMIGRATOR_CONFIG_TEMPLATE_TITLE_DESC">
 
 		<field
 			name="positions"
 			type="radio"
-			label="COM_JUPGRADEPRO_CONFIG_POSITIONS"
-			description="COM_JUPGRADEPRO_CONFIG_POSITIONS_DESC"
+			label="COM_REDMIGRATOR_CONFIG_POSITIONS"
+			description="COM_REDMIGRATOR_CONFIG_POSITIONS_DESC"
 			default="1">
 			<option	value="1">JYES</option>
 			<option	value="0">JNO</option>
@@ -228,41 +228,41 @@
 			label="JCONFIG_PERMISSIONS_LABEL" 
 			class="inputbox" 
 			filter="rules" 
-			component="com_jupgradepro" 
+			component="com_REDMIGRATOR" 
 			section="component" />
 	</fieldset>
 
 	<fieldset
 		name="debug"
-		label="COM_JUPGRADEPRO_CONFIG_DEBUG_TITLE"
-		description="COM_JUPGRADEPRO_CONFIG_DEBUG_TITLE_DESC">
+		label="COM_REDMIGRATOR_CONFIG_DEBUG_TITLE"
+		description="COM_REDMIGRATOR_CONFIG_DEBUG_TITLE_DESC">
 
-		<field name="error_reporting"	type="list"	label="COM_JUPGRADEPRO_CONFIG_ERROR_REPORTING"
-			description="COM_JUPGRADEPRO_CONFIG_ERROR_REPORTING_DESC" default="0">
+		<field name="error_reporting"	type="list"	label="COM_REDMIGRATOR_CONFIG_ERROR_REPORTING"
+			description="COM_REDMIGRATOR_CONFIG_ERROR_REPORTING_DESC" default="0">
 				<option
 				value="0">JNO</option>
 				<option
 				value="1">JYES</option>
 		</field>
 
-		<field name="debug_check"	type="list"	label="COM_JUPGRADEPRO_CONFIG_DEBUG_CHECK"
-			description="COM_JUPGRADEPRO_CONFIG_DEBUG_CHECK_DESC" default="0">
+		<field name="debug_check"	type="list"	label="COM_REDMIGRATOR_CONFIG_DEBUG_CHECK"
+			description="COM_REDMIGRATOR_CONFIG_DEBUG_CHECK_DESC" default="0">
 				<option
 				value="0">JNO</option>
 				<option
 				value="1">JYES</option>
 		</field>
 
-		<field name="debug_step"	type="list"	label="COM_JUPGRADEPRO_CONFIG_DEBUG_STEP"
-			description="COM_JUPGRADEPRO_CONFIG_DEBUG_STEP_DESC" default="0">
+		<field name="debug_step"	type="list"	label="COM_REDMIGRATOR_CONFIG_DEBUG_STEP"
+			description="COM_REDMIGRATOR_CONFIG_DEBUG_STEP_DESC" default="0">
 				<option
 				value="0">JNO</option>
 				<option
 				value="1">JYES</option>
 		</field>
 
-		<field name="debug_migrate"	type="list"	label="COM_JUPGRADEPRO_CONFIG_DEBUG_MIGRATE"
-			description="COM_JUPGRADEPRO_CONFIG_DEBUG_MIGRATE_DESC"	default="0">
+		<field name="debug_migrate"	type="list"	label="COM_REDMIGRATOR_CONFIG_DEBUG_MIGRATE"
+			description="COM_REDMIGRATOR_CONFIG_DEBUG_MIGRATE_DESC"	default="0">
 				<option
 				value="0">JNO</option>
 				<option

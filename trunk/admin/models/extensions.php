@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -13,16 +13,16 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('jUpgrade', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php');
-JLoader::register('jUpgradeStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.step.class.php');
-JLoader::register('jUpgradeExtensions', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.extensions.class.php');
+JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
+JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
+JLoader::register('redMigratorExtensions', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.extensions.class.php');
 
 /**
- * jUpgradePro Model
+ * redMigrator Model
  *
- * @package		jUpgradePro
+ * @package		redMigrator
  */
-class jUpgradeProModelExtensions extends JModelLegacy
+class redMigratorModelExtensions extends JModelLegacy
 {
 	/**
 	 * Migrate the extensions
@@ -33,10 +33,10 @@ class jUpgradeProModelExtensions extends JModelLegacy
 	function extensions() {
 
 		// Get the step
-		$step = jUpgradeStep::getInstance('extensions', true);
+		$step = redMigratorStep::getInstance('extensions', true);
 
-		// Get jUpgradeExtensions instance
-		$extensions = jUpgrade::getInstance($step);
+		// Get redMigratorExtensions instance
+		$extensions = redMigrator::getInstance($step);
 		$success = $extensions->upgrade();
 
 		if ($success === true) {

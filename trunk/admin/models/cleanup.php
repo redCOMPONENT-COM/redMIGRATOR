@@ -1,9 +1,9 @@
 <?php
 /**
-* jUpgradePro
+* redMigrator
 *
 * @version $Id:
-* @package jUpgradePro
+* @package redMigrator
 * @copyright Copyright (C) 2004 - 2013 Matware. All rights reserved.
 * @author Matias Aguirre
 * @email maguirre@matware.com.ar
@@ -13,16 +13,16 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('jUpgrade', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php');
-JLoader::register('jUpgradeDriver', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.driver.class.php');
-JLoader::register('jUpgradeStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.step.class.php');
+JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
+JLoader::register('redMigratorDriver', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.driver.class.php');
+JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
 
 /**
- * jUpgradePro Model
+ * redMigrator Model
  *
- * @package		jUpgradePro
+ * @package		redMigrator
  */
-class jUpgradeProModelCleanup extends JModelLegacy
+class redMigratorModelCleanup extends JModelLegacy
 {
 	/**
 	 * Cleanup
@@ -33,21 +33,21 @@ class jUpgradeProModelCleanup extends JModelLegacy
 	function cleanup()
 	{
 		// Loading the helper
-		JLoader::import('helpers.jupgradepro', JPATH_COMPONENT_ADMINISTRATOR);
+		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 		// Importing helper tags
 		jimport('cms.helper.tags');
 		// Getting the component parameter with global settings
-		$params = jUpgradeProHelper::getParams();
+		$params = redMigratorHelper::getParams();
 
-		// If REST is enable, cleanup the source #__jupgradepro_steps table
+		// If REST is enable, cleanup the source #__redMigrator_steps table
 		if ($params->method == 'rest') {
-			$driver = JUpgradeDriver::getInstance();
+			$driver = redMigratorDriver::getInstance();
 			$code = $driver->requestRest('cleanup');
 		}
 
 		// Set all cid, status and cache to 0
 		$query = $this->_db->getQuery(true);
-		$query->update('#__jupgradepro_steps')->set('cid = 0, status = 0, cache = 0');
+		$query->update('#__redmigrator_steps')->set('cid = 0, status = 0, cache = 0');
 		$this->_db->setQuery($query)->execute();
 
 		// Convert the params to array
@@ -62,7 +62,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 				if ($v == 1) {
 					$query->clear();
 					// Set all status to 0 and clear state
-					$query->update('#__jupgradepro_steps')->set('status = 2')->where("name = '{$name}'");
+					$query->update('#__redmigrator_steps')->set('status = 2')->where("name = '{$name}'");
 
 					try {
 						$this->_db->setQuery($query)->execute();
@@ -73,7 +73,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 					$query->clear();
 
 					if ($name == 'users') {
-						$query->update('#__jupgradepro_steps')->set('status = 2')->where('name = \'arogroup\'');
+						$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'arogroup\'');
 
 						try {
 							$this->_db->setQuery($query)->execute();
@@ -82,7 +82,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 						}
 
 						$query->clear();
-						$query->update('#__jupgradepro_steps')->set('status = 2')->where('name = \'usergroupmap\'');
+						$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'usergroupmap\'');
 
 						try {
 							$this->_db->setQuery($query)->execute();
@@ -92,7 +92,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 					}
 
 					if ($name == 'categories') {
-						$query->update('#__jupgradepro_steps')->set('status = 2')->where('name = \'sections\'');
+						$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'sections\'');
 
 						try {
 							$this->_db->setQuery($query)->execute();
@@ -107,7 +107,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 			if ($k == 'skip_extensions') {
 				if ($v == 1) {
 					$query->clear();
-					$query->update('#__jupgradepro_steps')->set('status = 2')->where('name = \'extensions\'');
+					$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'extensions\'');
 
 					try {
 						$this->_db->setQuery($query)->execute();
@@ -120,10 +120,10 @@ class jUpgradeProModelCleanup extends JModelLegacy
 
 		// Truncate the selected tables
 		$tables = array();
-		$tables[] = '#__jupgradepro_categories';
-		$tables[] = '#__jupgradepro_menus';
-		$tables[] = '#__jupgradepro_modules';
-		$tables[] = '#__jupgradepro_default_categories';
+		$tables[] = '#__redmigrator_categories';
+		$tables[] = '#__redmigrator_menus';
+		$tables[] = '#__redmigrator_modules';
+		$tables[] = '#__redmigrator_default_categories';
 		$tables[] = '#__menu_types';
 		$tables[] = '#__content';
 
@@ -143,7 +143,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 
 			// Insert needed value
 			$query->clear();
-			$query->insert('#__jupgradepro_menus')->columns('`old`, `new`')->values("0, 0");
+			$query->insert('#__redmigrator_menus')->columns('`old`, `new`')->values("0, 0");
 
 			try {
 				$this->_db->setQuery($query)->execute();
@@ -153,7 +153,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 
 			// Clear the default database
 			$query->clear();
-			$query->delete()->from('#__jupgradepro_default_menus')->where('id > 100');
+			$query->delete()->from('#__redmigrator_default_menus')->where('id > 100');
 
 			try {
 				$this->_db->setQuery($query)->execute();
@@ -188,7 +188,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 				$menu = (object) $menu;
 
 				try {
-					$this->_db->insertObject('#__jupgradepro_default_menus', $menu);
+					$this->_db->insertObject('#__redmigrator_default_menus', $menu);
 				} catch (RuntimeException $e) {
 					throw new RuntimeException($e->getMessage());
 				}
@@ -210,7 +210,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 
 			// Insert uncategorized id
 			$query->clear();
-			$query->insert('#__jupgradepro_categories')->columns('`old`, `new`')->values("0, 2");
+			$query->insert('#__redmigrator_categories')->columns('`old`, `new`')->values("0, 2");
 			try {
 				$this->_db->setQuery($query)->execute();
 			} catch (RuntimeException $e) {
@@ -237,7 +237,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 				$id = $category->id;
 				unset($category->id);
 
-				$this->_db->insertObject('#__jupgradepro_default_categories', $category);
+				$this->_db->insertObject('#__redmigrator_default_categories', $category);
 
 				// Getting the categories table
 				$table = JTable::getInstance('Category', 'JTable');
@@ -308,7 +308,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 
 			if ($modules_id > 86) {
 				$query->clear();
-				$query->update('#__jupgradepro_steps')->set('status = 2')->where('name = \'modules\'');
+				$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'modules\'');
 				try {
 					$this->_db->setQuery($query)->execute();
 				} catch (RuntimeException $e) {
@@ -316,7 +316,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 				}
 
 				$query->clear();
-				$query->update('#__jupgradepro_steps')->set('status = 2')->where('name = \'modules_menu\'');
+				$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'modules_menu\'');
 				try {
 					$this->_db->setQuery($query)->execute();
 				} catch (RuntimeException $e) {
@@ -336,7 +336,7 @@ class jUpgradeProModelCleanup extends JModelLegacy
 		}
 
 		// Done checks
-		if (!jUpgradeProHelper::isCli())
+		if (!redMigratorHelper::isCli())
 			$this->returnError (100, 'DONE');
 	}
 
