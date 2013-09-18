@@ -165,13 +165,13 @@ class redMigratorStep
 		}
 
 		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
-		$params = redmigratorHelper::getParams();
+		$params = redMigratorHelper::getParams();
 
 		$limit = $params->chunk_limit;
 
 		// Getting the total
 		if (isset($this->source)) {
-			$this->total = redmigratorHelper::getTotal($this);
+			$this->total = redMigratorHelper::getTotal($this);
 		}
 
 		// We must to fragment the steps
