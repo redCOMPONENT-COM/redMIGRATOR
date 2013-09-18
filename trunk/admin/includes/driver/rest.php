@@ -69,9 +69,10 @@ class redMigratorDriverRest extends redMigratorDriver
 	 * @return   step object
 	 */
 	public function requestRest($task = 'total', $table = false) {
-		// JHttp instance
-		jimport('joomla.http.http');
-		$http = new JHttp();
+		// RedHttp instance
+		JLoader::registerPrefix('Red', dirname(__DIR__) . '/libraries');
+
+		$http = RedHttpFactory::getHttp();
 		$data = $this->getRestData();
 
 		// Getting the total
