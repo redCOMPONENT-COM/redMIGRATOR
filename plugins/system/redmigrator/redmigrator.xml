@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="system" method="upgrade">
+	<name>redMIGRATOR - System plugin</name>
+	<author>redCOMPONENT</author>
+	<creationDate>April 13th, 2013</creationDate>
+	<copyright>Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later.</license>
+	<authorEmail>email@redcomponent.com</authorEmail>
+	<authorUrl>http://www.redcomponent.com</authorUrl>
+	<version>3.0</version>
+	<description>RESTFul WebService for redmigrator</description>
+	<files>
+		<folder>redmigrator</folder>
+		<filename plugin="redmigrator">redmigrator.php</filename>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_system_redmigrator.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_redmigrator.sys.ini</language>
+	</languages>
+	<params>
+		<param
+			name="client_key"
+			type="password"
+			default=""
+			label="Key of the client side"
+			description="Key of the client side"
+		/>
+	</params>
+</install>

@@ -1,0 +1,3 @@
+[submodule "redRAD"]
+	path = redRAD
+	url = https://github.com/redCOMPONENT-COM/redRAD
