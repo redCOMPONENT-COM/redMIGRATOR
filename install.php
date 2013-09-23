@@ -40,4 +40,17 @@ if (!class_exists('Pkg_RedradInstallerScript'))
  */
 class Com_RedmigratorInstallerScript extends Pkg_RedradInstallerScript
 {
+	public function postflight($type, $parent)
+	{
+		if (parent::postflight($type, $parent))
+		{
+			jimport(joomla.filesystem.file);
+
+			JFile::move('com_redmigrator.xml', 'redmigrator.xml', JPATH_ADMINISTRATOR . '/components/com_redmigrator');
+
+			return true;
+		}
+
+		return false;
+	}
 }
