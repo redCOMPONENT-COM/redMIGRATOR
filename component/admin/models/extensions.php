@@ -21,7 +21,7 @@ JLoader::register('redMigratorExtensions', JPATH_COMPONENT_ADMINISTRATOR.'/inclu
  *
  * @package		redMigrator
  */
-class redMigratorModelExtensions extends JModelLegacy
+class redMigratorModelExtensions extends RModelAdmin
 {
 	/**
 	 * Migrate the extensions

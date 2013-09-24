@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
  * @subpackage  com_redMigrator
  * @since       3.0.3
  */
-class redMigratorControllerAjax extends JControllerLegacy
+class redMigratorControllerAjax extends RControllerAdmin
 {
 	/**
 	 * @var		string	The context for persistent state.

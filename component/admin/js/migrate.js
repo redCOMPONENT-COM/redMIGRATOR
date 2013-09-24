@@ -115,7 +115,7 @@ var redmigrator = new Class({
 					var object = JSON.decode(response);
 
 					if (self.options.debug_check == 1) {
-						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' +object.text;
+						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' + object.text;
 						console.log(response);
 					}
 
@@ -145,7 +145,7 @@ var redmigrator = new Class({
 					var object = JSON.decode(response);
 
 					if (self.options.debug_check == 1) {
-						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[checks]</b><br><br>' +response;
+						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[checks]</b><br><br>' + object.text;
 						console.log(response);
 					}
 
@@ -234,7 +234,7 @@ var redmigrator = new Class({
 
 				if (row_object.number == 500) {
 					if (self.options.debug_migrate == 1) {
-						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[ROW]</b><br><br>' +row_object.text;
+						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[ROW]</b><br><br>' + row_object.text;
 					}
 				}
 
@@ -285,7 +285,7 @@ var redmigrator = new Class({
 				}
 
 				if (self.options.debug_step == 1) {
-					html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[STEP '+object.name+']</b><br><br>' +response;
+					html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[STEP ' + object.name + ']</b><br><br>' + response;
 				}
 
 				// Changing title and statusbar
@@ -302,7 +302,7 @@ var redmigrator = new Class({
 				totalItems.innerHTML = object.total;
 
 				// Start the checks
-				row.options.url = 'index.php?option=com_redmigrator&format=raw&task=ajax.migrate&table='+object.name;	
+				row.options.url = 'index.php?option=com_redmigrator&format=raw&task=ajax.migrate&table=' + object.name;	
 
 				// Running the request[s]
 				if (self.options.method == 'database') {
@@ -375,7 +375,7 @@ var redmigrator = new Class({
 				ext_currItem.innerHTML = row_object.cid;
 
 				if (self.options.debug_migrate == 1) {
-					ext_html_debug.innerHTML = ext_html_debug.innerHTML + '<br><br>==========<br><b>[ROW: '+row_object.name+']</b><br><br>' +row_response;
+					ext_html_debug.innerHTML = ext_html_debug.innerHTML + '<br><br>==========<br><b>[ROW: ' + row_object.name + ']</b><br><br>' + row_response.text;
 				}
 
 				if (row_object.cid == row_object.stop.toInt()+1 || row_object.next == 1 ) {
