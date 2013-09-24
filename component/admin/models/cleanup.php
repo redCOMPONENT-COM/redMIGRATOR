@@ -21,7 +21,7 @@ JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/re
  *
  * @package		redMigrator
  */
-class redMigratorModelCleanup extends JModelLegacy
+class redMigratorModelCleanup extends RModelAdmin
 {
 	/**
 	 * Cleanup

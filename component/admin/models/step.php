@@ -20,7 +20,7 @@ JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/re
  *
  * @package		redMigrator
  */
-class redMigratorModelStep extends JModelLegacy
+class redMigratorModelStep extends RModelAdmin
 {
 	/**
 	 * Initial checks in redMigrator

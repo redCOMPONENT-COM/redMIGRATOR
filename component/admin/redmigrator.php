@@ -12,6 +12,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+// Require redRAD
+require_once JPATH_LIBRARIES . '/redrad/bootstrap.php';
+
 // Turn off all error reporting
 error_reporting(0);
 //error_reporting(E_ALL);

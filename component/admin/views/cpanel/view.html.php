@@ -18,8 +18,14 @@ jimport( 'joomla.application.component.view' );
  * @package		MatWare
  * @subpackage	com_jupgrade
  */
-class redMigratorViewCpanel extends JViewLegacy
+class redMigratorViewCpanel extends RView
 {
+	protected $componentTitle = 'red<strong>MIGRATOR</strong>';
+
+	protected $displayTopBar = true;
+
+	protected $topBarLayout = 'topbar';
+
 	/**
 	 * Display the view.
 	 *
@@ -29,14 +35,6 @@ class redMigratorViewCpanel extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		$url = 'http://wiki.redcomponent.com/index.php?title=redMIGRATOR:Table_of_Contents';
-
-		JToolbarHelper::title(JText::_( 'redMigrator' ), 'redmigrator');
-		JToolbarHelper::preferences('com_redmigrator', '500');
-		JToolbarHelper::spacer();
-		JToolbarHelper::help('help', false, $url);
-		JToolbarHelper::spacer();
-
 		// Get params
 		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 		$params = redMigratorHelper::getParams();
@@ -58,7 +56,6 @@ class redMigratorViewCpanel extends JViewLegacy
 		}
 
 		// Load mooTools
-		//JHTML::_('behavior.mootools'); // 2.5
 		JHtml::_('behavior.framework', true);
 
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.'/redmigrator.xml';
@@ -69,5 +66,28 @@ class redMigratorViewCpanel extends JViewLegacy
 		$this->version = $xml->version[0];
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Get the toolbar to render.
+	 *
+	 * @return  RToolbar
+	 */
+	public function getToolbar()
+	{
+		$user  = JFactory::getUser();
+
+		$firstGroup = new RToolbarButtonGroup;
+
+		if ($user->authorise('core.admin', 'com_redmigrator.panel'))
+		{
+			$options = RToolbarBuilder::createOptionsButton('com_redmigrator');
+			$firstGroup->addButton($options);
+		}
+
+		$toolbar = new RToolbar;
+		$toolbar->addGroup($firstGroup);				
+
+		return $toolbar;
 	}
 }

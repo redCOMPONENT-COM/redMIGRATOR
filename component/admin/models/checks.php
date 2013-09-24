@@ -21,7 +21,7 @@ JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/re
  *
  * @package		redMigrator
  */
-class redMigratorModelChecks extends JModelLegacy
+class redMigratorModelChecks extends RModelAdmin
 {
 	/**
 	 * Initial checks in redMigrator
