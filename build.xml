@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- ==================================================================    -->
+<!-- redMIGRATOR copier                                                    -->
+<!-- This PHING build file copies the current extension files form repo    -->
+<!-- to a testing joomla site.                                             -->
+<!-- You can also achieve the same goal by using:                          -->
+<!-- Joomla Installer => install from folder => choose this repo as folder -->
+<!-- ==================================================================    -->
 <project name="redmigrator" default="site" basedir=".">
 
     <import file="./redRAD/build.xml"/>
