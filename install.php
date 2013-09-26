@@ -9,27 +9,27 @@
 
 defined('_JEXEC') or die;
 
-// Find redRAD installer to use it as base system
-if (!class_exists('Pkg_RedradInstallerScript'))
+// Find redCORE installer to use it as base system
+if (!class_exists('Com_RedcoreInstallerScript'))
 {
 	$searchPaths = array(
 		// Install
-		dirname(__FILE__) . '/redRAD',
+		dirname(__FILE__) . '/redCORE',
 		// Discover install
-		JPATH_ADMINISTRATOR . '/manifests/packages/redrad',
-		// Uninstall
-		JPATH_LIBRARIES . '/redrad'
+		JPATH_ADMINISTRATOR . '/components/com_redcore'
 	);
 
-	if ($redradInstaller = JPath::find($searchPaths, 'install.php'))
+	if ($redcoreInstaller = JPath::find($searchPaths, 'install.php'))
 	{
-		require_once $redradInstaller;
+		require_once $redcoreInstaller;
 	}
 	else
 	{
-		throw new Exception('redRAD installer not found!', 500);
+		throw new Exception('redCORE installer not found!', 500);
 	}
 }
+
+
 
 /**
  * Custom installation of redMIGRATOR
@@ -38,7 +38,7 @@ if (!class_exists('Pkg_RedradInstallerScript'))
  * @subpackage  Install
  * @since       1.0
  */
-class Com_RedmigratorInstallerScript extends Pkg_RedradInstallerScript
+class Com_RedmigratorInstallerScript extends Pkg_RedcoreInstallerScript
 {
 	public function postflight($type, $parent)
 	{

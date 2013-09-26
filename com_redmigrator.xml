@@ -10,7 +10,7 @@
 	<version>3.1.0</version>
 	<description>COM_REDMIGRATOR_DESC</description>
     <scriptfile>install.php</scriptfile>
-    <redrad version="1.0" />
+    <redcore version="1.0" />
     <install folder="component/admin">
         <sql>
             <file driver="mysql" charset="utf8">sql/install/mysql/install.sql</file>

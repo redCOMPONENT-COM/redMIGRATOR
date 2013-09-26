@@ -8,8 +8,8 @@
 <!-- ==================================================================    -->
 <project name="redmigrator" default="site" basedir=".">
 
-    <import file="./redRAD/build.xml"/>
-    <target name="site" depends="init, redRAD-submodule, component" description="Do a full build"/>
+    <import file="./redCORE/build.xml"/>
+    <target name="site" depends="init, redCORE-submodule, component" description="Do a full build"/>
 
     <!-- Do initialization stuff -->
     <target name="init">
