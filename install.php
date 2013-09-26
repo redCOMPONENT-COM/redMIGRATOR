@@ -29,8 +29,6 @@ if (!class_exists('Com_RedcoreInstallerScript'))
 	}
 }
 
-
-
 /**
  * Custom installation of redMIGRATOR
  *
@@ -38,7 +36,7 @@ if (!class_exists('Com_RedcoreInstallerScript'))
  * @subpackage  Install
  * @since       1.0
  */
-class Com_RedmigratorInstallerScript extends Pkg_RedcoreInstallerScript
+class Com_RedmigratorInstallerScript extends Com_RedcoreInstallerScript
 {
 	public function postflight($type, $parent)
 	{
