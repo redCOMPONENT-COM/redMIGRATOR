@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once JPATH_LIBRARIES . '/redrad/bootstrap.php';
 
 // Turn off all error reporting
-error_reporting(0);
+//error_reporting(0);
 //error_reporting(E_ALL);
 //ini_set( 'display_errors','1'); 
 
