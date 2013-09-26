@@ -12,7 +12,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-RHelperAsset::load('lib/font-awesome/css/font-awesome.min.css', 'redrad');
+RHelperAsset::load('lib/font-awesome/css/font-awesome.min.css', 'redcore');
 
 // Get the version
 $version = "v{$this->version}";
