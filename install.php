@@ -44,7 +44,7 @@ class Com_RedmigratorInstallerScript extends Pkg_RedradInstallerScript
 	{
 		if (parent::postflight($type, $parent))
 		{
-			jimport(joomla.filesystem.file);
+			JLoader::import('joomla.filesystem.file');
 
 			JFile::move('com_redmigrator.xml', 'redmigrator.xml', JPATH_ADMINISTRATOR . '/components/com_redmigrator');
 
