@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
@@ -81,12 +81,12 @@ class redMigratorViewCpanel extends RView
 
 		if ($user->authorise('core.admin', 'com_redmigrator.panel'))
 		{
-			$options = RToolbarBuilder::createOptionsButton('com_redmigrator');
+			$options = RToolbarBuilder::createRedcoreOptionsButton('com_redmigrator');
 			$firstGroup->addButton($options);
 		}
 
 		$toolbar = new RToolbar;
-		$toolbar->addGroup($firstGroup);				
+		$toolbar->addGroup($firstGroup);
 
 		return $toolbar;
 	}
