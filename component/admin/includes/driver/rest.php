@@ -69,10 +69,8 @@ class redMigratorDriverRest extends redMigratorDriver
 	 * @return   step object
 	 */
 	public function requestRest($task = 'total', $table = false) {
-		// RedHttp instance
-		JLoader::registerPrefix('Red', dirname(__DIR__) . '/libraries');
 
-		$http = RedHttpFactory::getHttp();
+		$http = JHttpFactory::getHttp();
 		$data = $this->getRestData();
 
 		// Getting the total
