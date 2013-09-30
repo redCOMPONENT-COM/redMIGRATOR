@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<!DOCTYPE jupgrade>
-<jupgrade>
+<!DOCTYPE redmigrator>
+<redmigrator>
 	<name>Virtuemart for Joomla 1.7</name>
 
-	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/virtuemart/virtuemart.collection.xml</collection>
+	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/redmigrator/extensions/virtuemart/virtuemart.collection.xml</collection>
 
 	<!-- The tables to copy to the new site. -->
 	<tables>
@@ -61,17 +61,4 @@
 		<table>vm_zone_shipping</table>
 	</tables>
 
-	<!-- The folders to copy to the new site. 
-	<folders>
-		<folder>media/kunena</folder>
-		<folder>administrator/components/com_kunena</folder>
-		<folder>components/com_kunena</folder>
-	</folders>-->
-
-	<!-- The categories to copy to the new site. -->
-	<!--
-	<categories>
-		<category section="com_kunena"></category>
-	</categories>
-	-->
-</jupgrade>
+</redmigrator>

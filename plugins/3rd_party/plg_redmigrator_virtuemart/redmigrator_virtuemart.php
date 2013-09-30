@@ -1,6 +1,6 @@
 <?php
 /**
- * jUpgrade Virtuemart Component adapter
+ * redMigrator Virtuemart Component adapter
  *
  * @package		MatWare
  * @subpackage	com_jupgrade
@@ -12,13 +12,13 @@
 defined('_JEXEC') or die;
 
 /**
- * jUpgradePro Virtuemart Plugin
+ * redMigrator Virtuemart Plugin
  *
  * @package     Joomla.Plugin
  * @subpackage  system.jupgradepro
  * @since       3.0.1
  */
-class plgJUpgradeProVirtuemart extends JPlugin
+class plgRedMigratorVirtuemart extends JPlugin
 {
 
 }
