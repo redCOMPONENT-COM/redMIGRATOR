@@ -1,6 +1,6 @@
 <?php
 /**
- * jUpgrade
+ * redMigrator
  *
  * @version		$Id: 
  * @package		MatWare
@@ -15,13 +15,13 @@
 defined('JPATH_BASE') or die();
 
 /**
- * jUpgrade class for Virtuemart migration
+ * redMigrator class for Virtuemart migration
  *
  * This class migrates the Adminpraise extension
  *
  * @since		1.2.0
  */
-class jUpgradeComponentVirtuemart extends jUpgrade
+class redMigratorComponentVirtuemart extends redMigrator
 {
 	/**
 	 * Check if extension migration is supported.
