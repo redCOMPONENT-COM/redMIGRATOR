@@ -2,12 +2,13 @@
 /**
  * redMigrator Virtuemart Component adapter
  *
- * @package		MatWare
- * @subpackage	com_jupgrade
- * @author		Matias Aguirre <maguirre@matware.com.ar>
- * @copyright	Copyright (C) 2004 - 2013 Matware. All rights reserved.
- * @license		GNU General Public License <http://www.gnu.org/copyleft/gpl.html>
- * @link		http://www.matware.com.ar
+ * @package     redMIGRATOR.Backend
+ * @subpackage  Controller
+ *
+ * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ *
+ *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 defined('_JEXEC') or die;
 
