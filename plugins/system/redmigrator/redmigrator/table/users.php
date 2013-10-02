@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,17 +8,16 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
 /**
  * Users table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @since  1.0
  */
-class redMigratorTableUsers extends redMigratorTable
+class RedMigratorTableUsers extends RedMigratorTable
 {
 	/**
 	 * Unique id
@@ -109,25 +108,24 @@ class redMigratorTableUsers extends redMigratorTable
 	 *
 	 * @var string
 	 */	
-	var $_type = 'users';	
+	var $_type = 'users';
 
 	/**
 	* @param database A database connector object
 	*/
 	function __construct ( &$db )
 	{
-		parent::__construct( '#__users', 'id', $db );
+		parent::__construct('#__users', 'id', $db);
 
-		//initialise
+		// Initialise
 		$this->id        = 0;
 		$this->sendEmail = 0;
 	}
-	
+
 	/**
-	 * 
 	 *
 	 * @access	public
-	 * @param		Array	Result to migrate
+	 * @param   Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
 	function migrate ()
@@ -135,11 +133,12 @@ class redMigratorTableUsers extends redMigratorTable
 		// Fixing the params compatible with 2.5/3.0
 		$this->params = $this->convertParams($this->params);
 
-    // Chaging admin username and email
-    if ($this->id == 62) {
-      $this->username = $this->username.'v15';
-      $this->email = $this->email.'v15';
-    }
+		// Chaging admin username and email
+		if ($this->id == 62)
+		{
+			$this->username = $this->username . 'v15';
+			$this->email = $this->email . 'v15';
+		}
 	}
 
 	/**
@@ -148,6 +147,7 @@ class redMigratorTableUsers extends redMigratorTable
 	 * @param	object	$object	A reference to the parameters as an object.
 	 *
 	 * @return	void
+	 *
 	 * @since	0.4.
 	 * @throws	Exception
 	 */

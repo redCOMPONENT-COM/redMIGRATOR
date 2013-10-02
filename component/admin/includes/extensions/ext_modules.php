@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,14 +8,15 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 /**
  * Upgrade class for Weblinks
  *
  * This class takes the weblinks from the existing site and inserts them into the new site.
  *
- * @since	3.0.0
+ * @since  3.0.0
  */
-class redMigratorExtensionsModules extends redMigrator
+class RedMigratorExtensionsModules extends RedMigrator
 {
 	/**
 	 * @var		string	The name of the source database table.
@@ -39,24 +40,25 @@ class redMigratorExtensionsModules extends redMigrator
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
 	public static function getConditionsHook()
 	{
 		$conditions = array();
-		
+
 		$conditions['as'] = "m";
-		
+
 		$conditions['select'] = 'title as name, \'module\' AS type, `module` AS element, params';
 
 		$where = array();
 		$where[] = "module   NOT   IN   ('mod_mainmenu',   'mod_login',   'mod_popular',   'mod_latest',   'mod_stats',   'mod_unread',   'mod_online',   'mod_toolbar',   'mod_quickicon',   'mod_logged',   'mod_footer',   'mod_menu',   'mod_submenu',   'mod_status',   'mod_title',   'mod_login' )";
-		
+
 		$conditions['where'] = $where;
 
 		$conditions['group_by'] = 'element';
-		
+
 		return $conditions;
 	}
 
@@ -64,6 +66,7 @@ class redMigratorExtensionsModules extends redMigrator
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
@@ -73,8 +76,10 @@ class redMigratorExtensionsModules extends redMigrator
 		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
+
 			// Converting params to JSON
 			$row['params'] = $this->convertParams($row['params']);
+
 			// Defaults
 			$row['type'] = 'module';
 		}

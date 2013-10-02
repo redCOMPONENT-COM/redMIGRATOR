@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,25 +13,26 @@
  *
  * This class takes the banners from the existing site and inserts them into the new site.
  *
- * @since       0.4.5
+ * @since  0.4.5
  */
-class redMigratorBannersTracks extends redMigrator
+class RedMigratorBannersTracks extends RedMigrator
 {
 	/**
 	 * Setting the conditions hook
 	 *
 	 * @return	array
+	 *
 	 * @since	3.1.0
 	 * @throws	Exception
 	 */
 	public static function getConditionsHook()
 	{
 		$conditions = array();
-		
+
 		$conditions['where'] = array();
 
 		$conditions['group_by'] = "banner_id";
-		
+
 		return $conditions;
 	}
-} // end class
+} // End class

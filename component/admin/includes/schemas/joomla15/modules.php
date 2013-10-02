@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,14 +13,15 @@
  *
  * This class takes the modules from the existing site and inserts them into the new site.
  *
- * @since	0.4.5
+ * @since  0.4.5
  */
-class redMigratorModules extends redMigrator
+class RedMigratorModules extends RedMigrator
 {
 	/**
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
@@ -29,12 +30,12 @@ class redMigratorModules extends redMigrator
 		$conditions = array();
 
 		$conditions['select'] = "`id`, `title`, `content`, `ordering`, `position`,"
-			." `checked_out`, `checked_out_time`, `published`, `module`,"
-			." `access`, `showtitle`, `params`, `client_id`";
+									. " `checked_out`, `checked_out_time`, `published`, `module`,"
+									. " `access`, `showtitle`, `params`, `client_id`";
 
 		$conditions['where'][] = "client_id = 0";
 		$conditions['where'][] = "module IN ('mod_breadcrumbs', 'mod_footer', 'mod_mainmenu', 'mod_menu', 'mod_related_items', 'mod_stats', 'mod_wrapper', 'mod_archive', 'mod_custom', 'mod_latestnews', 'mod_mostread', 'mod_search', 'mod_syndicate', 'mod_banners', 'mod_feed', 'mod_login', 'mod_newsflash', 'mod_random_image', 'mod_whosonline' )";
-				
+
 		return $conditions;
 	}
 
@@ -42,6 +43,7 @@ class redMigratorModules extends redMigrator
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.
+	 *
 	 * @since	0.4.5
 	 * @throws	Exception
 	 */
@@ -54,26 +56,31 @@ class redMigratorModules extends redMigrator
 
 			$row['params'] = $this->convertParams($row['params']);
 
-			## Fix access
-			$row['access'] = $row['access']+1;
+			// Fix access
+			$row['access'] = $row['access'] + 1;
 
-			## Language
+			// Language
 			$row['language'] = "*";
 
-			## Module field changes
-			if ($row['module'] == "mod_mainmenu") {
+			// Module field changes
+			if ($row['module'] == "mod_mainmenu")
+			{
 				$row['module'] = "mod_menu";
 			}
-			else if ($row['module'] == "mod_archive") {
+			elseif ($row['module'] == "mod_archive")
+			{
 				$row['module'] = "mod_articles_archive";
 			}
-			else if ($row['module'] == "mod_latestnews") {
+			elseif ($row['module'] == "mod_latestnews")
+			{
 				$row['module'] = "mod_articles_latest";
 			}
-			else if ($row['module'] == "mod_mostread") {
+			elseif ($row['module'] == "mod_mostread")
+			{
 				$row['module'] = "mod_articles_popular";
 			}
-			else if ($row['module'] == "mod_newsflash") {
+			elseif ($row['module'] == "mod_newsflash")
+			{
 				$row['module'] = "mod_articles_news";
 			}
 		}
@@ -85,6 +92,7 @@ class redMigratorModules extends redMigrator
 	 * Sets the data in the destination database.
 	 *
 	 * @return	void
+	 *
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
@@ -92,6 +100,7 @@ class redMigratorModules extends redMigrator
 	{
 		// Getting the source table
 		$table = $this->getSourceTable();
+
 		// Getting the component parameter with global settings
 		$params = $this->getParams();
 
@@ -101,34 +110,37 @@ class redMigratorModules extends redMigrator
 
 		$total = count($rows);
 
-		// 
 		foreach ($rows as $row)
 		{
 			// Convert the array into an object.
 			$row = (object) $row;
 
-			## Change positions
-			if ($params->positions == 0) {
-				if (in_array($row->position, $map_keys)) {
+			// Change positions
+			if ($params->positions == 0)
+			{
+				if (in_array($row->position, $map_keys))
+				{
 						$row->position = $map[$row->position];
 				}
 			}
 
-			// Get old id 
-			$oldlist = new stdClass();
+			// Get old id
+			$oldlist = new stdClass;
 			$oldlist->old = $row->id;
 			unset($row->id);
 
 			// Insert module
-			if (!$this->_db->insertObject($table, $row)) {
+			if (!$this->_db->insertObject($table, $row))
+			{
 				throw new Exception($this->_db->getErrorMsg());
 			}
 
-			// Get new id 
+			// Get new id
 			$oldlist->new = $this->_db->insertid();
 
 			// Save old and new id
-			if (!$this->_db->insertObject('#__redmigrator_modules', $oldlist)) {
+			if (!$this->_db->insertObject('#__redmigrator_modules', $oldlist))
+			{
 				throw new Exception($this->_db->getErrorMsg());
 			}
 
@@ -143,6 +155,7 @@ class redMigratorModules extends redMigrator
 	 * Get the mapping of the old positions to the new positions in the template.
 	 *
 	 * @return	array	An array with keys of the old names and values being the new names.
+	 *
 	 * @since	0.5.7
 	 */
 	public static function getPositionsMap()
@@ -168,11 +181,15 @@ class redMigratorModules extends redMigrator
 	 * @param	object	$object	A reference to the parameters as an object.
 	 *
 	 * @return	void
+	 *
 	 * @since	1.0.3
 	 * @throws	Exception
 	 */
 	protected function convertParamsHook(&$object)
 	{
-		if (isset($object->startLevel)) $object->startLevel++;
+		if (isset($object->startLevel))
+		{
+			$object->startLevel++;
+		}
 	}
 }

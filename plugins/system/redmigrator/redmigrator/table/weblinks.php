@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -12,41 +12,58 @@
 defined('JPATH_BASE') or die();
 
 /**
- * redMigratorTableWeblinks Table class
+ * RedMigratorTableWeblinks Table class
  */
-class redMigratorTableWeblinks extends redMigratorTable {
+class RedMigratorTableWeblinks extends RedMigratorTable
+{
 	/** @var int(11) unsigned */
 	var $id = null;
+
 	/** @var int(11) */
 	var $catid = null;
+
 	/** @var int(11) */
 	var $sid = null;
+
 	/** @var varchar(250) */
 	var $title = null;
+
 	/** @var varchar(255) */
 	var $alias = null;
+
 	/** @var varchar(250) */
 	var $url = null;
+
 	/** @var text */
 	var $description = null;
+
 	/** @var datetime */
 	var $date = null;
+
 	/** @var int(11) */
 	var $hits = null;
+
 	/** @var int(11) */
 	var $state = null;
+
 	/** @var int(11) */
 	var $published = null;
+
 	/** @var int(11) */
 	var $checked_out = null;
+
 	/** @var datetime */
 	var $checked_out_time = null;
+
 	/** @var int(11) */
 	var $ordering = null;
+
 	/** @var tinyint(1) */
 	var $archived = null;
+
 	/** @var tinyint(1) */
 	var $approved = null;
+
 	/** @var text */
 	var $params = null;
 
@@ -57,7 +74,8 @@ class redMigratorTableWeblinks extends redMigratorTable {
 	 */	
 	var $_type = 'weblinks';
 
-	function __construct(&$_db) {
+	function __construct(&$_db)
+	{
 		parent::__construct('#__weblinks', 'id', $_db);
 	}
 

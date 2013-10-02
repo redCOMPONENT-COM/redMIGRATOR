@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,8 +13,8 @@
  *
  * This class takes the menus from the existing site and inserts them into the new site.
  *
- * @since	0.4.5
+ * @since  0.4.5
  */
-class redMigratorMenusTypes extends redMigrator
+class RedMigratorMenusTypes extends RedMigrator
 {
 }

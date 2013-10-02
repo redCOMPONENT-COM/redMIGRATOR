@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,29 +13,37 @@
 defined('JPATH_BASE') or die();
 
 /**
- * redMigratorTableBannersClients
+ * RedMigratorTableBannersClients
  *
- * @package 	redMigrator
+ * @package 	RedMigrator
  * @subpackage	Table
  * @since		1.5
  */
-class redMigratorTableBanners_Clients extends redMigratorTable {
+class RedMigratorTableBannersClients extends RedMigratorTable {
 	/** @var int(11) */
 	var $id = null;
+
 	/** @var varchar(255) */
 	var $name = null;
+
 	/** @var varchar(255) */
 	var $contact = null;
+
 	/** @var varchar(255) */
 	var $email = null;
+
 	/** @var text */
 	var $extrainfo = null;
+
 	/** @var tinyint(1) */
 	var $state = null;
+
 	/** @var tinyint(1) */
 	var $checked_out = null;
+
 	/** @var time */
 	var $checked_out_time = null;
+
 	/** @var varchar(50) */
 	var $editor = null;
 
@@ -43,10 +51,11 @@ class redMigratorTableBanners_Clients extends redMigratorTable {
 	 * Table type
 	 *
 	 * @var string
-	 */	
-	var $_type = 'banners_clients';	
+	 */
+	var $_type = 'banners_clients';
 
-	function __construct(&$db) {
+	function __construct(&$db)
+	{
 		parent::__construct('#__bannerclient', 'cid', $db);
 	}
 
@@ -54,29 +63,29 @@ class redMigratorTableBanners_Clients extends redMigratorTable {
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
 	public function getConditionsHook()
 	{
 		$conditions = array();
-		
+
 		$conditions['select'] = '`cid` AS id, `name`, 1 AS `state`, `contact`, `email`, `extrainfo`, `checked_out`, `checked_out_time`';
-		
+
 		$conditions['where'] = array();
-		
+
 		return $conditions;
-	}	
+	}
 
 	/**
-	 * 
 	 *
 	 * @access	public
-	 * @param		Array	Result to migrate
+	 * @param	Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
 	function migrate( )
-	{	
+	{
 		unset($this->cid);
-	}	
+	}
 }

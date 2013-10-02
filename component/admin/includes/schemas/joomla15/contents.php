@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,14 +13,15 @@
  *
  * This class takes the content from the existing site and inserts them into the new site.
  *
- * @since	0.4.5
+ * @since  0.4.5
  */
-class redMigratorContent extends redMigrator
+class RedMigratorContent extends RedMigrator
 {
 	/**
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.
+	 *
 	 * @since	0.4.5
 	 * @throws	Exception
 	 */
@@ -36,7 +37,8 @@ class redMigratorContent extends redMigrator
 			$row['language'] = '*';
 
 			// Correct state
-			if ($row['state'] == -1) {
+			if ($row['state'] == -1)
+			{
 				$row['state'] = 2;
 			}
 
@@ -56,6 +58,7 @@ class redMigratorContent extends redMigrator
 	 * @param	object	$object	A reference to the parameters as an object.
 	 *
 	 * @return	void
+	 *
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
@@ -96,12 +99,14 @@ class redMigratorContent extends redMigrator
 	}
 
 	/**
-	* Sets the data in the destination database.
-	*
-	* @return	void
-	* @since	0.5.3
-	* @throws	Exception
-	*/
+	 * Sets the data in the destination database.
+	 *
+	 * @return	void
+	 *
+	 * @since	0.5.3
+	 *
+	 * @throws	Exception
+	 */
 	public function dataHook($rows = null)
 	{
 		$params = $this->getParams();
@@ -111,7 +116,7 @@ class redMigratorContent extends redMigrator
 		$query = "SELECT * FROM #__redmigrator_categories WHERE section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$' AND old > 0";
 		$this->_db->setQuery($query);
 		$catidmap = $this->_db->loadObjectList('old');
-		
+
 		// Find uncategorised category id
 		$query = "SELECT id FROM #__categories WHERE extension='com_content' AND path='uncategorised' LIMIT 1";
 		$this->_db->setQuery($query);
@@ -122,9 +127,7 @@ class redMigratorContent extends redMigrator
 
 		$total = count($rows);
 
-		//
 		// Insert content data
-		//
 		foreach ($rows as $row)
 		{
 			$row = (array) $row;
@@ -141,13 +144,15 @@ class redMigratorContent extends redMigrator
 
 			// Check if has duplicated aliases
 			$query = "SELECT alias FROM #__content"
-			." WHERE alias = ".$this->_db->quote($row['alias']);
+						. " WHERE alias = " . $this->_db->quote($row['alias']);
 			$this->_db->setQuery($query);
 			$aliases = $this->_db->loadAssoc();
 
 			$count = count($aliases);
-			if ($count > 0) {
-				$row['alias'] .= "-".rand(0, 99999999);
+
+			if ($count > 0)
+			{
+				$row['alias'] .= "-" . rand(0, 99999999);
 			}
 
 			// Setting the default rules
@@ -158,17 +163,20 @@ class redMigratorContent extends redMigrator
 			$row['rules'] = $rules;
 
 			// Converting the metadata to JSON
-			if (version_compare(PHP_VERSION, '3.1', '>=')) {
+			if (version_compare(PHP_VERSION, '3.1', '>='))
+			{
 				$row['metadata'] = $row['metadata'] . "\ntags=";
 			}
+
 			$row['metadata'] = $this->convertParams($row['metadata'], false);
 
 			// JTable:store() run an update if id exists into the object so we create them first
-			$object = new stdClass();
+			$object = new stdClass;
 			$object->id = $row['id'];
 
 			// Inserting the content
-			if (!$this->_db->insertObject($table, $object)) {
+			if (!$this->_db->insertObject($table, $object))
+			{
 				throw new Exception($this->_db->getErrorMsg());
 			}
 
@@ -176,17 +184,20 @@ class redMigratorContent extends redMigrator
 			$content = JTable::getInstance('Content', 'JTable', array('dbo' => $this->_db));
 
 			// Bind data to save content
-			if (!$content->bind($row)) {
+			if (!$content->bind($row))
+			{
 				echo $content->getError();
 			}
 
 			// Check the content
-			if (!$content->check()) {
+			if (!$content->check())
+			{
 				echo $content->getError();
 			}
 
 			// Insert the content
-			if (!$content->store()) {
+			if (!$content->store())
+			{
 				echo $content->getError();
 			}
 
@@ -201,21 +212,21 @@ class redMigratorContent extends redMigrator
 	 * Run custom code after hooks
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 */
 	public function afterHook()
 	{
 		$this->fixComponentConfiguration();
-		//$this->updateFeature();
 	}
 
-	/*
+	/**
 	 * Upgrading the content configuration
 	 */
 	protected function fixComponentConfiguration()
 	{
-		if ($this->params->method == 'database') {
-
+		if ($this->params->method == 'database')
+		{
 			$query = "SELECT params FROM #__components WHERE `option` = 'com_content'";
 			$this->_driver->_db_old->setQuery($query);
 			$articles_config = $this->_driver->_db_old->loadResult();
@@ -223,15 +234,17 @@ class redMigratorContent extends redMigrator
 			// Check for query error.
 			$error = $this->_driver->_db_old->getErrorMsg();
 
-			if ($error) {
+			if ($error)
+			{
 				throw new Exception($error);
 			}
 
 			// Convert params to JSON
 			$articles_config = $this->convertParams($articles_config);
 
-		}else if ($this->params->method == 'rest') {
-
+		}
+		elseif ($this->params->method == 'rest')
+		{
 			$task = "tableparams";
 			$table = "components";
 
@@ -246,7 +259,8 @@ class redMigratorContent extends redMigrator
 		// Check for query error.
 		$error = $this->_driver->_db->getErrorMsg();
 
-		if ($error) {
+		if ($error)
+		{
 			throw new Exception($error);
 		}
 	}

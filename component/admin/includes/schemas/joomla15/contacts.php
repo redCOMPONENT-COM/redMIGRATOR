@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,22 +8,24 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 // Require the category class
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.category.class.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.category.class.php';
 
 /**
  * Upgrade class for Contacts
  *
  * This class takes the contacts from the existing site and inserts them into the new site.
  *
- * @since	0.4.5
+ * @since  0.4.5
  */
-class redMigratorContacts extends redMigrator
+class RedMigratorContacts extends RedMigrator
 {
 	/**
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.
+	 *
 	 * @since	0.4.5
 	 * @throws	Exception
 	 */
@@ -46,6 +48,7 @@ class redMigratorContacts extends redMigrator
 	 * Sets the data in the destination database.
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.
 	 * @throws	Exception
 	 */
@@ -56,7 +59,8 @@ class redMigratorContacts extends redMigrator
 		{
 			$row = (array) $row;
 
-			if (version_compare(PHP_VERSION, '3.0', '>=')) {
+			if (version_compare(PHP_VERSION, '3.0', '>='))
+			{
 				unset($row['imagepos']);
 			}
 		}

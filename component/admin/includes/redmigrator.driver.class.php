@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -12,19 +12,17 @@
 defined('_JEXEC') or die;
 
 /**
- * redMigrator driver class
+ * RedMigrator driver class
  *
- * @package		MatWare
- * @subpackage	com_redMigrator
  */
-class redMigratorDriver
-{	
+class RedMigratorDriver
+{
 	/**
 	 * @var      
 	 * @since  3.0
 	 */
 	public $params = null;
-	
+
 	/**
 	 * @var      
 	 * @since  3.0
@@ -37,59 +35,59 @@ class redMigratorDriver
 	 */
 	protected $_step = null;
 
-	function __construct(redMigratorStep $step = null)
+	function __construct(RedMigratorStep $step = null)
 	{
 		jimport('legacy.component.helper');
 		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 
-		// Set the step params	
+		// Set the step params
 		$this->_step = $step;
 
-		$this->params = redMigratorHelper::getParams();
+		$this->params = RedMigratorHelper::getParams();
 
 		// Creating dabatase instance for this installation
 		$this->_db = JFactory::getDBO();
 	}
 
 	/**
-	 *
 	 * @param   stdClass   $options  Parameters to be passed to the database driver.
 	 *
-	 * @return  redMigrator  A redMigrator object.
+	 * @return  RedMigrator  A RedMigrator object.
 	 *
 	 * @since  3.0.0
 	 */
-	static function getInstance(redMigratorStep $step = null)
+	static function getInstance(RedMigratorStep $step = null)
 	{
 		// Loading the JFile class
 		jimport('joomla.filesystem.file');
 
 		// Getting the params and Joomla version web and cli
-		$params = redMigratorHelper::getParams();
+		$params = RedMigratorHelper::getParams();
 
 		// Derive the class name from the driver.
-		$class_name = 'redMigratorDriver' . ucfirst(strtolower($params->method));
-		$class_file = JPATH_COMPONENT_ADMINISTRATOR.'/includes/driver/'.$params->method.'.php';
+		$class_name = 'RedMigratorDriver' . ucfirst(strtolower($params->method));
+		$class_file = JPATH_COMPONENT_ADMINISTRATOR . '/includes/driver/' . $params->method . '.php';
 
 		// Require the driver file
-		if (JFile::exists($class_file)) {
+		if (JFile::exists($class_file))
+		{
 			JLoader::register($class_name, $class_file);
 		}
 
 		// If the class still doesn't exist we have nothing left to do but throw an exception.  We did our best.
 		if (!class_exists($class_name))
 		{
-			throw new RuntimeException(sprintf('Unable to load redMigrator Driver: %s', $params->method));
+			throw new RuntimeException(sprintf('Unable to load RedMigrator Driver: %s', $params->method));
 		}
 
-		// Create our new redMigratorDriver connector based on the options given.
+		// Create our new RedMigratorDriver connector based on the options given.
 		try
 		{
 			$instance = new $class_name($step);
 		}
 		catch (RuntimeException $e)
 		{
-			throw new RuntimeException(sprintf('Unable to load redMigrator object: %s', $e->getMessage()));
+			throw new RuntimeException(sprintf('Unable to load RedMigrator object: %s', $e->getMessage()));
 		}
 
 		return $instance;
@@ -108,7 +106,7 @@ class redMigratorDriver
 	}
 
 	/**
-	 * @return  string	The step name  
+	 * @return  string	The step name
 	 *
 	 * @since   3.0
 	 */

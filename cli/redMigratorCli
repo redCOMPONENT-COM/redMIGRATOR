@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -15,7 +15,7 @@ define('_JEXEC', 1);
 // Bootstrap the application.
 require './bootstrap.php';
 
-class redMigratorCli extends JApplicationCli
+class RedMigratorCli extends JApplicationCli
 {
 	/**
 	* Ascii color array
@@ -66,18 +66,18 @@ class redMigratorCli extends JApplicationCli
 			// Pass an array of configuration options
 			array(
 				// Set the name of the log file
-				'text_file' => JPATH_SITE.'/logs/redMigrator.log.php'
+				'text_file' => JPATH_SITE.'/logs/RedMigrator.log.php'
 			)
 		);
 
 		// Initialize step model
-		$this->step_model = new redMigratorModelStep;
+		$this->step_model = new RedMigratorModelStep;
 
 		// Initialize checks model
-		$this->migrate_model = new redMigratorModelMigrate;
+		$this->migrate_model = new RedMigratorModelMigrate;
 
 		// Initialize checks model
-		$this->extensions_model = new redMigratorModelExtensions;
+		$this->extensions_model = new RedMigratorModelExtensions;
 	}
 
 	/**
@@ -109,7 +109,7 @@ class redMigratorCli extends JApplicationCli
 		$this->screen();
 
 		// Running the checks
-		$checks = new redMigratorModelChecks;
+		$checks = new RedMigratorModelChecks;
 
 		try {
 			$checks->checks();
@@ -118,7 +118,7 @@ class redMigratorCli extends JApplicationCli
 		}
 
 		// Running the cleanup
-		$cleanup = new redMigratorModelCleanup;
+		$cleanup = new RedMigratorModelCleanup;
 
 		try {
 			$cleanup->cleanup();
@@ -281,7 +281,7 @@ try
 {
 	// Instantiate the application object, passing the class name to JCli::getInstance
 	// and use chaining to execute the application.
-	JApplicationCli::getInstance('redMigratorCli')->execute();
+	JApplicationCli::getInstance('RedMigratorCli')->execute();
 }
 catch (Exception $e)
 {

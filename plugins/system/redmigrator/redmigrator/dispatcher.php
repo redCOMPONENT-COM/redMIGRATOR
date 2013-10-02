@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,6 +8,7 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 defined('_JEXEC') or die;
 
 /**
@@ -26,13 +27,12 @@ class JRESTDispatcher
 	private $_parameters = array();
 
 	/**
-	 * @var    redMigratorTable  redMigratorTable object
+	 * @var    RedMigratorTable  RedMigratorTable object
 	 * @since  3.0
 	 */
 	private $_table = array();
-	
+
 	/**
-	 * 
 	 *
 	 * @return  boolean
 	 *
@@ -41,8 +41,8 @@ class JRESTDispatcher
 	public function execute($parameters)
 	{
 		// Getting the database instance
-		$db = JFactory::getDbo();	
-	
+		$db = JFactory::getDbo();
+
 		// Loading params
 		$this->_parameters = $parameters;
 
@@ -54,26 +54,31 @@ class JRESTDispatcher
 		$table = (substr($table, 0, 4) == 'ext_') ? substr($table, 4) : $table;
 
 		// Check task is only to test the connection
-		if ($task == 'check') {
+		if ($task == 'check')
+		{
 			return true;
 		}
 
 		// Loading table
-		if (isset($table)) {
-			JTable::addIncludePath(JPATH_ROOT .DS.'plugins' .DS.'system'.DS.'redmigrator'.DS.'table');
-			$class = @redMigratorTable::getInstance($name, 'redMigratorTable');
+		if (isset($table))
+		{
+			JTable::addIncludePath(JPATH_ROOT . DS . 'plugins' . DS . 'system' . DS . 'redmigrator' . DS . 'table');
+			$class = @RedMigratorTable::getInstance($name, 'RedMigratorTable');
 
-			if (!is_object($class)) {
-				$class = redMigratorTable::getInstance('generic', 'redMigratorTable');
+			if (!is_object($class))
+			{
+				$class = RedMigratorTable::getInstance('generic', 'RedMigratorTable');
 				$class->changeTable($table);
 			}
-		}else if (isset($files)) {
-			require_once JPATH_ROOT .DS.'plugins' .DS.'system'.DS.'redmigrator'.DS.'files.php';
-			$class = new redMigratorFiles();
+		}
+		elseif (isset($files))
+		{
+			require_once JPATH_ROOT . DS . 'plugins' . DS . 'system' . DS . 'redmigrator' . DS . 'files.php';
+			$class = new RedMigratorFiles;
 		}
 
 		// Get the method name
-		$method = 'get'.ucfirst($task);
+		$method = 'get' . ucfirst($task);
 
 		// Does the method exist?
 		if (method_exists($class, $method))
@@ -82,7 +87,7 @@ class JRESTDispatcher
 		}
 		else
 		{
-			return false;	
+			return false;
 		}
 
 	}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -16,9 +16,11 @@ RHelperAsset::load('lib/font-awesome/css/font-awesome.min.css', 'redcore');
 
 // Get the version
 $version = "v{$this->version}";
-// get params
+
+// Get params
 $params	= $this->params;
-// get document to add scripts
+
+// Get document to add scripts
 $document	= JFactory::getDocument();
 $document->addScript('components/com_redmigrator/js/dwProgressBar.js');
 $document->addScript("components/com_redmigrator/js/migrate.js");
@@ -30,7 +32,7 @@ $document->addStyleSheet("components/com_redmigrator/css/redmigrator.css");
 window.addEvent('domready', function() {
 
 	/* Init redmigrator */
-	var redMigrator = new redmigrator({
+	var RedMigrator = new redmigrator({
 		method: '<?php echo $params->method ? $params->method : 0; ?>',
 		positions: <?php echo $params->positions ? $params->positions : 0; ?>,
 		skip_checks: <?php echo $params->skip_checks ? $params->skip_checks : 0; ?>,
@@ -105,7 +107,12 @@ window.addEvent('domready', function() {
 				</div>
 
 				<div id="info">
-					<div id="info_version"><i><?php echo JText::_('redmigrator'); ?></i> <?php echo JText::_('Version').' <b>'.$this->version.'</b>'; ?></div>
+					<div id="info_version">
+						<i>
+							<?php echo JText::_('redmigrator'); ?>
+						</i>
+						<?php echo JText::_('Version') . ' <b>' . $this->version . '</b>'; ?>
+					</div>
 					<div id="info_thanks">
 						<p>
 							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.redcomponent.com/">redCOMPONENT &#169;</a></i>  Copyright 2005-2013<br />

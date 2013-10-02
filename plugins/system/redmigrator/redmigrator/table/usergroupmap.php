@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,32 +8,31 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
 /**
  * Usergroupmap table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @since  1.0
  */
-class redMigratorTableUsergroupmap extends redMigratorTable
+class RedMigratorTableUsergroupmap extends RedMigratorTable
 {
 	/** @var int Primary key */
-	var $group_id			= null;
+	var $group_id	= null;
 
 	var $section_id	= null;
 
 	var $aro_id		= null;
-	
-	var $user_id	= null;	
+
+	var $user_id	= null;
 
 	/**
 	 * Table type
 	 *
 	 * @var string
-	 */	
+	 */
 	var $_type = 'usergroupmap';
 
 	protected $usergroup_map = array(
@@ -51,11 +50,11 @@ class redMigratorTableUsergroupmap extends redMigratorTable
 		25		=> 8,	// Super Administrator
 	);
 
-	function __construct( &$db )
+	function __construct(&$db)
 	{
-		parent::__construct( '#__core_acl_groups_aro_map', 'aro_id', $db );
+		parent::__construct('#__core_acl_groups_aro_map', 'aro_id', $db);
 	}
-	
+
 	/**
 	 * 
 	 *
@@ -69,7 +68,8 @@ class redMigratorTableUsergroupmap extends redMigratorTable
 		$this->user_id = $this->_getUserIdAroMap($this->aro_id);
 
 		// Note, if we are here, these are custom groups we didn't know about.
-		if ($this->group_id <= 30) {
+		if ($this->group_id <= 30)
+		{
 			$this->group_id = $this->usergroup_map[$this->group_id];
 		}
 
@@ -92,14 +92,15 @@ class redMigratorTableUsergroupmap extends redMigratorTable
 		$db->setQuery(
 			'SELECT value' .
 			' FROM #__core_acl_aro' .
-			' WHERE id = '.$aro_id
+			' WHERE id = ' . $aro_id
 		);
 
 		$return	= $db->loadResult();
 		$error	= $db->getErrorMsg();
 
 		// Check for query error.
-		if ($error) {
+		if ($error)
+		{
 			throw new Exception($error);
 		}
 

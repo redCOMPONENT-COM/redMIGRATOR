@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,14 +13,15 @@
  *
  * This class takes the weblinks from the existing site and inserts them into the new site.
  *
- * @since	0.4.5
+ * @since  0.4.5
  */
-class redMigratorWeblinks extends redMigrator
+class RedMigratorWeblinks extends RedMigrator
 {
 	/**
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
@@ -29,8 +30,8 @@ class redMigratorWeblinks extends redMigrator
 		$conditions = array();
 
 		$conditions['select'] = '`id`, `catid`, `title`, `alias`, `url`, `description`, `date`, `hits`, '
-     .' `published` AS state, `checked_out`, `checked_out_time`, `ordering`, `archived`, `approved`,`params`';
-				
+									. ' `published` AS state, `checked_out`, `checked_out_time`, `ordering`, `archived`, `approved`,`params`';
+
 		return $conditions;
 	}
 
@@ -38,6 +39,7 @@ class redMigratorWeblinks extends redMigrator
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.
+	 *
 	 * @since	0.4.5
 	 * @throws	Exception
 	 */
@@ -53,11 +55,12 @@ class redMigratorWeblinks extends redMigrator
 
 		return $rows;
 	}
-	
+
 	/**
 	 * Sets the data in the destination database.
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.
 	 * @throws	Exception
 	 */
@@ -74,13 +77,14 @@ class redMigratorWeblinks extends redMigrator
 		{
 			// Convert the array into an object.
 			$row = (array) $row;
-			
+
 			$cid = $row['catid'];
 			$row['catid'] = &$categories[$cid]->new;
 
 			$row['language'] = '*';
 
-			if (version_compare(PHP_VERSION, '3.0', '>=')) {
+			if (version_compare(PHP_VERSION, '3.0', '>='))
+			{
 				$row['created'] = $row['date'];
 				unset($row['approved']);
 				unset($row['archived']);

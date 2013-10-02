@@ -1,8 +1,8 @@
 <?php
 /**
- * redMigrator Virtuemart Component adapter
+ * RedMigrator Virtuemart Component adapter
  *
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,7 +13,7 @@
 defined('_JEXEC') or die;
 
 /**
- * redMigrator Virtuemart Plugin
+ * RedMigrator Virtuemart Plugin
  *
  * @package     Joomla.Plugin
  * @subpackage  system.jupgradepro

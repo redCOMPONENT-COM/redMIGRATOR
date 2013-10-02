@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -15,11 +15,9 @@ defined('JPATH_BASE') or die();
 /**
  * AroGroup table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @since  1.0
  */
-class redMigratorTableAROGroup extends redMigratorTable
+class RedMigratorTableAROGroup extends RedMigratorTable
 {
 	/** @var int Primary key */
 	var $id			= null;
@@ -38,8 +36,8 @@ class redMigratorTableAROGroup extends redMigratorTable
 	 * Table type
 	 *
 	 * @var string
-	 */		
-	var $_type = 'arogroup';	
+	 */
+	var $_type = 'arogroup';
 
 	protected $usergroup_map = array(
 		// Old	=> // New
@@ -56,40 +54,42 @@ class redMigratorTableAROGroup extends redMigratorTable
 		25		=> 8,	// Super Administrator
 	);
 
-	function __construct( &$db )
+	function __construct(&$db)
 	{
-		parent::__construct( '#__core_acl_aro_groups', 'id', $db );
+		parent::__construct('#__core_acl_aro_groups', 'id', $db);
 	}
 
 	/**
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
 	public function getConditionsHook()
 	{
 		$conditions = array();
-				
+
 		$where = array();
 		$where[] = "{$this->_tbl_key} > 30";
-		
+
 		$conditions['where'] = $where;
-		
+
 		return $conditions;
 	}
 
 	/**
-	 * 
 	 *
 	 * @access	public
 	 */
 	function migrate( )
-	{	
+	{
 		// Note, if we are here, these are custom groups we didn't know about.
-		if (isset($this->parent_id)) {
-			if ($this->parent_id <= 30) {
+		if (isset($this->parent_id))
+		{
+			if ($this->parent_id <= 30)
+			{
 				$this->parent_id = $this->usergroup_map[$this->parent_id];
 			}
 		}

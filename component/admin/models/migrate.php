@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -12,38 +12,40 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
-JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
+JLoader::register('RedMigrator', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.class.php');
+JLoader::register('RedMigratorStep', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.step.class.php');
 
 /**
- * redMigrator Model
+ * RedMigrator Model
  *
- * @package		redMigrator
  */
-class redMigratorModelMigrate extends RModelAdmin
+class RedMigratorModelMigrate extends RModelAdmin
 {
 	/**
 	 * Migrate
 	 *
 	 * @return	none
+	 *
 	 * @since	3.0.3
 	 */
-	function migrate($table = false, $json = true, $extensions = false) {
-
+	function migrate($table = false, $json = true, $extensions = false)
+	{
 		$table = (bool) ($table != false) ? $table : JRequest::getCmd('table', '');
 		$extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
 
-		// Init the redMigrator instance
-		$step = redMigratorStep::getInstance($table, $extensions);
-		$redmigrator = redMigrator::getInstance($step);
+		// Init the RedMigrator instance
+		$step = RedMigratorStep::getInstance($table, $extensions);
+		$redmigrator = RedMigrator::getInstance($step);
 
 		// Get the database structure
-		if ($step->first == true && $extensions == 'tables') {
+		if ($step->first == true && $extensions == 'tables')
+		{
 			$structure = $redmigrator->getTableStructure();
 		}
 
 		// Run the upgrade
-		if ($step->total > 0) {
+		if ($step->total > 0)
+		{
 			try
 			{
 				$redmigrator->upgrade();
@@ -55,23 +57,29 @@ class redMigratorModelMigrate extends RModelAdmin
 		}
 
 		// Javascript flags
-		if ( $step->cid == $step->stop+1 && $step->total != 0) {
+		if ( $step->cid == $step->stop + 1 && $step->total != 0)
+		{
 			$step->next = true;
 		}
-		if ($step->name == $step->laststep) {
+
+		if ($step->name == $step->laststep)
+		{
 			$step->end = true;
 		}
 
 		$empty = false;
-		if ($step->cid == 0 && $step->total == 0 && $step->start == 0 && $step->stop == 0) {
-			$empty = true;
-		} 
 
-		if ($step->stop == 0) {
+		if ($step->cid == 0 && $step->total == 0 && $step->start == 0 && $step->stop == 0)
+		{
+			$empty = true;
+		}
+
+		if ($step->stop == 0)
+		{
 			$step->stop = -1;
 		}
 
-		// Update #__redMigrator_steps table if id = last_id
+		// Update #__RedMigrator_steps table if id = last_id
 		if ( ( ($step->total <= $step->cid) || ($step->stop == -1) && ($empty == false) ) )
 		{
 			$step->next = true;
@@ -80,10 +88,13 @@ class redMigratorModelMigrate extends RModelAdmin
 			$step->_updateStep();
 		}
 
-		if (!redMigratorHelper::isCli()) {
+		if (!RedMigratorHelper::isCli())
+		{
 			echo $step->getParameters();
-		}else{
+		}
+		else
+		{
 			return $step->getParameters();
 		}
 	}
-} // end class
+} // End class

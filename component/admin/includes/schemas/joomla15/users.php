@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -9,21 +9,22 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-JLoader::register("redMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR."/includes/redmigrator.users.class.php");
+JLoader::register("RedMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR . "/includes/redmigrator.users.class.php");
 
 /**
  * Upgrade class for Users
  *
  * This class takes the users from the existing site and inserts them into the new site.
  *
- * @since	0.4.4
+ * @since  0.4.4
  */
-class redMigratorUsers extends redMigratorUsersDefault
+class RedMigratorUsers extends RedMigratorUsersDefault
 {
 	/**
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.
+	 *
 	 * @since	0.4.4
 	 * @throws	Exception
 	 */
@@ -36,17 +37,18 @@ class redMigratorUsers extends redMigratorUsersDefault
 
 			$row['params'] = $this->convertParams($row['params']);
 
-      // Chaging admin username and email
-      if ($row['id'] == 62) {
-        $row['username'] = $row['username'].'v15';
-        $row['email'] = $row['email'].'v15';
-      }
+		// Chaging admin username and email
+		if ($row['id'] == 62)
+		{
+			$row['username'] = $row['username'] . 'v15';
+			$row['email'] = $row['email'] . 'v15';
+		}
 
-			// Remove unused fields. 
+			// Remove unused fields.
 			$gid = 'gid';
 			unset($row[$gid]);
 		}
-		
+
 		return $rows;
 	}
 
@@ -54,6 +56,7 @@ class redMigratorUsers extends redMigratorUsersDefault
 	 * Sets the data in the destination database.
 	 *
 	 * @return	void
+	 *
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
@@ -64,7 +67,8 @@ class redMigratorUsers extends redMigratorUsersDefault
 		{
 			$row = (array) $row;
 
-			if (version_compare(PHP_VERSION, '3.0', '>=')) {
+			if (version_compare(PHP_VERSION, '3.0', '>='))
+			{
 				unset($row['usertype']);
 			}
 		}
@@ -78,6 +82,7 @@ class redMigratorUsers extends redMigratorUsersDefault
 	 * @param	object	$object	A reference to the parameters as an object.
 	 *
 	 * @return	void
+	 *
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
