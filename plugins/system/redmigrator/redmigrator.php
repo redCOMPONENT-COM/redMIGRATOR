@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,18 +8,17 @@
  *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+
+jimport('joomla.plugin.plugin');
 
 /**
- * Joomla! System redMigrator Plugin
+ * Joomla! System RedMigrator Plugin
  *
- * @package		Joomla
- * @subpackage	System
  */
-class plgSystemredMigrator extends JPlugin
+class PlgSystemRedMigrator extends JPlugin
 {
 	/**
 	 * Folder where the helpers are stored
@@ -64,7 +63,7 @@ class plgSystemredMigrator extends JPlugin
 		require_once $this->helpersFolder . '/dispatcher.php';
 		require_once $this->helpersFolder . '/table.php';
 
-		// Check if redMigrator_steps exists
+		// Check if RedMigrator_steps exists
 		$this->checkStepTable();
 
 		// Getting the database instance
@@ -81,8 +80,8 @@ class plgSystemredMigrator extends JPlugin
 		}
 
 		// Request was found
-		if ($request == true) {
-
+		if ($request == true)
+		{
 			// Check the username and pass
 			$auth = new JRESTAuthorizer;
 
@@ -99,21 +98,21 @@ class plgSystemredMigrator extends JPlugin
 
 			$return = $dispatcher->execute($rest->_parameters);
 
-			if ($return !== false) {
+			if ($return !== false)
+			{
 				echo $return;
-			}else{
+			}
+			else
+			{
 				JResponse::setHeader('status', 401);
 				JResponse::setBody('Dispatch error.');
 				JResponse::sendHeaders();
 				exit;
 			}
 
-			exit; // Exit
+			exit;
 		}
-
-		//exit; // Exit test
-
-	} // end method
+	} // End method
 
 
 	function checkStepTable()
@@ -140,15 +139,14 @@ class plgSystemredMigrator extends JPlugin
 		{
 			$this->populateDatabase($db, $sqlfile);
 		}
-
-	} // end method
+	}
 
 	/**
 	 * populateDatabase
 	 */
 	function populateDatabase(& $db, $sqlfile)
 	{
-		if( !($buffer = file_get_contents($sqlfile)) )
+		if( !($buffer = file_get_contents($sqlfile)))
 		{
 			return -1;
 		}
@@ -158,6 +156,7 @@ class plgSystemredMigrator extends JPlugin
 		foreach ($queries as $query)
 		{
 			$query = trim($query);
+
 			if ($query != '' && $query {0} != '#')
 			{
 				$db->setQuery($query);
@@ -167,5 +166,4 @@ class plgSystemredMigrator extends JPlugin
 
 		return true;
 	}
-
-} // end class
+}

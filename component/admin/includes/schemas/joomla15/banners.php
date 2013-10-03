@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,33 +8,35 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 /**
  * Upgrade class for Banners
  *
  * This class takes the banners from the existing site and inserts them into the new site.
  *
- * @since       0.4.5
+ * @since  0.4.5
  */
-class redMigratorBanners extends redMigrator
+class RedMigratorBanners extends RedMigrator
 {
 	/**
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
 	public static function getConditionsHook()
 	{
 		$conditions = array();
-		
+
 		$conditions['select'] = '`bid` AS id, `cid`, `type`, `name`, `alias`, `imptotal`, `impmade`, '
-													.'`clicks`, `imageurl`, `clickurl`, `date`, `showBanner` AS state, `checked_out`, '
-													.'`checked_out_time`, `editor`, `custombannercode`, `catid`, `description`, '
-													.'`sticky`, `ordering`, `publish_up`, `publish_down`, `tags`, `params`'	;
-		
+									. '`clicks`, `imageurl`, `clickurl`, `date`, `showBanner` AS state, `checked_out`, '
+									. '`checked_out_time`, `editor`, `custombannercode`, `catid`, `description`, '
+									. '`sticky`, `ordering`, `publish_up`, `publish_down`, `tags`, `params`';
+
 		$conditions['where'] = array();
-		
+
 		return $conditions;
 	}
 
@@ -42,6 +44,7 @@ class redMigratorBanners extends redMigrator
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return      array   Returns a reference to the source data array.
+	 *
 	 * @since       0.4.5
 	 * @throws      Exception
 	 */
@@ -55,7 +58,7 @@ class redMigratorBanners extends redMigrator
 		{
 			$row = (array) $row;
 
-			$row['params'] = $this->convertParams($row['params']);                        
+			$row['params'] = $this->convertParams($row['params']);
 
 			$cid = $row['catid'];
 			$row['catid'] = &$categories[$cid]->new;
@@ -68,13 +71,14 @@ class redMigratorBanners extends redMigrator
 	 * Sets the data in the destination database.
 	 *
 	 * @return      void
+	 *
 	 * @since       0.4.
 	 * @throws      Exception
 	 */
 	public function dataHook($rows = null)
 	{
 		// Getting the component parameter with global settings
-		$params = $this->getParams();	
+		$params = $this->getParams();
 
 		// Fixing the changes between versions
 		foreach($rows as &$row)

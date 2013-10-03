@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,24 +8,26 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
 /**
  * Menu Types table
  *
- * @package 	Joomla.Framework
- * @subpackage	Table
- * @since		1.5
+ * @since  1.5
  */
-class redMigratorTableMenus_types extends redMigratorTable
+class RedMigratorTableMenusTypes extends RedMigratorTable
 {
 	/** @var int Primary key */
 	var $id					= null;
+
 	/** @var string */
 	var $menutype			= null;
+
 	/** @var string */
 	var $title				= null;
+
 	/** @var string */
 	var $description		= null;
 
@@ -33,8 +35,8 @@ class redMigratorTableMenus_types extends redMigratorTable
 	 * Table type
 	 *
 	 * @var string
-	 */	
-	var $_type = 'menus_types';	
+	 */
+	var $_type = 'menus_types';
 
 	/**
 	 * Constructor
@@ -42,8 +44,8 @@ class redMigratorTableMenus_types extends redMigratorTable
 	 * @access protected
 	 * @param database A database connector object
 	 */
-	function __construct( &$db )
+	function __construct(&$db)
 	{
-		parent::__construct( '#__menu_types', 'id', $db );
+		parent::__construct('#__menu_types', 'id', $db);
 	}
 }

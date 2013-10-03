@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -12,36 +12,38 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
-JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
-JLoader::register('redMigratorExtensions', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.extensions.class.php');
+JLoader::register('RedMigrator', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.class.php');
+JLoader::register('RedMigratorStep', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.step.class.php');
+JLoader::register('RedMigratorExtensions', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.extensions.class.php');
 
 /**
- * redMigrator Model
+ * RedMigrator Model
  *
- * @package		redMigrator
  */
-class redMigratorModelExtensions extends RModelAdmin
+class RedMigratorModelExtensions extends RModelAdmin
 {
 	/**
 	 * Migrate the extensions
 	 *
 	 * @return	none
+	 *
 	 * @since	2.5.0
 	 */
-	function extensions() {
-
+	function extensions()
+	{
 		// Get the step
-		$step = redMigratorStep::getInstance('extensions', true);
+		$step = RedMigratorStep::getInstance('extensions', true);
 
-		// Get redMigratorExtensions instance
-		$extensions = redMigrator::getInstance($step);
+		// Get RedMigratorExtensions instance
+		$extensions = RedMigrator::getInstance($step);
 		$success = $extensions->upgrade();
 
-		if ($success === true) {
+		if ($success === true)
+		{
 			$step->status = 2;
 			$step->_updateStep();
+
 			return true;
 		}
 	}
-} // end class
+} // End class

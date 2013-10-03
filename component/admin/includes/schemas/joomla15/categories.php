@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -9,21 +9,22 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 // Require the category class
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.category.class.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.category.class.php';
 
 /**
  * Upgrade class for categories
  *
  * This class takes the categories from the existing site and inserts them into the new site.
  *
- * @since	0.4.5
+ * @since  0.4.5
  */
-class redMigratorCategories extends redMigratorCategory
+class RedMigratorCategories extends RedMigratorCategory
 {
 	/**
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
@@ -37,9 +38,9 @@ class redMigratorCategories extends redMigratorCategory
 		$where_or[] = "section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$'";
 		$where_or[] = "section IN ('com_banner', 'com_contact', 'com_contact_details', 'com_content', 'com_newsfeeds', 'com_sections', 'com_weblinks' )";
 
-		$conditions['order'] = "id DESC, section DESC, ordering DESC";		
+		$conditions['order'] = "id DESC, section DESC, ordering DESC";
 		$conditions['where_or'] = $where_or;
-		
+
 		return $conditions;
 	}
 
@@ -47,6 +48,7 @@ class redMigratorCategories extends redMigratorCategory
 	 * Sets the data in the destination database.
 	 *
 	 * @return	void
+	 *
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
@@ -54,6 +56,7 @@ class redMigratorCategories extends redMigratorCategory
 	{
 		// Getting the destination table
 		$table = $this->getDestinationTable();
+
 		// Getting the component parameter with global settings
 		$params = $this->getParams();
 
@@ -62,7 +65,7 @@ class redMigratorCategories extends redMigratorCategory
 		 * @since	2.5.1
 		 */
 		// Content categories
-		$this->section = 'com_content'; 
+		$this->section = 'com_content';
 
 		// Initialize values
 		$aliases = array();
@@ -72,26 +75,30 @@ class redMigratorCategories extends redMigratorCategory
 		// JTable::store() run an update if id exists so we create them first
 		foreach ($rows as $category)
 		{
-			$object = new stdClass();
+			$object = new stdClass;
 
 			$category = (array) $category;
 
-			if ($category['id'] == 1) {
-				$query = "SELECT id+1"
-				." FROM #__categories"
-				." ORDER BY id DESC LIMIT 1";
+			if ($category['id'] == 1)
+			{
+				$query = "SELECT id + 1"
+							. " FROM #__categories"
+							. " ORDER BY id DESC LIMIT 1";
 				$this->_db->setQuery($query);
 				$rootidmap = $this->_db->loadResult();
 
 				$object->id = $rootidmap;
 				$category['old_id'] = $category['id'];
 				$category['id'] = $rootidmap;
-			}else{
+			}
+			else
+			{
 				$object->id = $category['id'];
 			}
 
 			// Inserting the categories
-			if (!$this->_db->insertObject($table, $object)) {
+			if (!$this->_db->insertObject($table, $object))
+			{
 				echo $this->_db->getErrorMsg();
 			}
 		}
@@ -109,20 +116,23 @@ class redMigratorCategories extends redMigratorCategory
 			$category['rgt'] = null;
 			$category['level'] = null;
 
-			if ($category['id'] == 1) {
+			if ($category['id'] == 1)
+			{
 				$category['id'] = $rootidmap;
 			}
 
 			// Check if has duplicated aliases
 			$query = "SELECT alias"
-			." FROM #__categories"
-			." WHERE alias = ".$this->_db->quote($category['alias']);
+						. " FROM #__categories"
+						. " WHERE alias = " . $this->_db->quote($category['alias']);
 			$this->_db->setQuery($query);
 			$aliases = $this->_db->loadAssoc();
 
 			$count = count($aliases);
-			if ($count > 0) {
-				$category['alias'] .= "-".rand(0, 99999);
+
+			if ($count > 0)
+			{
+				$category['alias'] .= "-" . rand(0, 99999);
 			}
 
 			$this->insertCategory($category);

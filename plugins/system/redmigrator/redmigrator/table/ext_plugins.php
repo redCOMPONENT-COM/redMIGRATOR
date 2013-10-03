@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,38 +8,47 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
 /**
  * Menu table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @since  1.0
  */
-class redMigratorTableExt_plugins extends redMigratorTable
+class RedMigratorTableExtPlugins extends RedMigratorTable
 {
 	/** @var int Primary key */
 	var $id					= null;
+
 	/** @var string */
 	var $name				= null;
+
 	/** @var string */
 	var $folder				= null;
+
 	/** @var int */
 	var $ordering			= null;
+
 	/** @var boolean */
 	var $published			= null;
+
 	/** @var string */
 	var $module				= null;
+
 	/** @var int */
 	var $access				= null;
+
 	/** @var string */
 	var $params				= null;
+
 	/** @var string */
 	var $client_id			= null;
+
 	/** @var int */
-	var $element				= null;
+	var $element			= null;
+
 	/** @var int */
 	var $type				= null;
 
@@ -47,8 +56,8 @@ class redMigratorTableExt_plugins extends redMigratorTable
 	 * Table type
 	 *
 	 * @var string
-	 */	
-	var $_type = 'ext_plugins';	
+	 */
+	var $_type = 'ext_plugins';
 
 	/**
 	 * Contructor
@@ -56,8 +65,9 @@ class redMigratorTableExt_plugins extends redMigratorTable
 	 * @access protected
 	 * @param database A database connector object
 	 */
-	function __construct( &$db ) {
-		parent::__construct( '#__plugins', 'id', $db );
+	function __construct( &$db )
+	{
+		parent::__construct('#__plugins', 'id', $db);
 	}
 
 
@@ -65,6 +75,7 @@ class redMigratorTableExt_plugins extends redMigratorTable
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
@@ -81,15 +92,15 @@ class redMigratorTableExt_plugins extends redMigratorTable
 
 
 	/**
-	 * 
 	 *
 	 * @access	public
-	 * @param		Array	Result to migrate
+	 * @param	Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
 	function migrate( )
-	{		
+	{
 		$this->params = isset($this->params) ? $this->convertParams($this->params) : '';
+
 		// Default
 		$this->type = 'plugin';
 	}

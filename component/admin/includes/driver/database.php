@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -12,17 +12,17 @@
 defined('_JEXEC') or die;
 
 /**
- * redMigrator database utility class
+ * RedMigrator database utility class
  *
- * @package		redMigrator
  */
-class redMigratorDriverDatabase extends redMigratorDriver
+class RedMigratorDriverDatabase extends RedMigratorDriver
 {
 	/**
 	 * @var      
 	 * @since  3.0
 	 */
 	public $_db_old = null;
+
 	/**
 	 * @var	conditions  
 	 * @since  3.0
@@ -35,20 +35,20 @@ class redMigratorDriverDatabase extends redMigratorDriver
 	 */
 	private $extensions_steps = array('extensions', 'ext_components', 'ext_modules', 'ext_plugins');
 
-	function __construct(redMigratorStep $step = null)
+	function __construct(RedMigratorStep $step = null)
 	{
 		parent::__construct($step);
 
-		$class = (!empty($step->class)) ? $step->class : 'redMigrator';
+		$class = (!empty($step->class)) ? $step->class : 'RedMigrator';
 		$name = (!empty($step->name)) ? $step->name : '';
 		$xmlpath = (!empty($step->xmlpath)) ? $step->xmlpath : '';
 
 		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 
-		redMigratorHelper::requireClass($name, $xmlpath, $class);
+		RedMigratorHelper::requireClass($name, $xmlpath, $class);
 
 		// @@ Fix bug using PHP < 5.2.3 version
-		$this->_conditions = call_user_func($class .'::getConditionsHook');
+		$this->_conditions = call_user_func($class . '::getConditionsHook');
 
 		$db_config = array();
 		$db_config['driver'] = $this->params->old_dbtype;
@@ -71,11 +71,14 @@ class redMigratorDriverDatabase extends redMigratorDriver
 	{
 		// Get the conditions
 		$conditions = $this->getConditionsHook();
+
 		// Process the conditions
 		$query = $this->_processQuery($conditions, true);
+
 		// Setting the query
-		$this->_db_old->setQuery( $query );
-		//echo "\nQUERY: {$query->__toString()}\n";
+		$this->_db_old->setQuery($query);
+
+		// Echo "\nQUERY: {$query->__toString()}\n";
 		$rows = $this->_db_old->loadAssocList();
 
 		try
@@ -105,7 +108,7 @@ class redMigratorDriverDatabase extends redMigratorDriver
 		$query = $this->_processQuery($conditions);
 
 		// Get Total
-		$this->_db_old->setQuery( $query );
+		$this->_db_old->setQuery($query);
 		$total = $this->_db_old->loadResult();
 
 		try
@@ -125,6 +128,7 @@ class redMigratorDriverDatabase extends redMigratorDriver
 	 *
 	 * @access	public
 	 * @return	array	The conditions ready to be added to query
+	 *
 	 * @since  3.1.0
 	 */
 	public function _processQuery( $conditions, $pagination = false )
@@ -144,51 +148,60 @@ class redMigratorDriverDatabase extends redMigratorDriver
 		$query->from(trim($table));
 
 		// Setting the join[s] into the query
-		if (isset($conditions['join'])) {
+		if (isset($conditions['join']))
+		{
 			$count = count($conditions['join']);
 
-			for ($i=0;$i<$count;$i++) {
+			for ($i=0;$i<$count;$i++)
+			{
 				$query->join('LEFT', $conditions['join'][$i]);
 			}
 		}
 
 		// Setting the where[s] into the query
-		if (isset($conditions['where'])) {
+		if (isset($conditions['where']))
+		{
 			$count = count($conditions['where']);
 
-			for ($i=0;$i<$count;$i++) {
+			for ($i=0;$i<$count;$i++)
+			{
 				$query->where(trim($conditions['where'][$i]));
 			}
 		}
 
 		// Setting the where[s] into the query
-		if (isset($conditions['where_or'])) {
+		if (isset($conditions['where_or']))
+		{
 			$count = count($conditions['where_or']);
 
-			for ($i=0;$i<$count;$i++) {
+			for ($i=0;$i<$count;$i++)
+			{
 				$query->where(trim($conditions['where_or'][$i]), 'OR');
 			}
 		}
 
 		// Setting the GROUP BY into the query
-		if (isset($conditions['group_by'])) {
+		if (isset($conditions['group_by']))
+		{
 			$query->group(trim($conditions['group_by']));
 		}
 
 		// Process the ORDER clause
 		$key = $this->getKeyName();
 
-		if (!empty($key)) {
+		if (!empty($key))
+		{
 			$order = isset($conditions['order']) ? $conditions['order'] : "{$key} ASC";
 			$query->order($order);
 		}
 
 		// Pagination
-		if ($pagination === true) {
+		if ($pagination === true)
+		{
 			$chunk_limit = (int) $this->params->chunk_limit;
 			$oid = (int) $this->_getStepID();
 
-			$query->setLimit( $chunk_limit, $oid );
+			$query->setLimit($chunk_limit, $oid);
 		}
 
 		return $query;
@@ -202,58 +215,62 @@ class redMigratorDriverDatabase extends redMigratorDriver
 	 */
 	public function getConditionsHook()
 	{
-		return $this->_conditions;	
+		return $this->_conditions;
 	}
 
 	/**
  	* 
 	* @param string $table The table name
 	*/
-	function tableExists ($table) { 
+	function tableExists ($table)
+	{
 		$tables = array();
 		$tables = $this->_db_old->getTableList();
 
-		$table = $this->_db_old->getPrefix().$table;
+		$table = $this->_db_old->getPrefix() . $table;
 
 		return (in_array($table, $tables)) ? 'YES' : 'NO';
 	}
 
 	/**
-	 * @return  string	The table name  
+	 * @return  string	The table name
 	 *
 	 * @since   3.0
 	 */
 	public function getSourceTable()
 	{
-		return '#__'.$this->_step->source;
+		return '#__' . $this->_step->source;
 	}
 
 	/**
-	 * @return  string	The table name  
+	 * @return  string	The table name
 	 *
 	 * @since   3.0
 	 */
 	public function getDestinationTable()
 	{
-		return '#__'.$this->_step->destination;
+		return '#__' . $this->_step->destination;
 	}
 
 	/**
-	 * @return  string	The table key name  
+	 * @return  string	The table key name
 	 *
 	 * @since   3.0
 	 */
 	public function getKeyName()
 	{
-		if (empty($this->_tbl_key)) {
+		if (empty($this->_tbl_key))
+		{
 			$table = $this->getSourceTable();
 
 			$query = "SHOW KEYS FROM {$table} WHERE Key_name = 'PRIMARY'";
-			$this->_db_old->setQuery( $query );
+			$this->_db_old->setQuery($query);
 			$keys = $this->_db_old->loadObjectList();
 
 			return !empty($keys) ? $keys[0]->Column_name : '';
-		}else{
+		}
+		else
+		{
 			return $this->_tbl_key;
 		}
 	}
@@ -262,21 +279,26 @@ class redMigratorDriverDatabase extends redMigratorDriver
 	 * Cleanup the data in the destination database.
 	 *
 	 * @return	void
+	 *
 	 * @since	0.5.1
 	 * @throws	Exception
 	 */
 	protected function cleanDestinationData($table = false)
 	{
 		// Get the table
-		if ($table == false) {
+		if ($table == false)
+		{
 			$table = $this->getDestinationTable();
 		}
 
-		if ($this->canDrop) {
+		if ($this->canDrop)
+		{
 			$query = "TRUNCATE TABLE {$table}";
 			$this->_db->setQuery($query);
 			$this->_db->query();
-		} else {
+		}
+		else
+		{
 			$query = "DELETE FROM {$table}";
 			$this->_db->setQuery($query);
 			$this->_db->query();
@@ -285,7 +307,8 @@ class redMigratorDriverDatabase extends redMigratorDriver
 		// Check for query error.
 		$error = $this->_db->getErrorMsg();
 
-		if ($error) {
+		if ($error)
+		{
 			throw new Exception($error);
 		}
 	}

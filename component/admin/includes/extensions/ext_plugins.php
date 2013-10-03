@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,14 +8,15 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 /**
  * Upgrade class for Weblinks
  *
  * This class takes the weblinks from the existing site and inserts them into the new site.
  *
- * @since	3.0.0
+ * @since  3.0.0
  */
-class redMigratorExtensionsPlugins extends redMigrator
+class RedMigratorExtensionsPlugins extends RedMigrator
 {
 	/**
 	 * @var		string	The name of the source database table.
@@ -39,24 +40,25 @@ class redMigratorExtensionsPlugins extends redMigrator
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
 	public static function getConditionsHook()
 	{
 		$conditions = array();
-		
+
 		$conditions['as'] = "p";
-		
+
 		$conditions['select'] = 'name, \'plugin\' AS type, element, folder, client_id, ordering, params';
 
 		$where = array();
 		$where[] = "element   NOT   IN   ('joomla',   'ldap',   'gmail',   'openid',   'content',   'categories',   'contacts',   'sections',   'newsfeeds',   'weblinks',   'pagebreak',   'vote',   'emailcloak',   'geshi',   'loadmodule',   'pagenavigation', 'none',   'tinymce',   'xstandard',   'image',   'readmore',   'sef',   'debug',   'legacy',   'cache',   'remember', 'backlink', 'log', 'blogger', 'mtupdate' )";
-		
+
 		$conditions['where'] = $where;
 
 		$conditions['group_by'] = 'element';
-		
+
 		return $conditions;
 	}
 
@@ -64,6 +66,7 @@ class redMigratorExtensionsPlugins extends redMigrator
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
@@ -73,8 +76,10 @@ class redMigratorExtensionsPlugins extends redMigrator
 		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
+
 			// Converting params to JSON
 			$row['params'] = $this->convertParams($row['params']);
+
 			// Defaults
 			$row['type'] = 'plugin';
 		}

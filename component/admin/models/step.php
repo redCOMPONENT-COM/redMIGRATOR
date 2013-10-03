@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -12,29 +12,29 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
-JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
+JLoader::register('RedMigrator', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.class.php');
+JLoader::register('RedMigratorStep', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.step.class.php');
 
 /**
- * redMigrator Model
+ * RedMigrator Model
  *
- * @package		redMigrator
  */
-class redMigratorModelStep extends RModelAdmin
+class RedMigratorModelStep extends RModelAdmin
 {
 	/**
-	 * Initial checks in redMigrator
+	 * Initial checks in RedMigrator
 	 *
 	 * @return	none
+	 *
 	 * @since	1.2.0
 	 */
-	public function step($name = false, $json = true, $extensions = false) {
-
+	public function step($name = false, $json = true, $extensions = false)
+	{
 		// Check if extensions exists if not get it from URI request
 		$extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
 
-		// Getting the redMigratorStep instance
-		$step = redMigratorStep::getInstance(null, $extensions);
+		// Getting the RedMigratorStep instance
+		$step = RedMigratorStep::getInstance(null, $extensions);
 
 		// Check if name exists
 		$name = !empty($name) ? $name : $step->name;
@@ -42,9 +42,12 @@ class redMigratorModelStep extends RModelAdmin
 		// Get the next step
 		$step->getStep($name);
 
-		if (!redMigratorHelper::isCli()) {
+		if (!RedMigratorHelper::isCli())
+		{
 			echo $step->getParameters();
-		}else{
+		}
+		else
+		{
 			return $step->getParameters();
 		}
 	}
@@ -53,6 +56,7 @@ class redMigratorModelStep extends RModelAdmin
 	 * returnError
 	 *
 	 * @return	none
+	 *
 	 * @since	2.5.0
 	 */
 	public function returnError ($number, $text)
@@ -62,5 +66,4 @@ class redMigratorModelStep extends RModelAdmin
 		echo json_encode($message);
 		exit;
 	}
-
-} // end class
+} // End class

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -11,26 +11,26 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controller library
+
+// Import Joomla controller library
 jimport('joomla.application.component.controller');
- 
+
 /**
- * General Controller of redMigrator component
+ * General Controller of RedMigrator component
  */
-class redMigratorController extends JControllerLegacy
+class RedMigratorController extends JControllerLegacy
 {
 	/**
 	 * display task
 	 *
 	 * @return void
 	 */
-	function display($cachable = false, $urlparams = array()) 
+	function display($cachable = false, $urlparams = array())
 	{
-		// set default view if not set
+		// Set default view if not set
 		JRequest::setVar('view', JRequest::getCmd('view', 'cpanel'));
- 
-		// call parent behavior
+
+		// Call parent behavior
 		parent::display($cachable);
 	}
 }

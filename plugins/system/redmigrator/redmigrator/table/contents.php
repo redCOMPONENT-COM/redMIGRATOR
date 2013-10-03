@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,77 +8,104 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
-
 
 /**
  * Content table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @since  1.0
  */
-class redMigratorTableContents extends redMigratorTable
+class RedMigratorTableContents extends RedMigratorTable
 {
 	/** @var int Primary key */
 	var $id					= null;
+
 	/** @var string */
 	var $title				= null;
+
 	/** @var string */
 	var $alias				= null;
+
 	/** @var string */
 	var $title_alias		= null;
+
 	/** @var string */
 	var $introtext			= null;
+
 	/** @var string */
 	var $fulltext			= null;
+
 	/** @var int */
 	var $state				= null;
+
 	/** @var int The id of the category section*/
 	var $sectionid			= null;
+
 	/** @var int DEPRECATED */
 	var $mask				= null;
+
 	/** @var int */
 	var $catid				= null;
+
 	/** @var datetime */
 	var $created			= null;
+
 	/** @var int User id*/
 	var $created_by			= null;
+
 	/** @var string An alias for the author*/
 	var $created_by_alias	= null;
+
 	/** @var datetime */
 	var $modified			= null;
+
 	/** @var int User id*/
 	var $modified_by		= null;
+
 	/** @var boolean */
 	var $checked_out		= 0;
+
 	/** @var time */
 	var $checked_out_time	= 0;
+
 	/** @var datetime */
 	var $publish_up			= null;
+
 	/** @var datetime */
 	var $publish_down		= null;
+
 	/** @var string */
 	var $images				= null;
+
 	/** @var string */
 	var $urls				= null;
+
 	/** @var string */
 	var $attribs			= null;
+
 	/** @var int */
 	var $version			= null;
+
 	/** @var int */
 	var $parentid			= null;
+
 	/** @var int */
 	var $ordering			= null;
+
 	/** @var string */
 	var $metakey			= null;
+
 	/** @var string */
 	var $metadesc			= null;
+
 	/** @var string */
 	var $metadata			= null;
+
 	/** @var int */
 	var $access				= null;
+
 	/** @var int */
 	var $hits				= null;
 
@@ -86,31 +113,32 @@ class redMigratorTableContents extends redMigratorTable
 	 * Table type
 	 *
 	 * @var string
-	 */	
-	var $_type = 'contents';	
+	 */
+	var $_type = 'contents';
 
 	/**
 	* @param database A database connector object
 	*/
-	function __construct( &$db ) {
-		parent::__construct( '#__content', 'id', $db );
+	function __construct(&$db)
+	{
+		parent::__construct('#__content', 'id', $db);
 	}
 
 	/**
-	 * 
 	 *
 	 * @access	public
-	 * @param		Array	Result to migrate
+	 * @param	Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
 	function migrate( )
-	{	
+	{
 		$this->attribs = $this->convertParams($this->attribs);
 		$this->access = $this->access == 0 ? 1 : $this->access + 1;
 		$this->language = '*';
 
 		// Correct state
-		if ($this->state == -1) {
+		if ($this->state == -1)
+		{
 			$this->state = 2;
 		}
 
@@ -127,6 +155,7 @@ class redMigratorTableContents extends redMigratorTable
 	 * @param	object	$object	A reference to the parameters as an object.
 	 *
 	 * @return	void
+	 *
 	 * @since	0.4.
 	 * @throws	Exception
 	 */

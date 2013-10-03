@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,13 +13,13 @@
 defined('JPATH_BASE') or die();
 
 /**
- * redMigrator class for Virtuemart migration
+ * RedMigrator class for Virtuemart migration
  *
  * This class migrates the Adminpraise extension
  *
  * @since		1.2.0
  */
-class redMigratorComponentVirtuemart extends redMigrator
+class RedMigratorComponentVirtuemart extends RedMigrator
 {
 	/**
 	 * Check if extension migration is supported.

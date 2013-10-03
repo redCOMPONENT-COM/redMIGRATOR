@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -9,35 +9,34 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-JLoader::register("redMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR."/includes/redmigrator.users.class.php");
+JLoader::register("RedMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR . "/includes/redmigrator.users.class.php");
 
 /**
  * Upgrade class for Usergroups
  *
  * This class maps the old 1.5 usergroups to the new 1.6 system.
  *
- * @package		MatWare
- * @subpackage	com_redmigrator
- * @since		0.4.4
+ * @since  0.4.4
  */
-class redMigratorUsergroups extends redMigratorUsersDefault
+class RedMigratorUsergroups extends RedMigratorUsersDefault
 {
 	/**
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
 	public static function getConditionsHook()
 	{
 		$conditions = array();
-				
+
 		$where = array();
 		$where[] = "id > 30";
-		
+
 		$conditions['where'] = $where;
-		
+
 		return $conditions;
 	}
 
@@ -45,6 +44,7 @@ class redMigratorUsergroups extends redMigratorUsersDefault
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array
+	 *
 	 * @since	0.4.4
 	 * @throws	Exception
 	 */
@@ -59,8 +59,10 @@ class redMigratorUsergroups extends redMigratorUsersDefault
 		foreach ($rows as &$row)
 		{
 			// Note, if we are here, these are custom groups we didn't know about.
-			if (isset($row['parent_id'])) {
-				if ($row['parent_id'] <= 30) {
+			if (isset($row['parent_id']))
+			{
+				if ($row['parent_id'] <= 30)
+				{
 					$row['parent_id'] = $map[$row['parent_id']];
 				}
 			}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,8 +8,9 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// No direct access
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * REST Message class
@@ -180,6 +181,7 @@ class JRESTMessage
 		if (function_exists('apache_request_headers'))
 		{
 			$headers = apache_request_headers();
+
 			if (isset($headers['Authorization']))
 			{
 				return trim($headers['Authorization']);
@@ -269,24 +271,33 @@ class JRESTMessage
 		{
 			if (isset($_SERVER[$k]))
 			{
-				if (strpos($k, 'AUTH_USER')) { 
+				if (strpos($k, 'AUTH_USER'))
+				{
 					$parameters['AUTH_USER'] = trim($_SERVER[$k]);
-				}else if (strpos($k, 'AUTH_PW')) {
+				}
+				elseif (strpos($k, 'AUTH_PW'))
+				{
 					$parameters['AUTH_PW'] = trim($_SERVER[$k]);
-				}else if (strpos($k, 'USER')) { 
+				}
+				elseif (strpos($k, 'USER'))
+				{
 					$parameters['USER'] = trim($_SERVER[$k]);
-				}else if (strpos($k, 'PW')) {
+				}
+				elseif (strpos($k, 'PW'))
+				{
 					$parameters['PW'] = trim($_SERVER[$k]);
-				}else{
+				}
+				else
+				{
 					$parameters[$k] = trim($_SERVER[$k]);
 				}
 			}
 		}
 
 		// If we didn't find anything return false.
-		if (empty($parameters) 
-			|| ( empty($parameters['AUTH_USER']) || empty($parameters['AUTH_PW']) ) 
-			&& ( empty($parameters['USER']) || empty($parameters['PW']) ) )
+		if (empty($parameters)
+			|| ( empty($parameters['AUTH_USER']) || empty($parameters['AUTH_PW']))
+			&& ( empty($parameters['USER']) || empty($parameters['PW'])))
 		{
 			return false;
 		}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -17,12 +17,9 @@ defined('JPATH_BASE') or die();
  * Parent classes to all tables.
  *
  * @abstract
- * @package 	Joomla.Framework
- * @subpackage	Table
- * @since		1.0
  * @tutorial	Joomla.Framework/jtable.cls
  */
-class redMigratorTable extends JTable
+class RedMigratorTable extends JTable
 {
 	/**
 	 * Get the row
@@ -35,15 +32,20 @@ class redMigratorTable extends JTable
 	{
 		// Get the next id
 		$id = $this->_getStepID();
+
 		// Load the row
 		$load = $this->load($id);
 
-		if ($load !== false) {
+		if ($load !== false)
+		{
 			// Migrate it
 			$this->migrate();
+
 			// Return as JSON
 			return $this->toJSON();
-		}else{
+		}
+		else
+		{
 			return false;
 		}
 	}
@@ -60,14 +62,16 @@ class redMigratorTable extends JTable
 		$table = isset($this->_parameters['HTTP_TABLE']) ? $this->_parameters['HTTP_TABLE'] : '';
 
 		// Getting the database instance
-		$db = JFactory::getDbo();	
+		$db = JFactory::getDbo();
 
-		$query = "UPDATE redmigrator_plugin_steps SET cid = 0"; 
-		if ($table != false) {
+		$query = "UPDATE redmigrator_plugin_steps SET cid = 0";
+
+		if ($table != false)
+		{
 			$query .= " WHERE name = '{$table}'";
 		}
 
-		$db->setQuery( $query );
+		$db->setQuery($query);
 		$result = $db->query();
 
 		return true;
@@ -84,49 +88,61 @@ class redMigratorTable extends JTable
 		$key = $this->getKeyName();
 		$table = $this->getTableName();
 
-		if ($oid === null) {
+		if ($oid === null)
+		{
 			return false;
 		}
 
-		if ($oid !== null AND $key != '') {
+		if ($oid !== null AND $key != '')
+		{
 			$this->$key = $oid;
 		}
 
-		$this->reset();	
+		$this->reset();
 
 		// Getting the database instance
 		$db = JFactory::getDbo();
 
 		// Get the conditions
 		$conditions = $this->getConditionsHook();
-		
+
 		//
 		$where = '';
-		if (isset($conditions['where'])) {
-			$where = count( $conditions['where'] ) ? 'WHERE ' . implode( ' AND ', $conditions['where'] ) : '';
+
+		if (isset($conditions['where']))
+		{
+			$where = count($conditions['where']) ? 'WHERE ' . implode(' AND ', $conditions['where']) : '';
 		}
 
 		$where_or = '';
-		if (isset($conditions['where_or'])) {
-			$where_or = count( $conditions['where_or'] ) ? 'WHERE ' . implode( ' OR ', $conditions['where_or'] ) : '';
+
+		if (isset($conditions['where_or']))
+		{
+			$where_or = count($conditions['where_or']) ? 'WHERE ' . implode(' OR ', $conditions['where_or']) : '';
 		}
-	
+
 		$select = isset($conditions['select']) ? $conditions['select'] : '*';
-		$as = isset($conditions['as']) ? 'AS '.$conditions['as'] : '';
+		$as = isset($conditions['as']) ? 'AS ' . $conditions['as'] : '';
 
 		//
 		$join = '';
-		if (isset($conditions['join'])) {
-			$join = count( $conditions['join'] ) ? implode( ' ', $conditions['join'] ) : '';
+
+		if (isset($conditions['join']))
+		{
+			$join = count($conditions['join']) ? implode(' ', $conditions['join']) : '';
 		}
 
 		$order = '';
-		if ($key != '') {
+
+		if ($key != '')
+		{
 			$order = isset($conditions['order']) ? "ORDER BY " . $conditions['order'] : "ORDER BY {$key} ASC";
 		}
 
 		$group_by = '';
-		if (isset($conditions['group_by'])) {
+
+		if (isset($conditions['group_by']))
+		{
 			$group_by = isset($conditions['group_by']) ? "GROUP BY " . $conditions['group_by'] : "";
 		}
 
@@ -134,17 +150,20 @@ class redMigratorTable extends JTable
 
 		// Get the row
 		$query = "SELECT {$select} FROM {$table} {$as} {$join} {$where}{$where_or} {$group_by} {$order} {$limit}";
-		$db->setQuery( $query );
+		$db->setQuery($query);
 		$row = $db->loadAssoc();
 
-		if (is_array($row)) {
-			$this->_updateID($oid+1);
+		if (is_array($row))
+		{
+			$this->_updateID($oid + 1);
+
 			return $this->bind($row);
 		}
 		else
 		{
 			$this->_updateID(0);
-			$this->setError( $db->getErrorMsg() );
+			$this->setError($db->getErrorMsg());
+
 			return false;
 		}
 	}

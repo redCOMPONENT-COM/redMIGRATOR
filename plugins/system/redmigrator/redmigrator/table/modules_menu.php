@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -14,29 +14,28 @@ defined('JPATH_BASE') or die();
 /**
  * Module table
  *
- * @package 	Joomla.Framework
- * @subpackage		Table
- * @since	1.0
+ * @since  1.0
  */
-class redMigratorTableModules_menu extends redMigratorTable
+class RedMigratorTableModulesMenu extends RedMigratorTable
 {
 	/** @var int Primary key */
-	var $moduleid					= null;
+	var $moduleid = null;
+
 	/** @var string */
-	var $menuid				= null;
+	var $menuid	= null;
 
 	/**
 	 * Table type
 	 *
 	 * @var string
-	 */	
+	 */
 	var $_type = 'modules_menu';
 
 	/**
 	 * Second key
 	 *
 	 * @var string
-	 */	
+	 */
 	var $_tmp_key = 'menuid';
 
 	/**
@@ -45,14 +44,16 @@ class redMigratorTableModules_menu extends redMigratorTable
 	 * @access protected
 	 * @param database A database connector object
 	 */
-	function __construct( &$db ) {
-		parent::__construct( '#__modules_menu', 'moduleid', $db );
+	function __construct( &$db )
+	{
+		parent::__construct('#__modules_menu', 'moduleid', $db);
 	}
 
 	/**
 	 * Setting the conditions hook
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
@@ -70,7 +71,7 @@ class redMigratorTableModules_menu extends redMigratorTable
 		$conditions['where'][] = "modules.module IN ('mod_breadcrumbs', 'mod_footer', 'mod_mainmenu', 'mod_menu', 'mod_related_items', 'mod_stats', 'mod_wrapper', 'mod_archive', 'mod_custom', 'mod_latestnews', 'mod_mostread', 'mod_search', 'mod_syndicate', 'mod_banners', 'mod_feed', 'mod_login', 'mod_newsflash', 'mod_random_image', 'mod_whosonline' )";
 
 		$conditions['order'] = "moduleid, menuid ASC";
-				
+
 		return $conditions;
 	}
 }

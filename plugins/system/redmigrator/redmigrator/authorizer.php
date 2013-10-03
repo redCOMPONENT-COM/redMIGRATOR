@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -31,22 +31,24 @@ class JRESTAuthorizer
 	{
 		// Getting the client key
 		$plugin =& JPluginHelper::getPlugin('system', 'redmigrator');
-		$pluginParams = new JParameter( $plugin->params );
+		$pluginParams = new JParameter($plugin->params);
 		$client_key = trim($pluginParams->get('client_key'));
 
 		// Uncrypt the request
 		$key = base64_decode($params['HTTP_KEY']);
-		$parts	= explode( ':', $key );
-		$key	= trim($parts[0]);
+		$parts = explode(':', $key);
+		$key = trim($parts[0]);
 
-		if ($key != $client_key) {
+		if ($key != $client_key)
+		{
 			JResponse::setHeader('status', 402);
 			JResponse::setBody('Client key do not match.');
 			JResponse::sendHeaders();
 			exit;
 		}
 
-		if (!isset($params['AUTH_USER']) && !isset($params['HTTP_USER']) && !isset($params['USER'])) {
+		if (!isset($params['AUTH_USER']) && !isset($params['HTTP_USER']) && !isset($params['USER']))
+		{
 			JResponse::setHeader('status', 405);
 			JResponse::setBody('Username headers not found.');
 			JResponse::sendHeaders();
@@ -54,57 +56,70 @@ class JRESTAuthorizer
 		}
 
 		// Looking the username header
-		if (isset($params['AUTH_USER'])) {
+		if (isset($params['AUTH_USER']))
+		{
 			$user_decode = base64_decode($params['AUTH_USER']);
-		} else if (isset($params['HTTP_USER'])) {
+		}
+		elseif (isset($params['HTTP_USER']))
+		{
 			$user_decode = base64_decode($params['HTTP_USER']);
-		} else if (isset($params['USER'])) {
+		}
+		elseif (isset($params['USER']))
+		{
 			$user_decode = base64_decode($params['USER']);
 		}
 
-		$parts	= explode( ':', $user_decode );
+		$parts	= explode(':', $user_decode);
 		$user	= $parts[0];
 
 		// Looking the username header
-		if (isset($params['AUTH_PW'])) {
+		if (isset($params['AUTH_PW']))
+		{
 			$password_decode = base64_decode($params['AUTH_PW']);
-		} else if (isset($params['HTTP_PW'])) {
+		}
+		elseif (isset($params['HTTP_PW']))
+		{
 			$password_decode = base64_decode($params['HTTP_PW']);
-		} else if (isset($params['PW'])) {
+		}
+		elseif (isset($params['PW']))
+		{
 			$password_decode = base64_decode($params['PW']);
 		}
 
-		$parts	= explode( ':', $password_decode );
+		$parts	= explode(':', $password_decode);
 		$password	= $parts[0];
 
 		// Getting the local username and password
 		$query = 'SELECT `id`, `password`, `gid`'
-		. ' FROM #__users'
-		. ' WHERE username = '.$db->quote($user);
-		$db->setQuery( $query );
+					. ' FROM #__users'
+					. ' WHERE username = ' . $db->quote($user);
+		$db->setQuery($query);
 		$user_result = $db->loadObject();
 
 		// Check the password
-		$parts	= explode( ':', $user_result->password );
+		$parts	= explode(':', $user_result->password);
 		$crypt	= $parts[0];
 		$salt	= @$parts[1];
 		$testcrypt = JUserHelper::getCryptedPassword($password, $salt);
 
-		if (!is_object($user_result)) {
+		if (!is_object($user_result))
+		{
 			JResponse::setHeader('status', 403);
 			JResponse::setBody('Username not found.');
 			JResponse::sendHeaders();
 			exit;
 		}
 
-		if ($crypt != $testcrypt) {
+		if ($crypt != $testcrypt)
+		{
 			JResponse::setHeader('status', 406);
 			JResponse::setBody('Username or password do not match');
 			JResponse::sendHeaders();
 			exit;
 		}
 
-		if ($user_result->gid != 25) {
+		if ($user_result->gid != 25)
+		{
 			JResponse::setHeader('status', 401);
 			JResponse::setBody('Username is not Super Administrator');
 			JResponse::sendHeaders();

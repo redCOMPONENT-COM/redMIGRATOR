@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -9,7 +9,7 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-JLoader::register("redMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR."/includes/redmigrator.users.class.php");
+JLoader::register("RedMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR . "/includes/redmigrator.users.class.php");
 
 /**
  * Upgrade class for the Usergroup Map
@@ -19,26 +19,24 @@ JLoader::register("redMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR."/inc
  * Group id's over 30 can be used as is.
  * User id's are maintained in this upgrade process.
  *
- * @package		MatWare
- * @subpackage	com_redMigrator
- * @since		0.4.4
  */
-class redMigratorUsergroupMap extends redMigratorUsersDefault
+class RedMigratorUsergroupMap extends RedMigratorUsersDefault
 {
 	/**
 	 * Setting the conditions hook
 	 *
 	 * @return	array
+	 *
 	 * @since	3.1.0
 	 * @throws	Exception
 	 */
 	public static function getConditionsHook()
 	{
 		$conditions = array();
-		
+
 		$conditions['where'] = array();
 		$conditions['order'] = "aro_id ASC";
-		
+
 		return $conditions;
 	}
 
@@ -46,6 +44,7 @@ class redMigratorUsergroupMap extends redMigratorUsersDefault
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array
+	 *
 	 * @since	0.4.4
 	 * @throws	Exception
 	 */
@@ -59,17 +58,18 @@ class redMigratorUsergroupMap extends redMigratorUsersDefault
 		// Do some custom post processing on the list.
 		// The schema for old group map is: group_id, section_value, aro_id
 		// The schema for new groups is: user_id, group_id
-	
+
 		$count = count($rows);
 
-		for ($i=0;$i<$count;$i++)
+		for ($i = 0; $i < $count; $i++)
 		{
 			$row = (array) $rows[$i];
 
 			$row['user_id'] = $this->getUserIdAroMap($row['aro_id']);
 
 			// Note, if we are here, these are custom groups we didn't know about.
-			if ($row['group_id'] <= 30) {
+			if ($row['group_id'] <= 30)
+			{
 				$row['group_id'] = $groupMap[$row['group_id']];
 			}
 
@@ -87,6 +87,7 @@ class redMigratorUsergroupMap extends redMigratorUsersDefault
 	 * Sets the data in the destination database.
 	 *
 	 * @return	void
+	 *
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
@@ -97,7 +98,8 @@ class redMigratorUsergroupMap extends redMigratorUsersDefault
 		{
 			$row = (array) $row;
 
-			if (empty($row['user_id'])) {
+			if (empty($row['user_id']))
+			{
 				$row = false;
 			}
 		}

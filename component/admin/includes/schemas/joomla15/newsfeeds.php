@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     redMIGRATOR.Backend
+ * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,21 +13,22 @@
  *
  * This class takes the newsfeeds from the existing site and inserts them into the new site.
  *
- * @since	0.4.5
+ * @since  0.4.5
  */
-class redMigratorNewsfeeds extends redMigrator
+class RedMigratorNewsfeeds extends RedMigrator
 {
 	/**
 	 * Sets the data in the destination database.
 	 *
 	 * @return	void
+	 *
 	 * @since	3.0.
 	 * @throws	Exception
 	 */
 	public function dataHook($rows = null)
 	{
 		// Getting the component parameter with global settings
-		$params = $this->getParams();	
+		$params = $this->getParams();
 
 		// Getting the categories id's
 		$categories = $this->getMapList('categories', 'com_newsfeeds');
@@ -40,7 +41,8 @@ class redMigratorNewsfeeds extends redMigrator
 			$row['access'] = 1;
 			$row['language'] = '*';
 
-			if (version_compare(PHP_VERSION, '3.0', '>=')) {
+			if (version_compare(PHP_VERSION, '3.0', '>='))
+			{
 				unset($row['filename']);
 			}
 
