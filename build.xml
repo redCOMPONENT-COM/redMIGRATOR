@@ -31,7 +31,7 @@
 
         <!-- Manifest & install script -->
         <echo message="Copying manifest..."/>
-        <copy file="${src}/${comp.name}.xml"
+        <copy file="${src}/com_${comp.name}.xml"
               tofile="${www.dir}/administrator/components/com_${comp.name}/${comp.name}.xml" overwrite="true">
             <!-- trick to replace extension folders in the manifest-->
             <filterchain>
