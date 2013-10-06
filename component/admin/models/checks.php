@@ -31,9 +31,6 @@ class RedMigratorModelChecks extends RModelAdmin
 	 */
 	function checks()
 	{
-		// Loading the helper
-		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
-
 		// Getting the component parameter with global settings
 		$params = RedMigratorHelper::getParams();
 
@@ -186,6 +183,7 @@ class RedMigratorModelChecks extends RModelAdmin
 
 			if ($users_count > 1)
 			{
+                //RedMigratorHelper::returnError(100, $users_count);
 				throw new Exception('COM_REDMIGRATOR_ERROR_DATABASE_USERS');
 			}
 		}
@@ -193,22 +191,7 @@ class RedMigratorModelChecks extends RModelAdmin
 		// Done checks
 		if (!RedMigratorHelper::isCli())
 		{
-			$this->returnError(100, 'DONE');
+			RedMigratorHelper::returnError(100, 'DONE');
 		}
-	}
-
-	/**
-	 * returnError
-	 *
-	 * @return	none
-	 *
-	 * @since	2.5.0
-	 */
-	public function returnError ($number, $text)
-	{
-		$message['number'] = $number;
-		$message['text'] = JText::_($text);
-		print(json_encode($message));
-		exit;
 	}
 } // End class

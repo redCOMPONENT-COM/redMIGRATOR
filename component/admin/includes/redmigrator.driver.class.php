@@ -37,8 +37,7 @@ class RedMigratorDriver
 
 	function __construct(RedMigratorStep $step = null)
 	{
-		jimport('legacy.component.helper');
-		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
+		JLoader::import('legacy.component.helper');
 
 		// Set the step params
 		$this->_step = $step;
@@ -59,7 +58,7 @@ class RedMigratorDriver
 	static function getInstance(RedMigratorStep $step = null)
 	{
 		// Loading the JFile class
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 
 		// Getting the params and Joomla version web and cli
 		$params = RedMigratorHelper::getParams();

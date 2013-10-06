@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Import Joomla controller library
-jimport('joomla.application.component.controller');
+JLoader::import('joomla.application.component.controller');
 
 /**
  * General Controller of RedMigrator component

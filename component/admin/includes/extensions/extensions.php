@@ -197,7 +197,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 	 */
 	protected function _processExtensions()
 	{
-		jimport('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.folder');
 
 		$types = array(
 			'/^com_(.+)$/e',		// Com_componentname

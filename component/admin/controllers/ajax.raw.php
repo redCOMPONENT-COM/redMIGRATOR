@@ -58,7 +58,7 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		}
 		catch (Exception $e)
 		{
-			$model->returnError(500, $e->getMessage());
+			RedMigratorHelper::returnError(500, $e->getMessage());
 		}
 
 	}
@@ -78,7 +78,7 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		}
 		catch (Exception $e)
 		{
-			$model->returnError(500, $e->getMessage());
+			RedMigratorHelper::returnError(500, $e->getMessage());
 		}
 	}
 
@@ -97,7 +97,7 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		}
 		catch (Exception $e)
 		{
-			$model->returnError(500, $e->getMessage());
+			RedMigratorHelper::returnError(500, $e->getMessage());
 		}
 	}
 
@@ -116,7 +116,7 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		}
 		catch (Exception $e)
 		{
-			$model->returnError(500, $e->getMessage());
+			RedMigratorHelper::returnError(500, $e->getMessage());
 		}
 	}
 
@@ -135,7 +135,7 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		}
 		catch (Exception $e)
 		{
-			$model->returnError(500, $e->getMessage());
+			RedMigratorHelper::returnError(500, $e->getMessage());
 		}
 	}
 }

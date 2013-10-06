@@ -12,7 +12,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
+JLoader::import('joomla.application.component.view');
 
 class RedMigratorViewCpanel extends RView
 {
@@ -32,7 +32,6 @@ class RedMigratorViewCpanel extends RView
 	function display($tpl = null)
 	{
 		// Get params
-		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 		$params = RedMigratorHelper::getParams();
 
 		//
@@ -72,7 +71,7 @@ class RedMigratorViewCpanel extends RView
 	 */
 	public function getToolbar()
 	{
-		$user  = JFactory::getUser();
+		$user = JFactory::getUser();
 
 		$firstGroup = new RToolbarButtonGroup;
 

@@ -76,8 +76,7 @@ class RedMigratorStep
 
 	function __construct($name = null, $extensions = false)
 	{
-		jimport('legacy.component.helper');
-		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
+		JLoader::import('legacy.component.helper');
 
 		// Creating dabatase instance for this installation
 		$this->_db = JFactory::getDBO();
@@ -190,7 +189,6 @@ class RedMigratorStep
 			return false;
 		}
 
-		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 		$params = RedMigratorHelper::getParams();
 
 		$limit = $params->chunk_limit;
@@ -433,7 +431,7 @@ class RedMigratorStep
 	{
 		$update_cid = $this->_getStepID() + 1;
 		$this->_updateID($update_cid);
-		echo redmigratorHelper::isCli() ? "•" : "";
+		echo RedMigratorHelper::isCli() ? "•" : "";
 	}
 
 	/**

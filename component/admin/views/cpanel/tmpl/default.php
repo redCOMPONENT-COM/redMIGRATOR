@@ -21,7 +21,7 @@ $version = "v{$this->version}";
 $params	= $this->params;
 
 // Get document to add scripts
-$document	= JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addScript('components/com_redmigrator/js/dwProgressBar.js');
 $document->addScript("components/com_redmigrator/js/migrate.js");
 $document->addScript('components/com_redmigrator/js/requestmultiple.js');
