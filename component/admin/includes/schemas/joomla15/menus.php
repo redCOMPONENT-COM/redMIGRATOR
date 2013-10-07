@@ -68,7 +68,7 @@ class RedMigratorMenu extends RedMigrator
 	 */
 	public static function insertDefaultMenus()
 	{
-		jimport('joomla.table.table');
+		JLoader::import('joomla.table.table');
 
 		// Getting the database instance
 		$db = JFactory::getDbo();
@@ -227,7 +227,7 @@ class RedMigratorMenu extends RedMigrator
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
-	protected function convertParamsHook(&$object)
+	protected function convertParamsHook($object)
 	{
 		if (isset($object->menu_image))
 		{

@@ -129,8 +129,8 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 	 *
 	 * @since	0.4.5
 	 * @throws	Exception
-	 *
-	protected function upgradeTemplates()
+	 */	
+	/*protected function upgradeTemplates()
 	{
 		$this->destination = "#__extensions";
 
@@ -158,7 +158,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 		return true;
 	}*/
 
-	protected function _addExtensions( $rows, $prefix )
+	protected function _addExtensions($rows, $prefix)
 	{
 		// Create new indexed array
 		foreach ($rows as &$row)
@@ -166,20 +166,24 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 			// Convert the array into an object.
 			$row = (object) $row;
 			$row->id = null;
-			$row->element = strtolower($row->element);
 
-			// Ensure that name is always using form: xxx_folder_name
-			$name = preg_replace('/^' . $prefix . '_/', '', $row->element);
-
-			if (!empty($row->folder))
+			if (isset($row->element))
 			{
-				$element = preg_replace('/^' . $row->folder . '_/', '', $row->element);
-				$row->name = ucfirst($row->folder) . ' - ' . ucfirst($element);
-				$name = $row->folder . '_' . $element;
-			}
+				$row->element = strtolower($row->element);
 
-			$name = $prefix . '_' . $name;
-			$this->extensions[$name] = $row;
+				// Ensure that name is always using form: xxx_folder_name
+				$name = preg_replace('/^' . $prefix . '_/', '', $row->element);
+
+				if (!empty($row->folder))
+				{
+					$element = preg_replace('/^' . $row->folder . '_/', '', $row->element);
+					$row->name = ucfirst($row->folder) . ' - ' . ucfirst($element);
+					$name = $row->folder . '_' . $element;
+				}
+
+				$name = $prefix . '_' . $name;
+				$this->extensions[$name] = $row;
+			}
 		}
 	}
 
@@ -193,7 +197,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 	 */
 	protected function _processExtensions()
 	{
-		jimport('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.folder');
 
 		$types = array(
 			'/^com_(.+)$/e',		// Com_componentname

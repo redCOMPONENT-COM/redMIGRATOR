@@ -67,7 +67,7 @@ class RedMigratorHelper
 		if (!empty($name))
 		{
 			// Loading the JFile class
-			jimport('joomla.filesystem.file');
+			JLoader::import('joomla.filesystem.file');
 
 			$file_core = JPATH_COMPONENT_ADMINISTRATOR . "/includes/schemas/joomla15/{$name}.php";
 			$file_checks = JPATH_COMPONENT_ADMINISTRATOR . "/includes/extensions/{$name}.php";
@@ -146,4 +146,19 @@ class RedMigratorHelper
 
 		return true;
 	}
+
+    /**
+     * returnError
+     *
+     * @return	none
+     *
+     * @since	2.5.0
+     */
+    public static function returnError ($number, $text)
+    {
+        $message['number'] = $number;
+        $message['text'] = JText::_($text);
+        echo json_encode($message);
+        exit;
+    }
 }

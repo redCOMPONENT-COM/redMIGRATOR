@@ -43,8 +43,6 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 		$name = (!empty($step->name)) ? $step->name : '';
 		$xmlpath = (!empty($step->xmlpath)) ? $step->xmlpath : '';
 
-		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
-
 		RedMigratorHelper::requireClass($name, $xmlpath, $class);
 
 		// @@ Fix bug using PHP < 5.2.3 version
@@ -222,7 +220,7 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
  	* 
 	* @param string $table The table name
 	*/
-	function tableExists ($table)
+	function tableExists($table)
 	{
 		$tables = array();
 		$tables = $this->_db_old->getTableList();

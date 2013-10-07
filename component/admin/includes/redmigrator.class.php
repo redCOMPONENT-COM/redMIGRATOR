@@ -76,9 +76,8 @@ class RedMigrator
 		// Set the current step
 		$this->_step = $step;
 
-		jimport('legacy.component.helper');
-		jimport('cms.version.version');
-		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
+		JLoader::import('legacy.component.helper');
+		JLoader::import('cms.version.version');
 
 		$this->params = RedMigratorHelper::getParams();
 
@@ -686,7 +685,7 @@ class RedMigrator
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
-	protected function convertParamsHook(&$object)
+	protected function convertParamsHook($object)
 	{
 		// Do customisation of the params field here for specific data.
 	}

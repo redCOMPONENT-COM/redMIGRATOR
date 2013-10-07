@@ -28,7 +28,7 @@ class RedMigratorUsers extends RedMigratorUsersDefault
 	 * @since	0.4.4
 	 * @throws	Exception
 	 */
-	public function &databaseHook($rows)
+	public function databaseHook($rows)
 	{
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
@@ -86,7 +86,7 @@ class RedMigratorUsers extends RedMigratorUsersDefault
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
-	protected function convertParamsHook(&$object)
+	protected function convertParamsHook($object)
 	{
 		$object->timezone = 'UTC';
 	}

@@ -317,7 +317,7 @@
 
         <field
                 name="rules"
-                type="rules"
+                type="rrules"
                 label="JCONFIG_PERMISSIONS_LABEL"
                 class="inputbox"
                 filter="rules"

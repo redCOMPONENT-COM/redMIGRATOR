@@ -31,11 +31,8 @@ class RedMigratorModelCleanup extends RModelAdmin
 	 */
 	function cleanup()
 	{
-		// Loading the helper
-		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
-
 		// Importing helper tags
-		jimport('cms.helper.tags');
+		JLoader::import('cms.helper.tags');
 
 		// Getting the component parameter with global settings
 		$params = RedMigratorHelper::getParams();
@@ -421,22 +418,7 @@ class RedMigratorModelCleanup extends RModelAdmin
 		// Done checks
 		if (!RedMigratorHelper::isCli())
 		{
-			$this->returnError(100, 'DONE');
+			RedMigratorHelper::returnError(100, 'DONE');
 		}
-	}
-
-	/**
-	 * returnError
-	 *
-	 * @return	none
-	 *
-	 * @since	2.5.0
-	 */
-	public function returnError ($number, $text)
-	{
-		$message['number'] = $number;
-		$message['text'] = JText::_($text);
-		echo json_encode($message);
-		exit;
 	}
 } // End class
