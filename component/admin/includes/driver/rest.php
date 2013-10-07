@@ -31,7 +31,7 @@ class RedMigratorDriverRest extends RedMigratorDriver
 	 * @since	0.4.4
 	 * @throws	Exception
 	 */
-	public function &getRestData()
+	public function getRestData()
 	{
 		$data = array();
 
@@ -100,7 +100,7 @@ class RedMigratorDriverRest extends RedMigratorDriver
 	 * @since 3.0.0
 	 * @throws	Exception
 	 */
-	public function &getSourceDataRest($table = null)
+	public function getSourceDataRest($table = null)
 	{
 		// Declare rows
 		$rows = array();
@@ -132,7 +132,7 @@ class RedMigratorDriverRest extends RedMigratorDriver
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
-	public function &getSourceDataRestIndividual($table = null)
+	public function getSourceDataRestIndividual($table = null)
 	{
 		$rows = array();
 		$response = $this->requestRest('row', $table);

@@ -185,7 +185,7 @@ class RedMigratorModules extends RedMigrator
 	 * @since	1.0.3
 	 * @throws	Exception
 	 */
-	protected function convertParamsHook(&$object)
+	protected function convertParamsHook($object)
 	{
 		if (isset($object->startLevel))
 		{

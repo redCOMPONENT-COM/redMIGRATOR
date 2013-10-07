@@ -48,7 +48,7 @@ class RedMigratorUsergroupMap extends RedMigratorUsersDefault
 	 * @since	0.4.4
 	 * @throws	Exception
 	 */
-	public function &databaseHook($rows)
+	public function databaseHook($rows)
 	{
 		$remove = array();
 

@@ -51,19 +51,4 @@ class RedMigratorModelStep extends RModelAdmin
 			return $step->getParameters();
 		}
 	}
-
-	/**
-	 * returnError
-	 *
-	 * @return	none
-	 *
-	 * @since	2.5.0
-	 */
-	public function returnError ($number, $text)
-	{
-		$message['number'] = $number;
-		$message['text'] = JText::_($text);
-		echo json_encode($message);
-		exit;
-	}
 } // End class
