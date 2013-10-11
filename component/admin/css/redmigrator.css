@@ -85,7 +85,7 @@ div#info {
 	font-size: 9pt;
 }
 
-#checks, #download, #decompress, #install, #migration, #templates, #files, #extensions, #done {
+#core_checks, #download, #decompress, #install, #migration, #templates, #files, #ext_init, #done {
 	color: #777;
 	text-shadow: 0 1px 0 #FFF;
 	background: #F8F8F8; /* Old browsers */

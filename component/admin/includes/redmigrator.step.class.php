@@ -22,6 +22,8 @@ class RedMigratorStep
 
 	public $title = null;
 
+	public $type = null;
+
 	public $class = null;
 
 	public $replace = '';
@@ -85,10 +87,6 @@ class RedMigratorStep
 		if ($extensions == false)
 		{
 			$this->_table = '#__redmigrator_steps';
-		}
-		elseif ($extensions === 'tables')
-		{
-			$this->_table = '#__redmigrator_extensions_tables';
 		}
 		elseif ($extensions == true)
 		{
@@ -300,12 +298,6 @@ class RedMigratorStep
 		$query->select('e.*');
 		$query->from($this->_table . ' AS e');
 
-		if ($this->_table == '#__redmigrator_extensions_tables')
-		{
-			$query->leftJoin('`#__redmigrator_extensions` AS ext ON ext.name = e.element');
-			$query->select('ext.xmlpath');
-		}
-
 		if (!empty($name))
 		{
 			$query->where("e.name = '{$name}'");
@@ -343,11 +335,6 @@ class RedMigratorStep
 		$query->from($this->_table);
 		$query->where("status = 0");
 
-		if ($this->_table == '#__redmigrator_extensions_tables')
-		{
-			$query->where("element = '{$step['element']}'");
-		}
-
 		$query->order('id DESC');
 		$query->limit(1);
 
@@ -369,7 +356,6 @@ class RedMigratorStep
 	 */
 	public function _updateStep()
 	{
-
 		$query = $this->_db->getQuery(true);
 		$query->update($this->_table);
 

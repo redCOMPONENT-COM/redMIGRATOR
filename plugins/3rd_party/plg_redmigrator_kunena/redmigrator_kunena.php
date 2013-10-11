@@ -1,6 +1,6 @@
 <?php
 /**
- * RedMigrator Virtuemart Component adapter
+ * RedMigrator Kunena Component adapter
  *
  * @package     RedMIGRATOR.Backend
  * @subpackage  Controller

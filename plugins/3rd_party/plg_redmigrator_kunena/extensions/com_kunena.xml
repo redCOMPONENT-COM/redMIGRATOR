@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE redmigrator>
-<jupgrade>
+<redmigrator>
 	<name>Kunena for Joomla! 2.5!</name>
 
 	<!-- The folders to copy to the new site. -->
@@ -9,33 +9,30 @@
 		<folder>components/com_kunena</folder>
 		<folder>media/kunena</folder>
 	</folders>
+
 	<!-- The tables to copy to the new site. -->
-	<tables>
- 		<table>kunena_announcement</table>
-		<table>kunena_attachments</table>
-		<table>kunena_attachments_bak</table>
-		<table>kunena_categories</table>
-		<table>kunena_config</table>
-		<table>kunena_config_backup</table>
-		<table>kunena_favorites</table>
-		<table>kunena_groups</table>
-		<table>kunena_messages</table>
-		<table>kunena_messages_text</table>
-		<table>kunena_moderation</table>
-		<table>kunena_polls</table>
-		<table>kunena_polls_options</table>
-		<table>kunena_polls_users</table>
-		<table>kunena_ranks</table>
-		<table>kunena_sessions</table>
-		<table>kunena_smileys</table>
-		<table>kunena_subscriptions</table>
-		<table>kunena_subscriptions_categories</table>
-		<table>kunena_thankyou</table>
-		<table>kunena_users</table>
-		<table>kunena_users_banned</table>
-		<table>kunena_version</table>
-		<table>kunena_whoisonline</table>
+	<tables> 		
+		<table name="announcement" title="KUNENA Announcement" tbl_key="id" source="fb_announcement" destination="kunena_announcement" type="kunena" class="RedMigratorComKunenaAnnouncement">fb_announcement</table>
+
+		<table name="attachment" title="KUNENA Attachments" tbl_key="id" source="fb_attachments" destination="kunena_attachments" type="kunena" class="RedMigratorComKunenaAttachment">fb_attachments</table>
+
+		<table name="category" title="KUNENA Categories" tbl_key="id" source="fb_categories" destination="kunena_categories" type="kunena" class="RedMigratorComKunenaCategory">fb_categories</table>
+
+		<table name="message" title="KUNENA Message" tbl_key="id" source="fb_messages" destination="kunena_messages" type="kunena" class="RedMigratorComKunenaMessage">fb_messages</table>
+		
+		<table name="message_text" title="KUNENA Message Text" tbl_key="mesid" source="fb_messages_text" destination="kunena_messages_text" type="kunena" class="RedMigratorComKunenaMessageText">fb_messages_text</table>
+		
+		<table name="rank" title="KUNENA Ranks" tbl_key="rank_id" source="fb_ranks" destination="kunena_ranks" type="kunena" class="RedMigratorComKunenaRank">fb_ranks</table>
+
+		<table name="session" title="KUNENA Sessions" tbl_key="id" source="fb_sessions" destination="kunena_sessions" type="kunena" class="RedMigratorComKunenaSession">fb_sessions</table>
+
+		<table name="smiley" title="KUNENA Smileys" tbl_key="id" source="fb_smileys" destination="kunena_smileys" type="kunena" class="RedMigratorComKunenaSmiley">fb_smileys</table>
+
+		<table name="user" title="KUNENA Users" tbl_key="userid" source="fb_users" destination="kunena_users" type="kunena" class="RedMigratorComKunenaUser">fb_users</table>
+
+		<table name="version" title="KUNENA Version" tbl_key="id" source="fb_version" destination="kunena_version" type="kunena" class="RedMigratorComKunenaVersion">fb_version</table>
 	</tables>
+
 	<!-- List of Kunena extensions. -->
 	<package>
 		<extension>
@@ -75,4 +72,4 @@
 			<name>com_kunenaimporter</name>
 		</extension>
 	</package>
-</jupgrade>
+</redmigrator>

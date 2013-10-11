@@ -31,7 +31,6 @@ Jloader::import('joomla.application.component.controller');
 
 // Loading the helper
 JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
-//JLoader::register('RedMigratorHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/redmigrator.php');
 
 // Getting the controller
 $controller	= JControllerLegacy::getInstance('RedMigrator');

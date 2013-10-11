@@ -61,14 +61,20 @@ window.addEvent('domready', function() {
 					<h2><?php echo JText::_('START UPGRADE'); ?></h2><br />
 				</div>
 
-				<div id="checks">
-					<p class="text"><?php echo JText::_('Checking and cleaning...'); ?></p>
+				<div id="core_checks">
+					<p class="text"><?php echo JText::_('Core checking and cleaning...'); ?></p>
 					<div id="pb0"></div>
 					<div><small><i><span id="checkstatus"><?php echo JText::_('Initialize...'); ?></span></i></small></div>
 				</div>
 
+				<div id="ext_init">
+					<p class="text"><?php echo JText::_('Initialize 3rd extensions...'); ?></p>
+					<div id="pb7"></div>
+					<div><small><i><span id="ext_status"><?php echo JText::_('Initialize 3rd extensions...'); ?></span></i></small></div>					
+				</div>
+
 				<div id="migration">
-					<p class="text"><?php echo JText::_('Upgrading progress...'); ?></p>
+					<p class="text"><?php echo JText::_('Migrating progress...'); ?></p>
 					<div id="pb4"></div>
 					<div><small><i><span id="migrate_status"><?php echo JText::_('Initialize...'); ?></span></i></small></div>
 					<div id="counter">
@@ -90,17 +96,7 @@ window.addEvent('domready', function() {
 				<div id="templates">
 					<p class="text"><?php echo JText::_('Copying templates...'); ?></p>
 					<div id="pb6"></div>
-				</div>
-
-				<div id="extensions">
-					<p class="text"><?php echo JText::_('Upgrading 3rd extensions...'); ?></p>
-					<div id="pb7"></div>
-					<div><small><i><span id="ext_status"><?php echo JText::_('Initialize...'); ?></span></i></small></div>
-					<div id="ext_counter">
-						<i><small><b><span id="ext_currItem">0</span></b> items /
-						<b><span id="ext_totalItems">0</span></b> items</small></i>
-					</div>
-				</div>
+				</div>				
 
 				<div id="done">
 					<h2 class="done"><?php echo JText::_('Migration Successful!'); ?></h2>

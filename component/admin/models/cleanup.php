@@ -415,6 +415,19 @@ class RedMigratorModelCleanup extends RModelAdmin
 			}
 		}
 
+		// Delete all 3rd extension steps migrated before
+		$query->clear();
+		$query->delete()->from('#__redmigrator_steps')->where('type != "core"');
+
+		try
+		{
+			$this->_db->setQuery($query)->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage());
+		}
+
 		// Done checks
 		if (!RedMigratorHelper::isCli())
 		{

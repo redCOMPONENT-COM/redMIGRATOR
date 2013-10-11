@@ -44,7 +44,7 @@ class RedMigratorModelMigrate extends RModelAdmin
 		}
 
 		// Run the upgrade
-		if ($step->total > 0)
+		if ($step->total >= 0)
 		{
 			try
 			{

@@ -36,6 +36,8 @@ class RedMigratorModelExtensions extends RModelAdmin
 
 		// Get RedMigratorExtensions instance
 		$extensions = RedMigrator::getInstance($step);
+
+		// Initialize 3rd extensions
 		$success = $extensions->upgrade();
 
 		if ($success === true)

@@ -226,6 +226,10 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 		// Do some custom post processing on the list.
 		foreach ($plugins as $plugin)
 		{
+			// Install blank database of new 3rd extensions (Khai added)
+			$install_script = JPATH_PLUGINS . "/redmigrator/{$plugin->element}/sql/install.utf8.sql";
+			RedMigratorHelper::createDbFromSqlScript($install_script);
+
 			// Looking for xml files
 			$files = (array) JFolder::files(JPATH_PLUGINS . "/redmigrator/{$plugin->element}/extensions", '\.xml$', true, true);
 
@@ -271,69 +275,42 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 							// Adding +1 to count
 							$this->count = $this->count + 1;
 
-							// Reset the $query object
-							$query->clear();
-
-							$xmlpath = "{$plugin->element}/extensions/{$element}.xml";
-
-							// Inserting the step to #__RedMigrator_extensions table
-							$query->insert('#__redmigrator_extensions')->columns('`name`, `title`, `class`, `xmlpath`')->values("'{$element}', '{$xml->name}', '{$class}', '{$xmlpath}'");
-							$this->_db->setQuery($query);
-							$this->_db->execute();
-
 							// Inserting the collection if exists
 							if (isset($xml->name) && isset($xml->collection))
 							{
+								$query->clear();
 								$query->insert('#__update_sites')->columns('name, type, location, enabled')
 										->values("'{$xml->name}', 'collection',  '{$xml->collection}, 1");
 								$this->_db->setQuery($query);
 								$this->_db->execute();
 							}
 
-							// Converting the params
-							$extension->params = $this->convertParams($extension->params);
-
-							// Saving the extension to #__extensions table
-							if (!$this->_db->insertObject('#__extensions', $extension))
-							{
-								throw new Exception($this->_db->getErrorMsg());
-							}
-
-							// Getting the extension id
-							$extension->id = $this->_db->insertid();
-
 							// Adding tables to migrate
 							if (!empty($xml->tables[0]))
 							{
-								// Check if tables must to be replaced
-								$main_replace = (string) $xml->tables->attributes()->replace;
-
 								$count = count($xml->tables[0]->table);
 
-								for($i = 0; $i < $count; $i++)
+								for ($i = 0; $i < $count; $i++)
 								{
 									$table = new StdClass;
-									$table->name = $table->source = $table->destination = (string) $xml->tables->table[$i];
-									$table->eid = $extension->id;
-									$table->element = $element;
-									$table->class = $class;
-									$table->replace = (string) $xml->tables->table[$i]->attributes()->replace;
-									$table->replace = !empty($table->replace) ? $table->replace : $main_replace;
+									$attributes = $xml->tables->table[$i]->attributes();
+									$table->name = (string) $attributes->name;
+									$table->title = (string) $attributes->title;
+									$table->tbl_key = (string) $attributes->tbl_key;
+									$table->source = (string) $attributes->source;
+									$table->destination = (string) $attributes->destination;
+									$table->type = (string) $attributes->type;
+									$table->class = (string) $attributes->class;
 
-									$exists = $this->_driver->tableExists($table->name);
-
-									if ($exists == 'YES')
+									if (!$this->_db->insertObject('#__redmigrator_steps', $table))
 									{
-										if (!$this->_db->insertObject('#__redmigrator_extensions_tables', $table))
-										{
-											throw new Exception($this->_db->getErrorMsg());
-										}
+										throw new Exception($this->_db->getErrorMsg());
 									}
 								}
 							}
 
 							// Add other extensions from the package
-							if (!empty($xml->package[0]))
+							/*if (!empty($xml->package[0]))
 							{
 								foreach ($xml->package[0]->extension as $xml_ext)
 								{
@@ -352,7 +329,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 										unset ($this->extensions[(string) $xml_ext->name]);
 									}
 								}
-							}
+							}*/
 						} // End if
 					} // End if
 				} // End if

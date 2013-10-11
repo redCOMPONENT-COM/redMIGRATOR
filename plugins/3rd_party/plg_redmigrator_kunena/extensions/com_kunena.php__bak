@@ -1,6 +1,6 @@
 <?php
 /**
- * RedMigrator Virtuemart Component adapter
+ * RedMigrator Kunena Component adapter
  *
  * @package     RedMIGRATOR.Backend
  * @subpackage  Controller
@@ -13,21 +13,7 @@
 
 defined('_JEXEC') or die();
 
-/**
- * Kunena 1.6/1.7 migration class from Joomla 1.5 to Joomla 2.5
- *
- * You can also put this class into your own extension, which makes jUpgrade to use your own copy instead of this adapter class.
- * In order to do that you should have j16upgrade.xml file somewhere in your extension path containing:
- * 	<jupgrade>
- * 		<!-- Adapter class location and name -->
- * 		<installer>
- * 			<file>administrator/components/com_kunena/install/j16upgrade.php</file>
- * 			<class>jUpgradeComponentKunena</class>
- * 		</installer>
- * 	</jupgrade>
- * For more information, see ./com_kunena.xml
- *
- */
+JLoader::register("RedMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR . "/includes/redmigrator.users.class.php");
 
 class RedMigratorComponentKunena extends RedMigratorUsersDefault
 {

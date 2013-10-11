@@ -37,12 +37,12 @@ class RedMigratorUsers extends RedMigratorUsersDefault
 
 			$row['params'] = $this->convertParams($row['params']);
 
-		// Chaging admin username and email
-		if ($row['id'] == 62)
-		{
-			$row['username'] = $row['username'] . 'v15';
-			$row['email'] = $row['email'] . 'v15';
-		}
+			// Chaging admin username and email
+			if ($row['id'] == 62)
+			{
+				$row['username'] = $row['username'] . 'v15';
+				$row['email'] = $row['email'] . 'v15';
+			}
 
 			// Remove unused fields.
 			$gid = 'gid';
