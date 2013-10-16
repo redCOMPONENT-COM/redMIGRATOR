@@ -41,9 +41,11 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 
 		$class = (!empty($step->class)) ? $step->class : 'RedMigrator';
 		$name = (!empty($step->name)) ? $step->name : '';
-		$xmlpath = (!empty($step->xmlpath)) ? $step->xmlpath : '';
+		$type = (!empty($step->type)) ? $step->type : 'core';
+		//$xmlpath = (!empty($step->xmlpath)) ? $step->xmlpath : '';
 
-		RedMigratorHelper::requireClass($name, $xmlpath, $class);
+		RedMigratorHelper::requireClass($name, $type, $class);
+		//RedMigratorHelper::requireClass($name, $xmlpath, $class);
 
 		// @@ Fix bug using PHP < 5.2.3 version
 		$this->_conditions = call_user_func($class . '::getConditionsHook');
@@ -76,9 +78,6 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 		// Setting the query
 		$this->_db_old->setQuery($query);
 
-		// Echo "\nQUERY: {$query->__toString()}\n";
-		$rows = $this->_db_old->loadAssocList();
-
 		try
 		{
 			$rows = $this->_db_old->loadAssocList();
@@ -107,7 +106,6 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 
 		// Get Total
 		$this->_db_old->setQuery($query);
-		$total = $this->_db_old->loadResult();
 
 		try
 		{
@@ -150,7 +148,7 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 		{
 			$count = count($conditions['join']);
 
-			for ($i=0;$i<$count;$i++)
+			for ($i = 0; $i < $count; $i++)
 			{
 				$query->join('LEFT', $conditions['join'][$i]);
 			}
@@ -161,7 +159,7 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 		{
 			$count = count($conditions['where']);
 
-			for ($i=0;$i<$count;$i++)
+			for ($i = 0; $i < $count; $i++)
 			{
 				$query->where(trim($conditions['where'][$i]));
 			}
@@ -172,7 +170,7 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 		{
 			$count = count($conditions['where_or']);
 
-			for ($i=0;$i<$count;$i++)
+			for ($i = 0; $i < $count; $i++)
 			{
 				$query->where(trim($conditions['where_or'][$i]), 'OR');
 			}

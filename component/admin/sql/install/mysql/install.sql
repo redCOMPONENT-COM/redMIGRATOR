@@ -61,33 +61,6 @@ INSERT INTO `#__redmigrator_extensions` (`id`, `name`, `title`, `tbl_key`, `sour
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__redmigrator_extensions_tables`
---
-
-DROP TABLE IF EXISTS `#__redmigrator_extensions_tables`;
-CREATE TABLE IF NOT EXISTS `#__redmigrator_extensions_tables` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `eid` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `element` varchar(255) NOT NULL,
-  `tbl_key` varchar(255) NOT NULL,
-  `source` varchar(255) NOT NULL,
-  `destination` varchar(255) NOT NULL,
-  `class` varchar(255) NOT NULL,
-  `cid` int(11) NOT NULL DEFAULT '0',
-  `status` int(11) NOT NULL DEFAULT '0',
-  `cache` int(11) NOT NULL,
-  `total` int(11) NOT NULL,
-  `start` int(11) NOT NULL,
-  `stop` int(11) NOT NULL,
-  `replace` varchar(255) NOT NULL,
-  `first` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `#__redmigrator_files_images`
 --
 
@@ -170,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `#__redmigrator_steps` (
   `source` varchar(255) NOT NULL,
   `destination` varchar(255) NOT NULL,
   `cid` int(11) NOT NULL DEFAULT '0',
+  `type` varchar(255) NOT NULL,
   `class` varchar(255) NOT NULL,
   `status` int(11) NOT NULL,
   `cache` int(11) NOT NULL,
@@ -185,24 +159,24 @@ CREATE TABLE IF NOT EXISTS `#__redmigrator_steps` (
 -- Dumping data for table `#__redmigrator_steps`
 --
 
-INSERT INTO `#__redmigrator_steps` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `class`, `status`, `cache`, `extension`, `total`, `start`, `stop`, `first`) VALUES
-(1, 'users', 'Users', 'id', 'users', 'users', 0, 'RedMigratorUsers', 0, 0, 0, 0, 0, 0, 0),
-(2, 'arogroup', 'Users Groups', 'id', 'core_acl_aro_groups', 'usergroups', 0, 'RedMigratorUsergroups', 0, 0, 0, 0, 0, 0, 0),
-(3, 'usergroupmap', 'Users Groups', 'aro_id', 'core_acl_groups_aro_map', 'user_usergroup_map', 0, 'RedMigratorUsergroupMap', 0, 0, 0, 0, 0, 0, 0),
-(4, 'categories', 'Categories', 'id', 'categories', 'categories', 0, 'RedMigratorCategories', 0, 0, 0, 0, 0, 0, 0),
-(5, 'sections', 'Sections', 'id', 'sections', 'categories', 0, 'RedMigratorSections', 0, 0, 0, 0, 0, 0, 0),
-(6, 'contents', 'Contents', 'id', 'content', 'content', 0, 'RedMigratorContent', 0, 0, 0, 0, 0, 0, 0),
-(7, 'contents_frontpage', 'FrontPage Contents', 'content_id', 'content_frontpage', 'content_frontpage', 0, 'RedMigratorContentFrontpage', 0, 0, 0, 0, 0, 0, 0),
-(8, 'menus', 'Menus', 'id', 'menu', 'menu', 0, 'RedMigratorMenu', 0, 0, 0, 0, 0, 0, 0),
-(9, 'menus_types', 'Menus Types', 'id', 'menu_types', 'menu_types', 0, 'RedMigratorMenusTypes', 0, 0, 0, 0, 0, 0, 0),
-(10, 'modules', 'Core Modules', 'id', 'modules', 'modules', 0, 'RedMigratorModules', 0, 0, 0, 0, 0, 0, 0),
-(11, 'modules_menu', 'Modules Menus', 'moduleid', 'modules_menu', 'modules_menu', 0, 'RedMigratorModulesMenu', 0, 0, 0, 0, 0, 0, 0),
-(12, 'banners', 'Banners', 'id', 'banner', 'banners', 0, 'RedMigratorBanners', 0, 0, 0, 0, 0, 0, 0),
-(13, 'banners_clients', 'Banners Clients', 'cid', 'bannerclient', 'banner_clients', 0, 'RedMigratorBannersClients', 0, 0, 0, 0, 0, 0, 0),
-(14, 'banners_tracks', 'Banners Tracks', 'banner_id', 'bannertrack', 'banner_tracks', 0, 'RedMigratorBannersTracks', 0, 0, 0, 0, 0, 0, 0),
-(15, 'contacts', 'Contacts', 'id', 'contact_details', 'contact_details', 0, 'RedMigratorContacts', 0, 0, 0, 0, 0, 0, 0),
-(16, 'newsfeeds', 'NewsFeeds', 'id', 'newsfeeds', 'newsfeeds', 0, 'RedMigratorNewsfeeds', 0, 0, 0, 0, 0, 0, 0),
-(17, 'weblinks', 'Weblinks', 'id', 'weblinks', 'weblinks', 0, 'RedMigratorWeblinks', 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `#__redmigrator_steps` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `type`, `class`, `status`, `cache`, `extension`, `total`, `start`, `stop`, `first`) VALUES
+(1, 'users', 'Users', 'id', 'users', 'users', 0, 'core', 'RedMigratorUsers', 0, 0, 0, 0, 0, 0, 0),
+(2, 'arogroup', 'Users Groups', 'id', 'core_acl_aro_groups', 'usergroups', 0, 'core', 'RedMigratorUsergroups', 0, 0, 0, 0, 0, 0, 0),
+(3, 'usergroupmap', 'Users Groups', 'aro_id', 'core_acl_groups_aro_map', 'user_usergroup_map', 0, 'core', 'RedMigratorUsergroupMap', 0, 0, 0, 0, 0, 0, 0),
+(4, 'categories', 'Categories', 'id', 'categories', 'categories', 0, 'core', 'RedMigratorCategories', 0, 0, 0, 0, 0, 0, 0),
+(5, 'sections', 'Sections', 'id', 'sections', 'categories', 0, 'core', 'RedMigratorSections', 0, 0, 0, 0, 0, 0, 0),
+(6, 'contents', 'Contents', 'id', 'content', 'content', 0, 'core', 'RedMigratorContent', 0, 0, 0, 0, 0, 0, 0),
+(7, 'contents_frontpage', 'FrontPage Contents', 'content_id', 'content_frontpage', 'content_frontpage', 0, 'core', 'RedMigratorContentFrontpage', 0, 0, 0, 0, 0, 0, 0),
+(8, 'menus', 'Menus', 'id', 'menu', 'menu', 0, 'core', 'RedMigratorMenu', 0, 0, 0, 0, 0, 0, 0),
+(9, 'menus_types', 'Menus Types', 'id', 'menu_types', 'menu_types', 0, 'core', 'RedMigratorMenusTypes', 0, 0, 0, 0, 0, 0, 0),
+(10, 'modules', 'Core Modules', 'id', 'modules', 'modules', 0, 'core', 'RedMigratorModules', 0, 0, 0, 0, 0, 0, 0),
+(11, 'modules_menu', 'Modules Menus', 'moduleid', 'modules_menu', 'modules_menu', 0, 'core', 'RedMigratorModulesMenu', 0, 0, 0, 0, 0, 0, 0),
+(12, 'banners', 'Banners', 'id', 'banner', 'banners', 0, 'core', 'RedMigratorBanners', 0, 0, 0, 0, 0, 0, 0),
+(13, 'banners_clients', 'Banners Clients', 'cid', 'bannerclient', 'banner_clients', 0, 'core', 'RedMigratorBannersClients', 0, 0, 0, 0, 0, 0, 0),
+(14, 'banners_tracks', 'Banners Tracks', 'banner_id', 'bannertrack', 'banner_tracks', 0, 'core', 'RedMigratorBannersTracks', 0, 0, 0, 0, 0, 0, 0),
+(15, 'contacts', 'Contacts', 'id', 'contact_details', 'contact_details', 0, 'core', 'RedMigratorContacts', 0, 0, 0, 0, 0, 0, 0),
+(16, 'newsfeeds', 'NewsFeeds', 'id', 'newsfeeds', 'newsfeeds', 0, 'core', 'RedMigratorNewsfeeds', 0, 0, 0, 0, 0, 0, 0),
+(17, 'weblinks', 'Weblinks', 'id', 'weblinks', 'weblinks', 0, 'core', 'RedMigratorWeblinks', 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 

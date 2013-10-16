@@ -10,35 +10,37 @@
  
 var redmigrator = new Class({
 
-  Implements: [Options, Events],
+  	Implements: [Options, Events],
 
-  options: {
-    method: 'rest',
-    positions: 0,
-    skip_checks: 0,
-    debug_check: 0,
-    debug_step: 0,
-    debug_migrate: 0
-  },
+  	options:
+  	{
+	    method: 'rest',
+	    positions: 0,
+	    skip_checks: 0,
+	    debug_check: 0,
+	    debug_step: 0,
+	    debug_migrate: 0
+  	},
 
-	initialize: function(options) {
+	initialize: function(options)
+	{
 		var self = this;
 
 		this.setOptions(options);
 
 		$('warning').setStyle('display', 'none');
 		$('error').setStyle('display', 'none');
-		$('checks').setStyle('display', 'none');
+		$('core_checks').setStyle('display', 'none');
+		$('ext_init').setStyle('display', 'none');
 		$('migration').setStyle('display', 'none');
 		$('files').setStyle('display', 'none');
-		$('templates').setStyle('display', 'none');
-		$('extensions').setStyle('display', 'none');
+		$('templates').setStyle('display', 'none');		
 		$('done').setStyle('display', 'none');
 
-		$('update').addEvent('click', function(e) {
-				self.checks(e);
+		$('update').addEvent('click', function(e)
+		{
+			self.core_checks(e);
 		});
-
 	},
 
 	/**
@@ -47,16 +49,20 @@ var redmigrator = new Class({
 	 * @return	bool
 	 * @since	1.2.0
 	 */
-	updateSettings: function(e) {
+	updateSettings: function(e)
+	{
 		var request = new Request({
 			url: 'index.php?option=com_redmigrator&format=raw&controller=ajax&task=getParams',
 			method: 'get',
 			noCache: true,
-			onComplete: function(response) {
+			onComplete: function(response)
+			{
 				var object = JSON.decode(response);
 				this.options.directory = object.directory;
 			}
-		}).send();
+		});
+
+		request.send();
 	},
 
 	/**
@@ -65,11 +71,13 @@ var redmigrator = new Class({
 	 * @return	bool
 	 * @since	1.2.0
 	 */
-	checks: function(e) {
+	core_checks: function(e)
+	{
 		var self = this;
 
 		// this/e.target is current target element.
-		if (e.stopPropagation) {
+		if (e.stopPropagation)
+		{
 			e.stopPropagation(); // Stops some browsers from redirecting.
 		}
 
@@ -80,11 +88,11 @@ var redmigrator = new Class({
 		html_debug = document.getElementById('debug');
 
 		// Check skip from settings
-		if (self.options.skip_checks != 1) {
-
-			var mySlideChecks = new Fx.Slide('checks');
+		if (self.options.skip_checks != 1)
+		{
+			var mySlideChecks = new Fx.Slide('core_checks');
 			mySlideChecks.hide();
-			$('checks').setStyle('display', 'block');
+			$('core_checks').setStyle('display', 'block');
 			mySlideChecks.toggle();
 
 			var pb0 = new dwProgressBar({
@@ -98,31 +106,33 @@ var redmigrator = new Class({
 			});
 
 			text = document.getElementById('checkstatus');
-			text.innerHTML = 'Checking and cleaning...';
+			text.innerHTML = 'Core checking and cleaning...';
 
 			//
 			// Cleanup call
 			//
-			var cleanup = new Request({
+			var core_cleanup = new Request({
 				url: 'index.php?option=com_redmigrator&format=raw&task=ajax.cleanup',
 				method: 'get',
 				noCache: true
-			}); // end Request		
+			}); // End Request		
 
-			cleanup.addEvents({
-				'complete': function(response) {
-
+			core_cleanup.addEvents({
+				'complete': function(response)
+				{
 					var object = JSON.decode(response);
 
-					if (self.options.debug_check == 1) {
+					if (self.options.debug_check == 1)
+					{
 						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' + object.text;
 						console.log(response);
 					}
 
-					if (object.number == 100) {
+					if (object.number == 100)
+					{
 						pb0.set(100);
 						pb0.finish();
-						self.migrate(e);
+						self.ext_init(e);
 					}
 
 				}
@@ -131,42 +141,47 @@ var redmigrator = new Class({
 			//
 			// Checks
 			//
-			var checks = new Request({
+			var core_checks = new Request({
 				url: 'index.php?option=com_redmigrator&format=raw&task=ajax.checks',
 				method: 'get',
 				noCache: true
 			}); // end Request		
 
-			checks.addEvents({
-				'complete': function(response) {
+			core_checks.addEvents({
+				'complete': function(response)
+				{
 					console.log(response);
 					pb0.set(66);
 
 					var object = JSON.decode(response);
 
-					if (self.options.debug_check == 1) {
+					if (self.options.debug_check == 1)
+					{
 						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[checks]</b><br><br>' + object.text;
 						console.log(response);
 					}
 
-					if (object.number > 400) {
+					if (object.number > 400)
+					{
 						$('error').setStyle('display', 'block');
 						text = document.getElementById('error');
 						text.innerHTML = object.text;
 					}
 
-					if (object.number == 100) {
-						cleanup.send();
+					if (object.number == 100)
+					{
+						core_cleanup.send();
 					}
 
 				}
 			});
 
 			// Start the checks
-			checks.send();
-
-		}else{
-			self.migrate(e);
+			core_checks.send();
+		}
+		else
+		{
+			self.ext_init(e);
 		}
 	}, // end function
 
@@ -176,7 +191,54 @@ var redmigrator = new Class({
 	 * @return	bool
 	 * @since	1.2.0
 	 */
-	migrate: function(e) {
+	ext_init: function(e)
+	{
+		var self = this;
+
+		// Progress bar
+		pb7 = new dwProgressBar({
+			container: $('pb7'),
+			startPercentage: 5,
+			speed: 1000,
+			boxID: 'pb7-box',
+			percentageID: 'pb7-perc',
+			displayID: 'text',
+			displayText: false
+		});
+
+		//
+		// Initialize the checks
+		//
+		var ext_init = new Request({
+			link: 'chain',
+			url: 'index.php?option=com_redmigrator&format=raw&task=ajax.extensions',
+			method: 'get'
+		}); // end Request
+
+		// Adding event to the row request
+		ext_init.addEvents({
+			'complete': function(response)
+			{
+				$('ext_init').setStyle('display', 'block');
+				pb7.set(100);
+				pb7.finish();
+
+				self.migrate(e);
+			}
+		});
+
+		// Run the check
+		ext_init.send();
+	}, // end function
+
+	/**
+	 * Run the migration
+	 *
+	 * @return	bool
+	 * @since	1.2.0
+	 */
+	migrate: function(e)
+	{
 		var self = this;
 
 		// CSS stuff
@@ -212,9 +274,6 @@ var redmigrator = new Class({
 		// Declare counter
 		var counter = 0;
 
-		//
-		// 
-		//
 		var row = new Request({
 			link: 'chain',
 			method: 'get'
@@ -222,30 +281,39 @@ var redmigrator = new Class({
 
 		// Adding event to the row request
 		row.addEvents({
-			'complete': function(row_response) {
-
+			'complete': function(row_response)
+			{
 				var row_object = JSON.decode(row_response);
 
-				if (row_object.cid == 0) {
+				if (row_object.cid == 0)
+				{
 					currItem.innerHTML = 1;
-				}else{
+				}
+				else
+				{
 					currItem.innerHTML = row_object.cid;
 				}
 
-				if (row_object.number == 500) {
-					if (self.options.debug_migrate == 1) {
+				if (row_object.number == 500)
+				{
+					if (self.options.debug_migrate == 1)
+					{
 						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[ROW]</b><br><br>' + row_object.text;
 					}
 				}
 
-				if (row_object.cid == row_object.stop.toInt()+1 || row_object.next == 1 ) {
-					if (row_object.end == 1) {
+				if (row_object.cid == row_object.stop.toInt() + 1 || row_object.next == 1 )
+				{
+					//if (row_object.end == 1)
+					if (row_object.name == row_object.laststep)
+					{
 						pb4.set(100);
 						pb4.finish();
 						this.cancel();
 						step.cancel();
-						self.extensions();
-					} else if (row_object.next == 1) {
+					}
+					else if (row_object.next == 1)
+					{
 						step.send();
 					}
 				}
@@ -266,36 +334,55 @@ var redmigrator = new Class({
 			method: 'get'
 		}); // end Request		
 
+		var stepNo = 0;
+		var stepTotal = 0;
+
 		//
 		step.addEvents({
-			'complete': function(response) {
-
+			'complete': function(response)
+			{
 				var object = JSON.decode(response);
 
-				// Redirect if total == 0
-				if (object.total == 0) {
-					if (object.end == 1) {
-						pb4.set(100);
-						pb4.finish();
-						this.cancel();
-						self.extensions();
-					}else{
+				// End of migration process
+				if (object.name == object.laststep)
+				{
+					pb4.set(100);
+					pb4.finish();
+					this.cancel();
+					self.done();
+				}
+				else
+				{
+					if (object.total == 0)
+					{
 						step.send();
 					}
-				}
+				}				
 
-				if (self.options.debug_step == 1) {
+				if (self.options.debug_step == 1)
+				{
 					html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[STEP ' + object.name + ']</b><br><br>' + response;
 				}
 
+				stepNo ++;
+
+				if (stepTotal == 0)
+				{
+					stepTotal = object.stepTotal;
+				}
+
 				// Changing title and statusbar
-				pb4.set(object.id*6);
+				pb4.set( (stepNo * 100) / stepTotal );
 
 				migrate_status.innerHTML = 'Migrating ' + object.title;
-				if (object.middle != true) {
-					if (object.cid == 0) {
+				if (object.middle != true)
+				{
+					if (object.cid == 0)
+					{
 						currItem.innerHTML = 1;
-					}else{
+					}
+					else
+					{
 						currItem.innerHTML = object.cid;
 					}
 				}
@@ -305,13 +392,18 @@ var redmigrator = new Class({
 				row.options.url = 'index.php?option=com_redmigrator&format=raw&task=ajax.migrate&table=' + object.name;	
 
 				// Running the request[s]
-				if (self.options.method == 'database') {
-					if (object.total != 0) {
+				if (self.options.method == 'database')
+				{					
+					if (object.total > 0)
+					{
 						row.send();
 					}
-				} else if (self.options.method == 'rest') {
-					for (i=object.start;i<=object.stop;i++) {
-						var reqname = object.name+i;
+				}
+				else if (self.options.method == 'rest')
+				{
+					for (i = object.start; i <= object.stop; i++)
+					{
+						var reqname = object.name + i;
 						rm.addRequest(reqname, row);
 					}
 					rm.runAll();
@@ -321,168 +413,6 @@ var redmigrator = new Class({
 
 		step.send();
 
-		// Scroll the window
-		//var myScroll = new Fx.Scroll(window).toBottom();
-
-	}, // end function
-
-	/**
-	 * Run the migration
-	 *
-	 * @return	bool
-	 * @since	1.2.0
-	 */
-	extensions: function(e) {
-		var self = this;
-
-		// Progress bar
-		pb7 = new dwProgressBar({
-			container: $('pb7'),
-			startPercentage: 5,
-			speed: 1000,
-			boxID: 'pb7-box',
-			percentageID: 'pb7-perc',
-			displayID: 'text',
-			displayText: false
-		});
-
-		// Get the status element
-		ext_status = document.getElementById('ext_status');
-		// Get the currItem element
-		ext_currItem = document.getElementById('ext_currItem');
-		// Get the totalItems element
-		ext_totalItems = document.getElementById('ext_totalItems');
-		// Get the debug
-		ext_html_debug = document.getElementById('debug');
-
-		// Declare counter
-		var counter = 0;
-
-		//
-		// Declare the row request
-		//
-		var ext_row = new Request({
-			link: 'chain',
-			method: 'get'
-		}); // end Request
-
-		// Adding event to the row request
-		ext_row.addEvents({
-			'complete': function(row_response) {
-
-				var row_object = JSON.decode(row_response);
-
-				ext_currItem.innerHTML = row_object.cid;
-
-				if (self.options.debug_migrate == 1) {
-					ext_html_debug.innerHTML = ext_html_debug.innerHTML + '<br><br>==========<br><b>[ROW: ' + row_object.name + ']</b><br><br>' + row_response.text;
-				}
-
-				if (row_object.cid == row_object.stop.toInt()+1 || row_object.next == 1 ) {
-					if (row_object.end == 1) {
-						pb7.set(100);
-						pb7.finish();
-						this.cancel();
-						ext_step.cancel();
-						self.done();
-					} else if (row_object.next == 1) {
-						ext_step.send();
-					}
-				}
-			}
-		});
-
-		var ext_rm = new Request.Multiple({
-			onRequest : function() {},
-			onComplete : function() {}
-		});
-
-		//
-		// Declare the step event
-		//
-		var ext_step = new Request({
-			link: 'chain',
-			url: 'index.php?option=com_redmigrator&format=raw&task=ajax.step&extensions=tables',
-			method: 'get'
-		}); // end Request		
-
-
-		ext_step.addEvents({
-			'complete': function(response) {
-
-				var object = JSON.decode(response);
-
-				// Redirect if total == 0
-				if (object.total == 0) {
-					if (object.end == 1) {
-						pb7.finish();
-						this.cancel();
-						self.done();
-					}else{
-						ext_step.send();
-					}
-				}
-
-				if (self.options.debug_step == 1) {
-					console.log(response);
-					ext_html_debug.innerHTML = ext_html_debug.innerHTML + '<br><br>==========<br><b>[STEP: '+object.name+']</b><br><br>' +response;
-				}
-
-				// Changing title and statusbar
-				//pb7.set(object.id*6);
-				ext_status.innerHTML = 'Migrating ' + object.name;
-				if (object.middle != true) {
-					ext_currItem.innerHTML = object.cid;
-				}
-				ext_totalItems.innerHTML = object.total;
-
-				// Start the checks
-				ext_row.options.url = 'index.php?option=com_redmigrator&format=raw&task=ajax.migrate&extensions=tables&table='+object.name;	
-
-				// Running the request[s]
-				if (self.options.method == 'database') {
-					if (object.total != 0) {
-						ext_row.send();
-					}
-				} else if (self.options.method == 'rest') {
-					for (i=object.start;i<=object.stop;i++) {
-						var reqname = object.name+i;
-						ext_rm.addRequest(reqname, ext_row);
-					}
-					ext_rm.runAll();
-				}
-			}
-		});
-
-		//
-		// Initialize the checks
-		//
-		var check = new Request({
-			link: 'chain',
-			url: 'index.php?option=com_redmigrator&format=raw&task=ajax.extensions',
-			method: 'get'
-		}); // end Request
-
-		// Adding event to the row request
-		check.addEvents({
-			'complete': function(response) {
-
-				if (response == 1) {
-					// CSS stuff
-					$('extensions').setStyle('display', 'block');
-
-					ext_step.send();
-				}else if (response == 0){
-					pb7.finish();
-					this.cancel();
-					self.done();					
-				}
-			}
-		});
-
-		// Run the check
-		check.send();
-
 	}, // end function
 
 	/**
@@ -491,12 +421,14 @@ var redmigrator = new Class({
 	 * @return	bool
 	 * @since	1.2.0
 	 */
-	files: function(e) {
+	files: function(e)
+	{
 		var self = this;
 
 		var method = self.options.method;
 
-		if (method == 'database') {
+		if (method == 'database')
+		{
 			method = 'ajax';
 		}
 
@@ -526,10 +458,12 @@ var redmigrator = new Class({
 		var counter = 0;
 
 		var rm = new Request.Multiple({
-			onRequest : function() {
+			onRequest : function()
+			{
 				//console.log('RM request init');
 			},
-			onComplete : function() {
+			onComplete : function()
+			{
 				//console.log('RM complete');
 			}
 		});
@@ -537,7 +471,8 @@ var redmigrator = new Class({
 		//
 		// basename function
 		//
-		basename = function(path) {
+		basename = function(path)
+		{
 			return path.replace(/.*\/|\.[^.]*$/g, '');
 		}
 
@@ -554,12 +489,13 @@ var redmigrator = new Class({
 		//
 		var step = new Request({
 			link: 'chain',
-			url: 'index.php?option=com_redmigrator&format=raw&view='+method+'&task=imageslist',
+			url: 'index.php?option=com_redmigrator&format=raw&view=' + method + '&task=imageslist',
 			method: 'get'
 		}); // end Request		
 
 		step.addEvents({
-			'complete': function(response) {
+			'complete': function(response)
+			{
 				//console.log(response);
 				var object = JSON.decode(response);
 				var counter = 0;
@@ -571,7 +507,8 @@ var redmigrator = new Class({
 
 				// Adding event to the row request
 				file.addEvents({
-					'complete': function(response) {
+					'complete': function(response)
+					{
 						//console.log(response);
 						counter = counter + 1;
 						currItem.innerHTML = counter;
@@ -581,17 +518,18 @@ var redmigrator = new Class({
 
 						pb5.set(percent);
 
-						if (counter == object.total) {
+						if (counter == object.total)
+						{
 							self.done();
-						}
-						
+						}				
 					}
 				});
 				
 				// Start the checks
 				file.options.url = 'index.php?option=com_redmigrator&format=raw&view='+method+'&task=image&files=images';			
 				
-				for (i=1;i<=object.total;i++) {
+				for (i=1;i<=object.total;i++)
+				{
 					rm.addRequest(i, file);			
 				}
 		
@@ -613,7 +551,8 @@ var redmigrator = new Class({
 	 * @return	bool
 	 * @since	1.2.0
 	 */
-	templates: function(e) {
+	templates: function(e)
+	{
 		var self = this;
 
 		var mySlideTem = new Fx.Slide('templates');
@@ -643,23 +582,23 @@ var redmigrator = new Class({
 		}); // end Request		
 
 		templates_files.addEvents({
-			'complete': function(response) {
-
+			'complete': function(response)
+			{
 				pb5.set(100);
 				pb5.finish();
 
 				var object = JSON.decode(response);
 
-				if (self.options.debug_php == 1) {
+				if (self.options.debug_php == 1)
+				{
 					text = document.getElementById('debug');
 					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[templates_files]</b><br><br>' +object.text;
 				}
 
-				if (object.number == 100) {
+				if (object.number == 100)
+				{
 					self.extensions();
-					//self.done();
 				}
-
 			}
 		});
 
@@ -673,18 +612,21 @@ var redmigrator = new Class({
 		}); // end Request		
 
 		templates.addEvents({
-			'complete': function(response) {
+			'complete': function(response)
+			{
 
 				pb5.set(50);
 
 				var object = JSON.decode(response);
 
-				if (self.options.debug_php == 1) {
+				if (self.options.debug_php == 1)
+				{
 					text = document.getElementById('debug');
 					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[templates_db]</b><br><br>' +object.text;
 				}
 
-				if (object.number == 100) {
+				if (object.number == 100)
+				{
 					templates_files.send();
 				}
 
@@ -702,7 +644,8 @@ var redmigrator = new Class({
 	 * @return	bool
 	 * @since	1.2.0
 	 */
-	done: function(e) {
+	done: function(e)
+	{
 		var self = this;
 
 		var myScroll = new Fx.Scroll(window).toBottom();
@@ -711,6 +654,5 @@ var redmigrator = new Class({
 		mySlideDone.hide();
 		$('done').setStyle('display', 'block');
 		mySlideDone.toggle();
-
 	} // end function
 });

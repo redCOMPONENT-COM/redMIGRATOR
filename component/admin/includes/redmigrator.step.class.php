@@ -22,6 +22,8 @@ class RedMigratorStep
 
 	public $title = null;
 
+	public $type = null;
+
 	public $class = null;
 
 	public $replace = '';
@@ -58,8 +60,6 @@ class RedMigratorStep
 
 	public $middle = false;
 
-	public $end = false;
-
 	public $extensions = false;
 
 	public $_table = false;
@@ -85,10 +85,6 @@ class RedMigratorStep
 		if ($extensions == false)
 		{
 			$this->_table = '#__redmigrator_steps';
-		}
-		elseif ($extensions === 'tables')
-		{
-			$this->_table = '#__redmigrator_extensions_tables';
 		}
 		elseif ($extensions == true)
 		{
@@ -160,7 +156,7 @@ class RedMigratorStep
 
 		foreach ($this as $k => $v)
 		{
-			if (property_exists($this,$k))
+			if (property_exists($this, $k))
 			{
 				if (!is_object($v))
 				{
@@ -172,6 +168,18 @@ class RedMigratorStep
 				}
 			}
 		}
+
+		// Get total of steps
+		$query = $this->_db->getQuery(true);
+		$query->select('count(*)')
+				->from('#__redmigrator_steps')
+				->where('status != 2');
+
+		$this->_db->setQuery($query);
+
+		$stepTotal = $this->_db->loadResult();
+
+		$return['stepTotal'] = $stepTotal;
 
 		return json_encode($return);
 	}
@@ -257,11 +265,6 @@ class RedMigratorStep
 			$this->next = 1;
 			$this->first = true;
 
-			if ($this->name == $this->laststep)
-			{
-				$this->end = true;
-			}
-
 			$this->cache = 0;
 			$this->status = 2;
 			$this->debug = "{{{4}}}";
@@ -274,12 +277,6 @@ class RedMigratorStep
 			$this->cache = 0;
 			$this->stop = $this->total - 1;
 			$this->debug = "{{{5}}}";
-		}
-
-		// Mark if is the end of the step
-		if ($this->name == $this->laststep && $this->cache == 1)
-		{
-			$this->end = true;
 		}
 
 		// Updating the status flag
@@ -299,12 +296,6 @@ class RedMigratorStep
 		$query = $this->_db->getQuery(true);
 		$query->select('e.*');
 		$query->from($this->_table . ' AS e');
-
-		if ($this->_table == '#__redmigrator_extensions_tables')
-		{
-			$query->leftJoin('`#__redmigrator_extensions` AS ext ON ext.name = e.element');
-			$query->select('ext.xmlpath');
-		}
 
 		if (!empty($name))
 		{
@@ -343,11 +334,6 @@ class RedMigratorStep
 		$query->from($this->_table);
 		$query->where("status = 0");
 
-		if ($this->_table == '#__redmigrator_extensions_tables')
-		{
-			$query->where("element = '{$step['element']}'");
-		}
-
 		$query->order('id DESC');
 		$query->limit(1);
 
@@ -369,7 +355,6 @@ class RedMigratorStep
 	 */
 	public function _updateStep()
 	{
-
 		$query = $this->_db->getQuery(true);
 		$query->update($this->_table);
 

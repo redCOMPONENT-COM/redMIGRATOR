@@ -106,7 +106,7 @@ class RedMigrator
 		}
 
 		// Set timelimit to 0
-		if(!@ini_get('safe_mode'))
+		if (!@ini_get('safe_mode'))
 		{
 			if (!empty($this->params->timelimit))
 			{
@@ -164,7 +164,7 @@ class RedMigrator
 		}
 
 		// Require the correct file
-		RedMigratorHelper::requireClass($step->name, $step->xmlpath, $step->class);
+		RedMigratorHelper::requireClass($step->name, $step->type, $step->class);
 
 		// If the class still doesn't exist we have nothing left to do but throw an exception.  We did our best.
 		if (!class_exists($class))
@@ -196,6 +196,7 @@ class RedMigrator
 	{
 		try
 		{
+			// Get data of the table from source db and save to destination db
 			$this->setDestinationData();
 		}
 		catch (Exception $e)
@@ -217,13 +218,18 @@ class RedMigrator
 	protected function setDestinationData($rows = false)
 	{
 		$name = $this->_step->_getStepName();
-		$method = $this->params->method;
 
 		// Get the source data.
 		if ($rows === false)
 		{
 			$rows = $this->dataSwitch();
 		}
+		else
+		{
+			return false;
+		}
+
+		$method = $this->params->method;
 
 		if ($method == 'database' OR $method == 'database_all')
 		{
@@ -239,7 +245,7 @@ class RedMigrator
 			$structureHook = 'structureHook_' . $name;
 
 			if (method_exists($this, $structureHook))
-			{ 
+			{
 				try
 				{
 					$this->$structureHook();
@@ -356,9 +362,6 @@ class RedMigrator
 	{
 		$table = $this->getDestinationTable();
 
-		// Replacing the table name if xml exists
-		$table = $this->replaceTable($table);
-
 		if (is_array($rows))
 		{
 			$total = count($rows);
@@ -385,7 +388,7 @@ class RedMigrator
 		}
 		elseif (is_object($rows))
 		{
-			if ($row != false)
+			if ($rows != false)
 			{
 				try
 				{
@@ -437,6 +440,11 @@ class RedMigrator
 	 * @throws	Exception
 	 */
 	public function afterHook()
+	{
+		return true;
+	}
+
+	protected function afterAllDataHook()
 	{
 		return true;
 	}

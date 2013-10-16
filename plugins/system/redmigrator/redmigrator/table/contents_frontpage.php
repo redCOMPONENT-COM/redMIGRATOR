@@ -17,7 +17,7 @@ defined('JPATH_BASE') or die();
  *
  * @since	1.0
  */
-class RedMigratorTableContentsFrontpage extends RedMigratorTable
+class RedMigratorTableContents_Frontpage extends RedMigratorTable
 {
 	/** @var int Primary key */
 	var $content_id	= null;

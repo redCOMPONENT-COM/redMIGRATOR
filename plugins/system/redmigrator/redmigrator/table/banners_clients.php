@@ -19,7 +19,7 @@ defined('JPATH_BASE') or die();
  * @subpackage	Table
  * @since		1.5
  */
-class RedMigratorTableBannersClients extends RedMigratorTable {
+class RedMigratorTableBanners_Clients extends RedMigratorTable {
 	/** @var int(11) */
 	var $id = null;
 

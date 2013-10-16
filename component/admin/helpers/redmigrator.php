@@ -62,32 +62,39 @@ class RedMigratorHelper
 	 *
 	 * @since   3.0.0
 	 */
-	public static function requireClass($name, $xmlpath, $class)
+	public static function requireClass($name, $type = null, $class = null)
 	{
 		if (!empty($name))
 		{
 			// Loading the JFile class
 			JLoader::import('joomla.filesystem.file');
 
-			$file_core = JPATH_COMPONENT_ADMINISTRATOR . "/includes/schemas/joomla15/{$name}.php";
-			$file_checks = JPATH_COMPONENT_ADMINISTRATOR . "/includes/extensions/{$name}.php";
+			if ($type == null) // Checks
+			{
+				$file_checks = JPATH_COMPONENT_ADMINISTRATOR . "/includes/extensions/{$name}.php";
 
-			// Require the file
-			if (JFile::exists($file_core))
-			{
-				JLoader::register($class, $file_core);
-			}
-			elseif (JFile::exists($file_checks)) // Checks
-			{
-				JLoader::register($class, $file_checks);
-			}
-			elseif (isset($xmlpath)) // 3rd party extensions
-			{
-				$phpfile_strip = JFile::stripExt(JPATH_PLUGINS . "/redmigrator/" . $xmlpath);
-
-				if (JFile::exists("{$phpfile_strip}.php"))
+				if (JFile::exists($file_checks))
 				{
-					JLoader::register($class, "{$phpfile_strip}.php");
+					JLoader::register($class, $file_checks);
+				}
+			}
+			elseif ($type == "core") // Joomla core
+			{
+				$file_core = JPATH_COMPONENT_ADMINISTRATOR . "/includes/schemas/joomla15/{$name}.php";
+
+				// Require the file
+				if (JFile::exists($file_core))
+				{
+					JLoader::register($class, $file_core);
+				}
+			}
+			else // 3rd extension
+			{
+				$file_ext = JPATH_PLUGINS . "/redmigrator/redmigrator_{$type}/schemas/joomla15/{$name}.php";
+
+				if (JFile::exists($file_ext))
+				{
+					JLoader::register($class, $file_ext);
 				}
 			}
 		}
@@ -147,6 +154,55 @@ class RedMigratorHelper
 		return true;
 	}
 
+	/**
+	 * Create database from sql script (Khai added)
+	 */
+	public static function createDbFromSqlScript($sqlfile)
+	{
+
+		$buffer = file_get_contents($sqlfile);
+
+		// Graceful exit and rollback if read not successful
+		if ($buffer === false)
+		{
+			JError::raiseWarning(1, JText::_('JLIB_INSTALLER_ERROR_SQL_READBUFFER'));
+
+			return false;
+		}
+
+		// Create an array of queries from the sql file
+		$queries = JInstallerHelper::splitSql($buffer);
+
+		if (count($queries) == 0)
+		{
+			// No queries to process
+			return 0;
+		}
+
+		$db = JFactory::getDbo();
+
+		// Process each query in the $queries array (split out of sql file).
+		foreach ($queries as $query)
+		{
+			$query = trim($query);
+
+			if ($query != '' && $query{0} != '#')
+			{				
+				$db->setQuery($query);
+
+				if (!$db->execute())
+				{
+					JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+
     /**
      * returnError
      *
@@ -160,5 +216,18 @@ class RedMigratorHelper
         $message['text'] = JText::_($text);
         echo json_encode($message);
         exit;
+    }
+
+    /**
+     * Only for developer debug
+     *
+     * @return	none
+     *
+     */
+    public static function writeFile ($filename, $content)
+    {
+    	$handle = fopen(JPATH_COMPONENT_ADMINISTRATOR . '/'. $filename, 'a');
+		fwrite($handle, $content);
+		fclose($handle);
     }
 }

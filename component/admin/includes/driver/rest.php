@@ -78,6 +78,7 @@ class RedMigratorDriverRest extends RedMigratorDriver
 		// Getting the total
 		$data['task'] = $task;
 		$data['table'] = ($table != false) ? $table : '';
+
 		$request = $http->get($this->params->rest_hostname . '/index.php', $data);
 
 		$code = $request->code;
@@ -105,13 +106,13 @@ class RedMigratorDriverRest extends RedMigratorDriver
 		// Declare rows
 		$rows = array();
 
-		// Cleanup		
+		// Cleanup
 		$cleanup = $this->requestRest('cleanup', $table);
 
 		// Total
 		$total = $this->requestRest('total', $table);
 
-		for ($i=1;$i<=$total;$i++)
+		for ($i = 1; $i <= $total; $i++)
 		{
 			$response = $this->requestRest('row', $table);
 
