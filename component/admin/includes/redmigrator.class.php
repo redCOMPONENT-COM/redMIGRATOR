@@ -198,12 +198,6 @@ class RedMigrator
 		{
 			// Get data of the table from source db and save to destination db
 			$this->setDestinationData();
-
-			// Excute after all steps
-			if (method_exists($this, 'afterAllDataHook'))
-			{
-				$this->afterAllStepsHook();
-			}
 		}
 		catch (Exception $e)
 		{
@@ -367,9 +361,6 @@ class RedMigrator
 	protected function insertData($rows)
 	{
 		$table = $this->getDestinationTable();
-
-		// Replacing the table name if xml exists
-		// $table = $this->replaceTable($table);
 
 		if (is_array($rows))
 		{

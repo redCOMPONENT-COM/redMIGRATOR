@@ -9,7 +9,7 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-class RedMigratorComKunenaAnnouncement extends RedMigrator
+class RedMigratorKunenaSession extends RedMigrator
 {
 
 }

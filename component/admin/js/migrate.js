@@ -229,7 +229,6 @@ var redmigrator = new Class({
 
 		// Run the check
 		ext_init.send();
-
 	}, // end function
 
 	/**
@@ -303,9 +302,10 @@ var redmigrator = new Class({
 					}
 				}
 
-				if (row_object.cid == row_object.stop.toInt()+1 || row_object.next == 1 )
+				if (row_object.cid == row_object.stop.toInt() + 1 || row_object.next == 1 )
 				{
-					if (row_object.end == 1)
+					//if (row_object.end == 1)
+					if (row_object.name == row_object.laststep)
 					{
 						pb4.set(100);
 						pb4.finish();
@@ -334,34 +334,45 @@ var redmigrator = new Class({
 			method: 'get'
 		}); // end Request		
 
+		var stepNo = 0;
+		var stepTotal = 0;
+
 		//
 		step.addEvents({
 			'complete': function(response)
 			{
 				var object = JSON.decode(response);
 
-				// Redirect if total == 0
-				if (object.total == 0)
+				// End of migration process
+				if (object.name == object.laststep)
 				{
-					if (object.end == 1)
-					{
-						pb4.set(100);
-						pb4.finish();
-						this.cancel();
-					}
-					else
+					pb4.set(100);
+					pb4.finish();
+					this.cancel();
+					self.done();
+				}
+				else
+				{
+					if (object.total == 0)
 					{
 						step.send();
 					}
-				}
+				}				
 
 				if (self.options.debug_step == 1)
 				{
 					html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[STEP ' + object.name + ']</b><br><br>' + response;
 				}
 
+				stepNo ++;
+
+				if (stepTotal == 0)
+				{
+					stepTotal = object.stepTotal;
+				}
+
 				// Changing title and statusbar
-				pb4.set(object.id*6);
+				pb4.set( (stepNo * 100) / stepTotal );
 
 				migrate_status.innerHTML = 'Migrating ' + object.title;
 				if (object.middle != true)
@@ -383,14 +394,14 @@ var redmigrator = new Class({
 				// Running the request[s]
 				if (self.options.method == 'database')
 				{					
-					if (object.total >= 0)
-					{						
+					if (object.total > 0)
+					{
 						row.send();
 					}
 				}
 				else if (self.options.method == 'rest')
 				{
-					for (i=object.start;i<=object.stop;i++)
+					for (i = object.start; i <= object.stop; i++)
 					{
 						var reqname = object.name + i;
 						rm.addRequest(reqname, row);

@@ -337,3 +337,6 @@ CREATE TABLE IF NOT EXISTS `#__kunena_version` (
 	`versionname` varchar(40) NULL,
 	`state` text NOT NULL,
 	PRIMARY KEY (id) ) DEFAULT CHARACTER SET utf8;
+
+INSERT INTO `#__kunena_version` (`id`, `version`, `versiondate`, `installdate`, `build`, `versionname`, `state`) VALUES
+(1, '3.0.2', '2013-08-18', '2013-10-10', '', 'Nocturne', '');

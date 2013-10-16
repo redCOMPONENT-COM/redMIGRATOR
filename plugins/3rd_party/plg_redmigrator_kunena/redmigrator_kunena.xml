@@ -16,5 +16,7 @@
 	<files>
 		<filename plugin="redmigrator_kunena">redmigrator_kunena.php</filename>
 		<folder>extensions</folder>
+		<folder>schemas</folder>
+		<folder>sql</folder>
 	</files>
 </extension>

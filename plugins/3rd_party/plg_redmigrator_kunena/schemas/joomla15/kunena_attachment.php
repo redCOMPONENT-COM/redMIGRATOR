@@ -9,8 +9,19 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-class RedMigratorComKunenaSmiley extends RedMigrator
+class RedMigratorKunenaAttachment extends RedMigrator
 {
+    public function dataHook($rows)
+    {
+        // Do some custom post processing on the list.
+        foreach ($rows as &$row)
+        {
+            $row = (array) $row;
+ 
+            unset($row['filelocation']);
+        }
 
+        return $rows;
+    }
 }
 ?>

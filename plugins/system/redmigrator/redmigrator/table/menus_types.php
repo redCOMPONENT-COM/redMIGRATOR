@@ -17,7 +17,7 @@ defined('JPATH_BASE') or die();
  *
  * @since  1.5
  */
-class RedMigratorTableMenusTypes extends RedMigratorTable
+class RedMigratorTableMenus_Types extends RedMigratorTable
 {
 	/** @var int Primary key */
 	var $id					= null;

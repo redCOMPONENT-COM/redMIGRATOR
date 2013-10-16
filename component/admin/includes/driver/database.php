@@ -78,9 +78,6 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 		// Setting the query
 		$this->_db_old->setQuery($query);
 
-		// Echo "\nQUERY: {$query->__toString()}\n";
-		// $rows = $this->_db_old->loadAssocList();
-
 		try
 		{
 			$rows = $this->_db_old->loadAssocList();
@@ -109,7 +106,6 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 
 		// Get Total
 		$this->_db_old->setQuery($query);
-		// $total = $this->_db_old->loadResult();
 
 		try
 		{

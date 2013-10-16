@@ -417,7 +417,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 
 		// Delete all 3rd extension steps migrated before
 		$query->clear();
-		$query->delete()->from('#__redmigrator_steps')->where('type != "core"');
+		$query->delete()
+				->from('#__redmigrator_steps')
+				->where('type != "core"');
 
 		try
 		{

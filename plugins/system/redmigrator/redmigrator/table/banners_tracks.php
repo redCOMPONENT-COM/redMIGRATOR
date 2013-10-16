@@ -19,7 +19,7 @@ defined('JPATH_BASE') or die();
  *
  * @since  0.4.5
  */
-class RedMigratorTableBannersTracks extends RedMigratorTable
+class RedMigratorTableBanners_Tracks extends RedMigratorTable
 {
 	/** @var date */
 	var $track_date = null;

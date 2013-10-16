@@ -58,7 +58,7 @@ window.addEvent('domready', function() {
 
 				<div id="update">
 					<br /><img src="components/com_redmigrator/images/update.png" align="middle" border="0"/><br />
-					<h2><?php echo JText::_('START UPGRADE'); ?></h2><br />
+					<h2><?php echo JText::_('START MIGRATE'); ?></h2><br />
 				</div>
 
 				<div id="core_checks">
@@ -68,9 +68,9 @@ window.addEvent('domready', function() {
 				</div>
 
 				<div id="ext_init">
-					<p class="text"><?php echo JText::_('Initialize 3rd extensions...'); ?></p>
+					<p class="text"><?php echo JText::_('Initialize extensions...'); ?></p>
 					<div id="pb7"></div>
-					<div><small><i><span id="ext_status"><?php echo JText::_('Initialize 3rd extensions...'); ?></span></i></small></div>					
+					<div><small><i><span id="ext_status"><?php echo JText::_('Initialize extensions...'); ?></span></i></small></div>					
 				</div>
 
 				<div id="migration">

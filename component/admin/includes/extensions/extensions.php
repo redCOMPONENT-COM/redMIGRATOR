@@ -62,6 +62,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 
 		// Get RedMigratorExtensionsComponents instance
 		$components = RedMigrator::getInstance($step);
+
 		$rows = $components->dataSwitch();
 
 		$this->_addExtensions($rows, 'com');
@@ -226,7 +227,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 		// Do some custom post processing on the list.
 		foreach ($plugins as $plugin)
 		{
-			// Install blank database of new 3rd extensions (Khai added)
+			// Install blank database of new 3rd extensions
 			$install_script = JPATH_PLUGINS . "/redmigrator/{$plugin->element}/sql/install.utf8.sql";
 			RedMigratorHelper::createDbFromSqlScript($install_script);
 
@@ -308,28 +309,6 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 									}
 								}
 							}
-
-							// Add other extensions from the package
-							/*if (!empty($xml->package[0]))
-							{
-								foreach ($xml->package[0]->extension as $xml_ext)
-								{
-									if (isset($this->extensions[(string) $xml_ext->name]))
-									{
-										$extension = $this->extensions[(string) $xml_ext->name];
-										$state->extensions[] = (string) $xml_ext->name;
-
-										$extension->params = $this->convertParams($extension->params);
-
-										if (!$this->_db->insertObject('#__extensions', $extension))
-										{
-											throw new Exception($this->_db->getErrorMsg());
-										}
-
-										unset ($this->extensions[(string) $xml_ext->name]);
-									}
-								}
-							}*/
 						} // End if
 					} // End if
 				} // End if

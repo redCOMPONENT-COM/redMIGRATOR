@@ -226,7 +226,7 @@ class RedMigratorHelper
      */
     public static function writeFile ($filename, $content)
     {
-    	$handle = fopen(JPATH_COMPONENT_ADMINISTRATOR . '/'. $filename, 'w+');
+    	$handle = fopen(JPATH_COMPONENT_ADMINISTRATOR . '/'. $filename, 'a');
 		fwrite($handle, $content);
 		fclose($handle);
     }

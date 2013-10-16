@@ -9,15 +9,8 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-class RedMigratorComKunenaMessage extends RedMigrator
+class RedMigratorKunenaSmiley extends RedMigrator
 {
-/*    public function dataHook($rows)
-    {
-$handle = fopen(JPATH_PLUGINS . '/redmigrator/xxx.txt', 'w+');
-fwrite($handle, 'xxx');
-fclose($handle);
-        
-        return $rows;
-    }*/
+
 }
 ?>

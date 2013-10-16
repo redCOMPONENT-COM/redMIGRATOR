@@ -60,8 +60,6 @@ class RedMigratorStep
 
 	public $middle = false;
 
-	public $end = false;
-
 	public $extensions = false;
 
 	public $_table = false;
@@ -158,7 +156,7 @@ class RedMigratorStep
 
 		foreach ($this as $k => $v)
 		{
-			if (property_exists($this,$k))
+			if (property_exists($this, $k))
 			{
 				if (!is_object($v))
 				{
@@ -170,6 +168,18 @@ class RedMigratorStep
 				}
 			}
 		}
+
+		// Get total of steps
+		$query = $this->_db->getQuery(true);
+		$query->select('count(*)')
+				->from('#__redmigrator_steps')
+				->where('status != 2');
+
+		$this->_db->setQuery($query);
+
+		$stepTotal = $this->_db->loadResult();
+
+		$return['stepTotal'] = $stepTotal;
 
 		return json_encode($return);
 	}
@@ -255,11 +265,6 @@ class RedMigratorStep
 			$this->next = 1;
 			$this->first = true;
 
-			if ($this->name == $this->laststep)
-			{
-				$this->end = true;
-			}
-
 			$this->cache = 0;
 			$this->status = 2;
 			$this->debug = "{{{4}}}";
@@ -272,12 +277,6 @@ class RedMigratorStep
 			$this->cache = 0;
 			$this->stop = $this->total - 1;
 			$this->debug = "{{{5}}}";
-		}
-
-		// Mark if is the end of the step
-		if ($this->name == $this->laststep && $this->cache == 1)
-		{
-			$this->end = true;
 		}
 
 		// Updating the status flag

@@ -9,7 +9,7 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-class RedMigratorComKunenaCategory extends RedMigrator
+class RedMigratorKunenaUser extends RedMigrator
 {
     public function dataHook($rows)
     {
@@ -19,22 +19,23 @@ class RedMigratorComKunenaCategory extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['parent_id'] = $row['parent'];
-            $row['icon_id'] = $row['cat_emoticon'];
-            $row['last_post_id'] = $row['id_last_msg'];
-            $row['last_post_time'] = $row['time_last_msg'];
+            $row['icq'] = $row['ICQ'];
+            $row['aim'] = $row['AIM'];
+            $row['yim'] = $row['YIM'];
+            $row['msn'] = $row['MSN'];
+            $row['skype'] = $row['SKYPE'];
+            $row['gtalk'] = $row['GTALK'];
 
             // Remove unused fields.
-            unset($row['parent']);
-            unset($row['cat_emoticon']);
-            unset($row['alert_admin']);
-            unset($row['moderated']);
-            unset($row['moderators']);
-            unset($row['future2']);
-            unset($row['id_last_msg']);
-            unset($row['time_last_msg']);
+            unset($row['ICQ']);
+            unset($row['AIM']);
+            unset($row['YIM']);
+            unset($row['MSN']);
+            unset($row['SKYPE']);
+            unset($row['gtalk']);
         }
 
         return $rows;
     }
 }
+?>
