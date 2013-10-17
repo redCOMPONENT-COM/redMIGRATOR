@@ -10,14 +10,13 @@
  *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 defined('_JEXEC') or die;
 
 /**
- * RedMigrator Virtuemart Plugin
+ * redMigrator Virtuemart Plugin
  *
- * @package     Joomla.Plugin
- * @subpackage  system.jupgradepro
- * @since       3.0.1
+ * @since  1.5
  */
 class plgRedMigratorVirtuemart extends JPlugin
 {

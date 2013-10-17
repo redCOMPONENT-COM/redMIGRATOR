@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="redmigrator" method="upgrade">
-	<name>redMIGRATOR - System plugin</name>
+	<name>redMIGRATOR - Virtuemart plugin</name>
 	<author>redCOMPONENT</author>
 	<creationDate>April 13th, 2013</creationDate>
 	<copyright>Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.</copyright>
@@ -10,11 +10,10 @@
 	<version>3.0.1</version>
 	<description>Virtuemart script for RedMigrator</description>
 
-	<installfile>install.php</installfile>
-	<uninstallfile>unistall.php</uninstallfile>
-
 	<files>
 		<filename plugin="redmigrator_virtuemart">redmigrator_virtuemart.php</filename>
 		<folder>extensions</folder>
+		<folder>schemas</folder>
+		<folder>sql</folder>
 	</files>
 </extension>

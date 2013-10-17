@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="redmigrator" method="upgrade">
-	<name>redMIGRATOR - Kunena - System plugin</name>
+	<name>redMIGRATOR - Kunena plugin</name>
 	<author>redCOMPONENT</author>
 	<creationDate>April 13th, 2013</creationDate>
 	<copyright>Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.</copyright>
