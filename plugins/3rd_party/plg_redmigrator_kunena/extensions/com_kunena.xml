@@ -12,24 +12,24 @@
 
 	<!-- The tables to copy to the new site. -->
 	<tables>
-		<table name="kunena_announcement" title="KUNENA Announcement" tbl_key="id" source="fb_announcement" destination="kunena_announcement" type="kunena" class="RedMigratorKunenaAnnouncement">fb_announcement</table>
+		<table name="fb_announcement" title="KUNENA Announcement" tbl_key="id" source="fb_announcement" destination="kunena_announcement" type="kunena" class="RedMigratorKunenaAnnouncement">fb_announcement</table>
 
-		<table name="kunena_attachment" title="KUNENA Attachments" tbl_key="id" source="fb_attachments" destination="kunena_attachments" type="kunena" class="RedMigratorKunenaAttachment">fb_attachments</table>
+		<table name="fb_attachments" title="KUNENA Attachments" tbl_key="id" source="fb_attachments" destination="kunena_attachments" type="kunena" class="RedMigratorKunenaAttachment">fb_attachments</table>
 
-		<table name="kunena_category" title="KUNENA Categories" tbl_key="id" source="fb_categories" destination="kunena_categories" type="kunena" class="RedMigratorKunenaCategory">fb_categories</table>
+		<table name="fb_categories" title="KUNENA Categories" tbl_key="id" source="fb_categories" destination="kunena_categories" type="kunena" class="RedMigratorKunenaCategory">fb_categories</table>
 
-		<table name="kunena_message" title="KUNENA Message" tbl_key="id" source="fb_messages" destination="kunena_messages" type="kunena" class="RedMigratorKunenaMessage">fb_messages</table>
-		
-		<table name="kunena_message_text" title="KUNENA Message Text" tbl_key="mesid" source="fb_messages_text" destination="kunena_messages_text" type="kunena" class="RedMigratorKunenaMessageText">fb_messages_text</table>
+		<table name="fb_messages" title="KUNENA Message" tbl_key="id" source="fb_messages" destination="kunena_messages" type="kunena" class="RedMigratorKunenaMessage">fb_messages</table>
 
-		<table name="kunena_rank" title="KUNENA Ranks" tbl_key="rank_id" source="fb_ranks" destination="kunena_ranks" type="kunena" class="RedMigratorKunenaRank">fb_ranks</table>
+		<table name="fb_message_text" title="KUNENA Message Text" tbl_key="mesid" source="fb_messages_text" destination="kunena_messages_text" type="kunena" class="RedMigratorKunenaMessageText">fb_messages_text</table>
 
-		<table name="kunena_session" title="KUNENA Sessions" tbl_key="userid" source="fb_sessions" destination="kunena_sessions" type="kunena" class="RedMigratorKunenaSession">fb_sessions</table>
+		<table name="fb_ranks" title="KUNENA Ranks" tbl_key="rank_id" source="fb_ranks" destination="kunena_ranks" type="kunena" class="RedMigratorKunenaRank">fb_ranks</table>
 
-		<table name="kunena_smiley" title="KUNENA Smileys" tbl_key="id" source="fb_smileys" destination="kunena_smileys" type="kunena" class="RedMigratorKunenaSmiley">fb_smileys</table>
+		<table name="fb_sessions" title="KUNENA Sessions" tbl_key="userid" source="fb_sessions" destination="kunena_sessions" type="kunena" class="RedMigratorKunenaSession">fb_sessions</table>
 
-		<table name="kunena_user" title="KUNENA Users" tbl_key="userid" source="fb_users" destination="kunena_users" type="kunena" class="RedMigratorKunenaUser">fb_users</table>
+		<table name="fb_smileys" title="KUNENA Smileys" tbl_key="id" source="fb_smileys" destination="kunena_smileys" type="kunena" class="RedMigratorKunenaSmiley">fb_smileys</table>
 
-		<table name="kunena_version" title="KUNENA Version" tbl_key="id" source="fb_version" destination="kunena_version" type="kunena" class="RedMigratorKunenaVersion">fb_version</table>
+		<table name="fb_users" title="KUNENA Users" tbl_key="userid" source="fb_users" destination="kunena_users" type="kunena" class="RedMigratorKunenaUser">fb_users</table>
+
+		<table name="fb_version" title="KUNENA Version" tbl_key="id" source="fb_version" destination="kunena_version" type="kunena" class="RedMigratorKunenaVersion">fb_version</table>
 	</tables>
 </redmigrator>

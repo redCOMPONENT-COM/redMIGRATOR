@@ -231,7 +231,7 @@ class RedMigrator
 
 		$method = $this->params->method;
 
-		if ($method == 'database' OR $method == 'database_all')
+		if ($method == 'database' || $this->_step->type != 'core')
 		{
 			if (method_exists($this, 'databaseHook'))
 			{
