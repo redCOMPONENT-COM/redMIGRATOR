@@ -3,11 +3,9 @@
 <redmigrator>
 	<name>Virtuemart for Joomla 1.7</name>
 
-	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/redmigrator/extensions/virtuemart/virtuemart.collection.xml</collection>
-
 	<!-- The tables to copy to the new site. -->
 	<tables>
-		<table>vm_auth_group</table>
+		<!-- <table>vm_auth_group</table>
 		<table>vm_auth_user_group</table>
 		<table>vm_auth_user_vendor</table>
 		<table>vm_cart</table>
@@ -57,8 +55,8 @@
 		<table>vm_user_info</table>
 		<table>vm_vendor</table>
 		<table>vm_vendor_category</table>
-		<table>vm_waiting_list</table>
-		<table>vm_zone_shipping</table>
+		<table>vm_waiting_list</table> -->
+		<table name="vm_zone_shipping" title="VIRTUEMART Zone shipping" tbl_key="zone_id" source="vm_zone_shipping" destination="virtuemart_worldzones" type="virtuemart" class="RedMigratorVirtuemartZoneShipping">vm_zone_shipping</table>
 	</tables>
 
 </redmigrator>
