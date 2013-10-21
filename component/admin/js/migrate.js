@@ -219,11 +219,20 @@ var redmigrator = new Class({
 		ext_init.addEvents({
 			'complete': function(response)
 			{
-				$('ext_init').setStyle('display', 'block');
-				pb7.set(100);
-				pb7.finish();
+				if (response == "success")
+				{
+					$('ext_init').setStyle('display', 'block');
+					pb7.set(100);
+					pb7.finish();
 
-				self.migrate(e);
+					self.migrate(e);
+				}
+				else
+				{
+					$('error').setStyle('display', 'block');
+					text = document.getElementById('error');
+					text.innerHTML = "Timeout";
+				}
 			}
 		});
 

@@ -45,6 +45,11 @@ class RedMigratorModelExtensions extends RModelAdmin
 			$step->status = 2;
 			$step->_updateStep();
 
+			if (!RedMigratorHelper::isCli())
+			{
+				echo "success";
+			}
+
 			return true;
 		}
 	}
