@@ -9,16 +9,16 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-class RedMigratorVirtuemartZoneShipping extends RedMigrator
+class RedMigratorVirtuemartOrderhistory extends RedMigrator
 {
     public function dataHook($rows)
     {
-        $arrFields = array('virtuemart_worldzone_id',
-                            'zone_name',
-                            'zone_cost',
-                            'zone_limit',
-                            'zone_description',
-                            'zone_tax_rate'
+        $arrFields = array('virtuemart_order_history_id',
+                            'virtuemart_order_id',
+                            'order_status_code',
+                            'customer_notified',
+                            'comments',
+                            'created_on'
                         );
 
         // Do some custom post processing on the list.
@@ -27,7 +27,9 @@ class RedMigratorVirtuemartZoneShipping extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_worldzone_id'] = $row['zone_id'];
+            $row['virtuemart_order_history_id'] = $row['order_status_history_id'];
+            $row['virtuemart_order_id'] = $row['order_id'];
+            $row['created_on'] = $row['date_added'];
 
             foreach ($row as $key => $value)
             {

@@ -311,16 +311,20 @@ var redmigrator = new Class({
 					}
 				}
 
-				if (row_object.cid == row_object.stop.toInt() + 1 || row_object.next == 1 )
+				// End of one step migration
+				if (row_object.cid == row_object.stop.toInt() + 1 || row_object.next == 1)
 				{
-					//if (row_object.end == 1)
+alert(row_response);					
+					// This step is last step -> finish migration
 					if (row_object.name == row_object.laststep)
 					{
 						pb4.set(100);
 						pb4.finish();
 						this.cancel();
 						step.cancel();
+						self.done();
 					}
+					// This step is not last step
 					else if (row_object.next == 1)
 					{
 						step.send();
@@ -345,6 +349,7 @@ var redmigrator = new Class({
 
 		var stepNo = 0;
 		var stepTotal = 0;
+		var preStep = '';
 
 		//
 		step.addEvents({
@@ -352,28 +357,22 @@ var redmigrator = new Class({
 			{
 				var object = JSON.decode(response);
 
-				// End of migration process
-				if (object.name == object.laststep)
+				// No data in table for this step -> request next step
+				if (object.total == 0)
 				{
-					pb4.set(100);
-					pb4.finish();
-					this.cancel();
-					self.done();
-				}
-				else
-				{
-					if (object.total == 0)
-					{
-						step.send();
-					}
-				}				
+					step.send();
+				}			
 
 				if (self.options.debug_step == 1)
 				{
 					html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[STEP ' + object.name + ']</b><br><br>' + response;
 				}
 
-				stepNo ++;
+				if (preStep != object.name)
+				{
+					stepNo ++;
+					preStep = object.name;
+				}
 
 				if (stepTotal == 0)
 				{
@@ -410,12 +409,15 @@ var redmigrator = new Class({
 				}
 				else if (self.options.method == 'rest')
 				{
-					for (i = object.start; i <= object.stop; i++)
+					if (object.total > 0)
 					{
-						var reqname = object.name + i;
-						rm.addRequest(reqname, row);
-					}
-					rm.runAll();
+						for (i = object.start; i <= object.stop; i++)
+						{
+							var reqname = object.name + i;
+							rm.addRequest(reqname, row);
+						}
+						rm.runAll();
+					}				
 				}
 			}
 		});

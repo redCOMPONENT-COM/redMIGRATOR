@@ -157,6 +157,24 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__virtuemart_categories_en_gb`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_categories_en_gb` (
+  `virtuemart_category_id` int(1) unsigned NOT NULL,
+  `category_name` char(180) NOT NULL DEFAULT '',
+  `category_description` varchar(19000) NOT NULL DEFAULT '',
+  `metadesc` varchar(400) NOT NULL DEFAULT '',
+  `metakey` varchar(400) NOT NULL DEFAULT '',
+  `customtitle` char(255) NOT NULL DEFAULT '',
+  `slug` char(192) NOT NULL DEFAULT '',
+  PRIMARY KEY (`virtuemart_category_id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__virtuemart_category_categories`
 --
 
@@ -350,6 +368,22 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
    PRIMARY KEY (`virtuemart_manufacturer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who deliver products' AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__virtuemart_manufacturers_en_gb`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers_en_gb` (
+  `virtuemart_manufacturer_id` int(1) unsigned NOT NULL,
+  `mf_name` char(180) NOT NULL DEFAULT '',
+  `mf_email` char(255) NOT NULL DEFAULT '',
+  `mf_desc` varchar(19000) NOT NULL DEFAULT '',
+  `mf_url` char(255) NOT NULL DEFAULT '',
+  `slug` char(192) NOT NULL DEFAULT '',
+  PRIMARY KEY (`virtuemart_manufacturer_id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 --
 -- Table structure for table `#__virtuemart_manufacturer_medias`
 --
@@ -381,6 +415,20 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturercategories` (
   PRIMARY KEY (`virtuemart_manufacturercategories_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories' AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__virtuemart_manufacturercategories_en_gb`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturercategories_en_gb` (
+  `virtuemart_manufacturercategories_id` int(1) unsigned NOT NULL,
+  `mf_category_name` char(180) NOT NULL DEFAULT '',
+  `mf_category_desc` varchar(19000) NOT NULL DEFAULT '',
+  `slug` char(192) NOT NULL DEFAULT '',
+  PRIMARY KEY (`virtuemart_manufacturercategories_id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 --
@@ -686,6 +734,20 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
     KEY `idx_payment_method_ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store' AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `j25_virtuemart_paymentmethods_en_gb`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods_en_gb` (
+  `virtuemart_paymentmethod_id` int(1) unsigned NOT NULL,
+  `payment_name` char(180) NOT NULL DEFAULT '',
+  `payment_desc` varchar(19000) NOT NULL DEFAULT '',
+  `slug` char(192) NOT NULL DEFAULT '',
+  PRIMARY KEY (`virtuemart_paymentmethod_id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 --
@@ -747,6 +809,24 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   KEY `idx_product_product_parent_id` (`product_parent_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All products are stored here.' AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__virtuemart_products_en_gb`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_products_en_gb` (
+  `virtuemart_product_id` int(1) unsigned NOT NULL,
+  `product_s_desc` varchar(2000) NOT NULL DEFAULT '',
+  `product_desc` varchar(18400) NOT NULL DEFAULT '',
+  `product_name` char(180) NOT NULL DEFAULT '',
+  `metadesc` varchar(400) NOT NULL DEFAULT '',
+  `metakey` varchar(400) NOT NULL DEFAULT '',
+  `customtitle` char(255) NOT NULL DEFAULT '',
+  `slug` char(192) NOT NULL DEFAULT '',
+  PRIMARY KEY (`virtuemart_product_id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1232,6 +1312,30 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
 --  KEY `idx_vendor_category_id` (`vendor_category_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Vendors manage their products in your store' AUTO_INCREMENT=1 ;
 
+-- ----------------------------------------------------------
+
+--
+-- Table structure for table `#__virtuemart_vendors_en_gb`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors_en_gb` (
+  `virtuemart_vendor_id` int(1) unsigned NOT NULL,
+  `vendor_store_desc` text NOT NULL,
+  `vendor_terms_of_service` text NOT NULL,
+  `vendor_legal_info` text NOT NULL,
+  `vendor_letter_css` text NOT NULL,
+  `vendor_letter_header_html` varchar(8000) NOT NULL DEFAULT '<h1>{vm:vendorname}</h1><p>{vm:vendoraddress}</p>',
+  `vendor_letter_footer_html` varchar(8000) NOT NULL DEFAULT '<p>{vm:vendorlegalinfo}<br />Page {vm:pagenum}/{vm:pagecount}</p>',
+  `vendor_store_name` char(180) NOT NULL DEFAULT '',
+  `vendor_phone` char(26) NOT NULL DEFAULT '',
+  `vendor_url` char(255) NOT NULL DEFAULT '',
+  `metadesc` varchar(400) NOT NULL DEFAULT '',
+  `metakey` varchar(400) NOT NULL DEFAULT '',
+  `customtitle` char(255) NOT NULL DEFAULT '',
+  `slug` char(192) NOT NULL DEFAULT '',
+  PRIMARY KEY (`virtuemart_vendor_id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `#__virtuemart_vendor_medias`

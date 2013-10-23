@@ -123,7 +123,7 @@ class RedMigratorHelper
 	 *
 	 * @since   3.1.0
 	 */
-	public static function populateDatabase(& $db, $sqlfile)
+	public static function populateDatabase($db, $sqlfile)
 	{
 		if (!($buffer = file_get_contents($sqlfile)))
 		{
@@ -153,55 +153,6 @@ class RedMigratorHelper
 
 		return true;
 	}
-
-	/**
-	 * Create database from sql script (Khai added)
-	 */
-	public static function createDbFromSqlScript($sqlfile)
-	{
-
-		$buffer = file_get_contents($sqlfile);
-
-		// Graceful exit and rollback if read not successful
-		if ($buffer === false)
-		{
-			JError::raiseWarning(1, JText::_('JLIB_INSTALLER_ERROR_SQL_READBUFFER'));
-
-			return false;
-		}
-
-		// Create an array of queries from the sql file
-		$queries = JInstallerHelper::splitSql($buffer);
-
-		if (count($queries) == 0)
-		{
-			// No queries to process
-			return 0;
-		}
-
-		$db = JFactory::getDbo();
-
-		// Process each query in the $queries array (split out of sql file).
-		foreach ($queries as $query)
-		{
-			$query = trim($query);
-
-			if ($query != '' && $query{0} != '#')
-			{				
-				$db->setQuery($query);
-
-				if (!$db->execute())
-				{
-					JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
-
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
 
     /**
      * returnError

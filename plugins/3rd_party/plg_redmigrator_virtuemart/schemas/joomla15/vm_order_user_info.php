@@ -9,11 +9,12 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-class RedMigratorVirtuemartUserInfo extends RedMigrator
+class RedMigratorVirtuemartOrderUserInfo extends RedMigrator
 {
     public function dataHook($rows)
     {
         $arrFields = array('virtuemart_order_userinfo_id',
+                            'virtuemart_order_id',
                             'virtuemart_user_id',
                             'address_type',
                             'address_type_name',
@@ -31,8 +32,7 @@ class RedMigratorVirtuemartUserInfo extends RedMigrator
                             'virtuemart_state_id',
                             'virtuemart_country_id',
                             'zip',
-                            'created_on',
-                            'modified_on'
+                            'email'
                         );
 
         // Do some custom post processing on the list.
@@ -41,7 +41,8 @@ class RedMigratorVirtuemartUserInfo extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_userinfo_id'] = $row['user_info_id'];
+            $row['virtuemart_order_userinfo_id'] = $row['order_info_id'];
+            $row['virtuemart_order_id'] = $row['order_id'];
             $row['virtuemart_user_id'] = $row['user_id'];
 
             JLoader::import("helpers.virtuemart", JPATH_PLUGINS . "/redmigrator/redmigrator_virtuemart");
@@ -58,10 +59,9 @@ class RedMigratorVirtuemartUserInfo extends RedMigrator
             if ($countryId)
             {
                 $row['virtuemart_country_id'] = $countryId;
-            }
-
-            $row['created_on'] = $row['cdate'];
-            $row['modified_on'] = $row['mdate'];
+            }                
+            
+            $row['email'] = $row['user_email'];
 
             foreach ($row as $key => $value)
             {
@@ -74,4 +74,7 @@ class RedMigratorVirtuemartUserInfo extends RedMigrator
 
         return $rows;
     }
+
+    
 }
+?>
