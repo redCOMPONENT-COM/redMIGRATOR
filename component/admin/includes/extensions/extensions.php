@@ -200,17 +200,17 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 	{
 		JLoader::import('joomla.filesystem.folder');
 
-		$types = array(
+		/*$types = array(
 			'/^com_(.+)$/e',		// Com_componentname
 			'/^mod_(.+)$/e',		// Mod_modulename
 			'/^plg_(.+)_(.+)$/e',	// Plg_folder_pluginname
-			'/^tpl_(.+)$/e');		// Tpl_templatename
+			'/^tpl_(.+)$/e');		// Tpl_templatename*/
 
-		$classes = array(
+		/*$classes = array(
 			"'RedMigratorComponent'.ucfirst('\\1')",				// RedMigratorComponentComponentname
 			"'RedMigratorModule'.ucfirst('\\1')",					// RedMigratorModuleModulename
 			"'RedMigratorPlugin'.ucfirst('\\1').ucfirst('\\2')",	// RedMigratorPluginPluginname
-			"'RedMigratorTemplate'.ucfirst('\\1')");				// RedMigratorTemplateTemplatename
+			"'RedMigratorTemplate'.ucfirst('\\1')");				// RedMigratorTemplateTemplatename*/
 
 		// Getting the plugins list
 		$query = $this->_db->getQuery(true);
@@ -227,9 +227,13 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 		// Do some custom post processing on the list.
 		foreach ($plugins as $plugin)
 		{
+			// Remove datebase or 3rd extensions if exists
+			$uninstall_script = JPATH_PLUGINS . "/redmigrator/{$plugin->element}/sql/uninstall.utf8.sql";
+			RedMigratorHelper::populateDatabase($this->_db, $uninstall_script);
+
 			// Install blank database of new 3rd extensions
 			$install_script = JPATH_PLUGINS . "/redmigrator/{$plugin->element}/sql/install.utf8.sql";
-			RedMigratorHelper::createDbFromSqlScript($install_script);
+			RedMigratorHelper::populateDatabase($this->_db, $install_script);
 
 			// Looking for xml files
 			$files = (array) JFolder::files(JPATH_PLUGINS . "/redmigrator/{$plugin->element}/extensions", '\.xml$', true, true);
@@ -295,10 +299,10 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 								{
 									$table = new StdClass;
 									$attributes = $xml->tables->table[$i]->attributes();
-									$table->name = (string) $attributes->name;
+									$table->name = (string) $xml->tables->table[$i];
 									$table->title = (string) $attributes->title;
 									$table->tbl_key = (string) $attributes->tbl_key;
-									$table->source = (string) $attributes->source;
+									$table->source = (string) $xml->tables->table[$i];
 									$table->destination = (string) $attributes->destination;
 									$table->type = (string) $attributes->type;
 									$table->class = (string) $attributes->class;

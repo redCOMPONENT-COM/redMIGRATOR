@@ -9,16 +9,16 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-class RedMigratorVirtuemartZoneShipping extends RedMigrator
+class RedMigratorVirtuemartCoupon extends RedMigrator
 {
     public function dataHook($rows)
     {
-        $arrFields = array('virtuemart_worldzone_id',
-                            'zone_name',
-                            'zone_cost',
-                            'zone_limit',
-                            'zone_description',
-                            'zone_tax_rate'
+        // Keep fields in new table (2.5.x or 3.x) which have values in old table (1.5.x)
+        $arrFields = array('virtuemart_coupon_id',
+                            'coupon_code',
+                            'percent_or_total',
+                            'coupon_type',
+                            'coupon_value'
                         );
 
         // Do some custom post processing on the list.
@@ -27,8 +27,9 @@ class RedMigratorVirtuemartZoneShipping extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_worldzone_id'] = $row['zone_id'];
+            $row['virtuemart_coupon_id'] = $row['coupon_id'];
 
+            // Remove fields in old table which are not in new talbe
             foreach ($row as $key => $value)
             {
                 if (!in_array($key, $arrFields))
