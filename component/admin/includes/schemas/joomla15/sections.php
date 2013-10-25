@@ -95,7 +95,7 @@ class RedMigratorSections extends RedMigratorCategory
 			$this->insertCategory($section);
 
 			// Updating the steps table
-			$this->_step->_nextID($total);
+			$this->_step->_nextCID($total);
 		}
 
 		return false;

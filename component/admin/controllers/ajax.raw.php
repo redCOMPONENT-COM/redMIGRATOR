@@ -24,7 +24,7 @@ class RedMigratorControllerAjax extends RControllerAdmin
 	 * @var		string	The context for persistent state.
 	 * @since   3.0.3
 	 */
-	protected $context = 'com_redmigrator.ajax';
+	// protected $context = 'com_redmigrator.ajax';
 
 	/**
 	 * Proxy for getModel.

@@ -5,61 +5,61 @@
 
 	<!-- The tables to copy to the new site. -->
 	<tables>
-		<!-- <table title="VIRTUEMART Category" tbl_key="category_id" destination="virtuemart_categories" type="virtuemart" class="RedMigratorVirtuemartCategory">vm_category</table> -->
+		<table title="VIRTUEMART Category" tbl_key="category_id" destination="virtuemart_categories" type="virtuemart" class="RedMigratorVirtuemartCategory">vm_category</table>
 
-		<!-- <table title="VIRTUEMART Category Xref" tbl_key="" destination="virtuemart_category_categories" type="virtuemart" class="RedMigratorVirtuemartCategoryCategory">vm_category_xref</table> -->
+		<table title="VIRTUEMART Category Xref" tbl_key="" destination="virtuemart_category_categories" type="virtuemart" class="RedMigratorVirtuemartCategoryCategory">vm_category_xref</table>
 
 		<table title="VIRTUEMART Country" tbl_key="country_id" destination="virtuemart_countries" type="virtuemart" class="RedMigratorVirtuemartCountry">vm_country</table>
 
-		<!-- <table title="VIRTUEMART State" tbl_key="state_id" destination="virtuemart_states" type="virtuemart" class="RedMigratorVirtuemartState">vm_state</table> -->
+		<table title="VIRTUEMART State" tbl_key="state_id" destination="virtuemart_states" type="virtuemart" class="RedMigratorVirtuemartState">vm_state</table>
 
-		<!-- <table title="VIRTUEMART Coupon" tbl_key="coupon_id" destination="virtuemart_coupons" type="virtuemart" class="RedMigratorVirtuemartCoupon">vm_coupons</table> -->
+		<table title="VIRTUEMART Coupon" tbl_key="coupon_id" destination="virtuemart_coupons" type="virtuemart" class="RedMigratorVirtuemartCoupon">vm_coupons</table>
 
-		<!-- <table title="VIRTUEMART Currency" tbl_key="currency_id" destination="virtuemart_currencies" type="virtuemart" class="RedMigratorVirtuemartCurrency">vm_currency</table> -->
+		<table title="VIRTUEMART Currency" tbl_key="currency_id" destination="virtuemart_currencies" type="virtuemart" class="RedMigratorVirtuemartCurrency">vm_currency</table>
 
-		<!-- <table title="VIRTUEMART Manufacturer" tbl_key="manufacturer_id" destination="virtuemart_manufacturers" type="virtuemart" class="RedMigratorVirtuemartManufacturer">vm_manufacturer</table> -->
+		<table title="VIRTUEMART Manufacturer" tbl_key="manufacturer_id" destination="virtuemart_manufacturers" type="virtuemart" class="RedMigratorVirtuemartManufacturer">vm_manufacturer</table>
 
-		<!-- <table title="VIRTUEMART Manufacturer - Category" tbl_key="" destination="virtuemart_manufacturercategories" type="virtuemart" class="RedMigratorVirtuemartManufacturerCategory">vm_manufacturer_category</table> -->
+		<table title="VIRTUEMART Manufacturer - Category" tbl_key="" destination="virtuemart_manufacturercategories" type="virtuemart" class="RedMigratorVirtuemartManufacturerCategory">vm_manufacturer_category</table>
 
-		<!-- <table title="VIRTUEMART Module" tbl_key="module_id" destination="virtuemart_modules" type="virtuemart" class="RedMigratorVirtuemartModule">vm_module</table> -->
+		<table title="VIRTUEMART Module" tbl_key="module_id" destination="virtuemart_modules" type="virtuemart" class="RedMigratorVirtuemartModule">vm_module</table>
 
-		<!-- <table title="VIRTUEMART Order" tbl_key="order_id" destination="virtuemart_orders" type="virtuemart" class="RedMigratorVirtuemartOrder">vm_orders</table> -->
+		<table title="VIRTUEMART Order" tbl_key="order_id" destination="virtuemart_orders" type="virtuemart" class="RedMigratorVirtuemartOrder">vm_orders</table>
 
-		<!-- <table title="VIRTUEMART Order history" tbl_key="order_status_history_id" destination="virtuemart_order_histories" type="virtuemart" class="RedMigratorVirtuemartOrderHistory">vm_order_history</table> -->
+		<table title="VIRTUEMART Order history" tbl_key="order_status_history_id" destination="virtuemart_order_histories" type="virtuemart" class="RedMigratorVirtuemartOrderHistory">vm_order_history</table>
 
-		<!-- <table title="VIRTUEMART Order item" tbl_key="order_item_id" destination="virtuemart_order_items" type="virtuemart" class="RedMigratorVirtuemartOrderItem">vm_order_item</table> -->
+		<table title="VIRTUEMART Order item" tbl_key="order_item_id" destination="virtuemart_order_items" type="virtuemart" class="RedMigratorVirtuemartOrderItem">vm_order_item</table>
 
-		<!-- <table title="VIRTUEMART Order status" tbl_key="order_status_id" destination="virtuemart_orderstates" type="virtuemart" class="RedMigratorVirtuemartOrderStatus">vm_order_status</table> -->
+		<table title="VIRTUEMART Order status" tbl_key="order_status_id" destination="virtuemart_orderstates" type="virtuemart" class="RedMigratorVirtuemartOrderStatus">vm_order_status</table>
 
-		<!-- <table title="VIRTUEMART Order user info" tbl_key="order_info_id" destination="virtuemart_order_userinfos" type="virtuemart" class="RedMigratorVirtuemartOrderUserInfo">vm_order_user_info</table> -->
+		<table title="VIRTUEMART Order user info" tbl_key="order_info_id" destination="virtuemart_order_userinfos" type="virtuemart" class="RedMigratorVirtuemartOrderUserInfo">vm_order_user_info</table>
 
-		<!-- <table title="VIRTUEMART Payment method" tbl_key="payment_method_id" destination="virtuemart_paymentmethods" type="virtuemart" class="RedMigratorVirtuemartPaymentMethod">vm_payment_method</table> -->
+		<table title="VIRTUEMART Payment method" tbl_key="payment_method_id" destination="virtuemart_paymentmethods" type="virtuemart" class="RedMigratorVirtuemartPaymentMethod">vm_payment_method</table>
 
-		<!-- <table title="VIRTUEMART Product" tbl_key="product_id" destination="virtuemart_products" type="virtuemart" class="RedMigratorVirtuemartProduct">vm_product</table> -->
+		<table title="VIRTUEMART Product" tbl_key="product_id" destination="virtuemart_products" type="virtuemart" class="RedMigratorVirtuemartProduct">vm_product</table>
 
-		<!-- <table title="VIRTUEMART Product - Category" tbl_key="" destination="virtuemart_product_categories" type="virtuemart" class="RedMigratorVirtuemartProductCategory">vm_product_category_xref</table> -->
+		<table title="VIRTUEMART Product - Category" tbl_key="" destination="virtuemart_product_categories" type="virtuemart" class="RedMigratorVirtuemartProductCategory">vm_product_category_xref</table>
 
-		<!-- <table title="VIRTUEMART Product - Manufacture" tbl_key="" destination="virtuemart_product_manufacturers" type="virtuemart" class="RedMigratorVirtuemartProductManufacture">vm_product_mf_xref</table> -->
+		<table title="VIRTUEMART Product - Manufacture" tbl_key="" destination="virtuemart_product_manufacturers" type="virtuemart" class="RedMigratorVirtuemartProductManufacture">vm_product_mf_xref</table>
 
-		<!-- <table title="VIRTUEMART Product Price" tbl_key="product_price_id" destination="virtuemart_product_prices" type="virtuemart" class="RedMigratorVirtuemartProductPrice">vm_product_price</table> -->
+		<table title="VIRTUEMART Product Price" tbl_key="product_price_id" destination="virtuemart_product_prices" type="virtuemart" class="RedMigratorVirtuemartProductPrice">vm_product_price</table>
 
-		<!-- <table title="VIRTUEMART Product Relation" tbl_key="" destination="virtuemart_product_relations" type="virtuemart" class="RedMigratorVirtuemartProductRelation">vm_product_relations</table> -->
+		<table title="VIRTUEMART Product Relation" tbl_key="" destination="virtuemart_product_relations" type="virtuemart" class="RedMigratorVirtuemartProductRelation">vm_product_relations</table>
 
-		<!-- <table title="VIRTUEMART Product Review" tbl_key="" destination="virtuemart_rating_reviews" type="virtuemart" class="RedMigratorVirtuemartProductReview">vm_product_reviews</table> -->
+		<table title="VIRTUEMART Product Review" tbl_key="" destination="virtuemart_rating_reviews" type="virtuemart" class="RedMigratorVirtuemartProductReview">vm_product_reviews</table>
 
-		<!-- <table title="VIRTUEMART Product Vote" tbl_key="" destination="virtuemart_rating_votes" type="virtuemart" class="RedMigratorVirtuemartProductVote">vm_product_votes</table> -->
+		<table title="VIRTUEMART Product Vote" tbl_key="" destination="virtuemart_rating_votes" type="virtuemart" class="RedMigratorVirtuemartProductVote">vm_product_votes</table>
 
-		<!-- <table title="VIRTUEMART Shopper group" tbl_key="shopper_group_id" destination="virtuemart_shoppergroups" type="virtuemart" class="RedMigratorVirtuemartShopperGroup">vm_shopper_group</table> -->
+		<table title="VIRTUEMART Shopper group" tbl_key="shopper_group_id" destination="virtuemart_shoppergroups" type="virtuemart" class="RedMigratorVirtuemartShopperGroup">vm_shopper_group</table>
 
-		<!-- <table title="VIRTUEMART User field" tbl_key="fieldid" destination="virtuemart_userfields" type="virtuemart" class="RedMigratorVirtuemartUserField">vm_userfield</table> -->
+		<table title="VIRTUEMART User field" tbl_key="fieldid" destination="virtuemart_userfields" type="virtuemart" class="RedMigratorVirtuemartUserField">vm_userfield</table>
 
-		<!-- <table title="VIRTUEMART User field values" tbl_key="fieldvalueid" destination="virtuemart_userfield_values" type="virtuemart" class="RedMigratorVirtuemartUserFieldValue">vm_userfield_values</table> -->
+		<table title="VIRTUEMART User field values" tbl_key="fieldvalueid" destination="virtuemart_userfield_values" type="virtuemart" class="RedMigratorVirtuemartUserFieldValue">vm_userfield_values</table>
 
-		<!-- <table title="VIRTUEMART User info" tbl_key="user_info_id" destination="virtuemart_userinfos" type="virtuemart" class="RedMigratorVirtuemartUserInfo">vm_user_info</table> -->
+		<table title="VIRTUEMART User info" tbl_key="user_info_id" destination="virtuemart_userinfos" type="virtuemart" class="RedMigratorVirtuemartUserInfo">vm_user_info</table>
 
-		<!-- <table title="VIRTUEMART Vendor" tbl_key="vendor_id" destination="virtuemart_vendors" type="virtuemart" class="RedMigratorVirtuemartVendor">vm_vendor</table> -->
+		<table title="VIRTUEMART Vendor" tbl_key="vendor_id" destination="virtuemart_vendors" type="virtuemart" class="RedMigratorVirtuemartVendor">vm_vendor</table>
 
-		<!-- <table title="VIRTUEMART Zone shipping" tbl_key="zone_id" destination="virtuemart_worldzones" type="virtuemart" class="RedMigratorVirtuemartZoneShipping">vm_zone_shipping</table> -->
+		<table title="VIRTUEMART Zone shipping" tbl_key="zone_id" destination="virtuemart_worldzones" type="virtuemart" class="RedMigratorVirtuemartZoneShipping">vm_zone_shipping</table>
 	</tables>
 
 </redmigrator>

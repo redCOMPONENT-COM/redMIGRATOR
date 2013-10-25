@@ -283,40 +283,39 @@ var redmigrator = new Class({
 		// Declare counter
 		var counter = 0;
 
-		var row = new Request({
+		var migrate = new Request({
 			link: 'chain',
 			method: 'get'
 		}); // end Request
 
 		// Adding event to the row request
-		row.addEvents({
-			'complete': function(row_response)
+		migrate.addEvents({
+			'complete': function(response)
 			{
-				var row_object = JSON.decode(row_response);
+				var object = JSON.decode(response);
 
-				if (row_object.cid == 0)
+				if (object.cid == 0)
 				{
 					currItem.innerHTML = 1;
 				}
 				else
 				{
-					currItem.innerHTML = row_object.cid;
+					currItem.innerHTML = object.cid;
 				}
 
-				if (row_object.number == 500)
+				if (object.number == 500)
 				{
 					if (self.options.debug_migrate == 1)
 					{
-						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[ROW]</b><br><br>' + row_object.text;
+						html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[ROW]</b><br><br>' + object.text;
 					}
 				}
 
 				// End of one step migration
-				if (row_object.cid == row_object.stop.toInt() + 1 || row_object.next == 1)
-				{
-alert(row_response);					
-					// This step is last step -> finish migration
-					if (row_object.name == row_object.laststep)
+				if (object.cid == object.stop.toInt() + 1 || object.next == 1)
+				{	
+					// This step is last step and end chunk of this step -> finish migration
+					if (object.name == object.laststep && object.end == 1)
 					{
 						pb4.set(100);
 						pb4.finish();
@@ -325,7 +324,7 @@ alert(row_response);
 						self.done();
 					}
 					// This step is not last step
-					else if (row_object.next == 1)
+					else if (object.next == 1)
 					{
 						step.send();
 					}
@@ -348,21 +347,29 @@ alert(row_response);
 		}); // end Request		
 
 		var stepNo = 0;
-		var stepTotal = 0;
 		var preStep = '';
 
-		//
+		// Get step response
 		step.addEvents({
 			'complete': function(response)
 			{
 				var object = JSON.decode(response);
 
-				// No data in table for this step -> request next step
+				// This step has no data (in table) -> request next step
 				if (object.total == 0)
 				{
-					step.send();
+					if (object.name == object.laststep)
+					{
+						step.cancel();
+						self.done();
+					}
+					else
+					{
+						step.send();
+					}					
 				}			
 
+				// Show step debug If it is enabled
 				if (self.options.debug_step == 1)
 				{
 					html_debug.innerHTML = html_debug.innerHTML + '<br><br>==========<br><b>[STEP ' + object.name + ']</b><br><br>' + response;
@@ -374,15 +381,12 @@ alert(row_response);
 					preStep = object.name;
 				}
 
-				if (stepTotal == 0)
-				{
-					stepTotal = object.stepTotal;
-				}
-
 				// Changing title and statusbar
-				pb4.set( (stepNo * 100) / stepTotal );
+				pb4.set( (stepNo * 100) / object.stepTotal );
 
+				// Show step title in "Progress status"
 				migrate_status.innerHTML = 'Migrating ' + object.title;
+
 				if (object.middle != true)
 				{
 					if (object.cid == 0)
@@ -397,14 +401,14 @@ alert(row_response);
 				totalItems.innerHTML = object.total;
 
 				// Start the checks
-				row.options.url = 'index.php?option=com_redmigrator&format=raw&task=ajax.migrate&table=' + object.name;	
+				migrate.options.url = 'index.php?option=com_redmigrator&format=raw&task=ajax.migrate&table=' + object.name;	
 
 				// Running the request[s]
 				if (self.options.method == 'database')
 				{					
 					if (object.total > 0)
 					{
-						row.send();
+						migrate.send();
 					}
 				}
 				else if (self.options.method == 'rest')
@@ -414,7 +418,7 @@ alert(row_response);
 						for (i = object.start; i <= object.stop; i++)
 						{
 							var reqname = object.name + i;
-							rm.addRequest(reqname, row);
+							rm.addRequest(reqname, migrate);
 						}
 						rm.runAll();
 					}				
@@ -552,7 +556,6 @@ alert(row_response);
 
 		// Scroll the window
 		var myScroll = new Fx.Scroll(window).toBottom();
-
 	}, // end function
 
 
@@ -646,7 +649,6 @@ alert(row_response);
 
 		// Start the checks
 		templates.send();
-
 	}, // end function
 
 	/**

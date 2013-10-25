@@ -188,6 +188,8 @@ class RedMigratorModelChecks extends RModelAdmin
 			}
 		}
 
+		
+
 		// Done checks
 		if (!RedMigratorHelper::isCli())
 		{

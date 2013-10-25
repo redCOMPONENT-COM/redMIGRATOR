@@ -37,7 +37,10 @@ class RedMigratorModelStep extends RModelAdmin
 		$step = RedMigratorStep::getInstance(null, $extensions);
 
 		// Check if name exists
-		$name = !empty($name) ? $name : $step->name;
+		if (empty($name))
+		{
+			$name = $step->name;
+		}
 
 		// Get the next step
 		$step->getStep($name);

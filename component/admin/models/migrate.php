@@ -30,8 +30,18 @@ class RedMigratorModelMigrate extends RModelAdmin
 	 */
 	function migrate($table = false, $json = true, $extensions = false)
 	{
-		$table = (bool) ($table != false) ? $table : JRequest::getCmd('table', '');
-		$extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
+		// $table = (bool) ($table != false) ? $table : JRequest::getCmd('table', '');
+		// $extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
+
+		if ($table === false)
+		{
+			$table = JRequest::getCmd('table', '');
+		}
+
+		if ($extensions === false)
+		{
+			$extensions = JRequest::getCmd('extensions', '');
+		}
 
 		// Init the RedMigrator instance
 		$step = RedMigratorStep::getInstance($table, $extensions);
@@ -57,12 +67,12 @@ class RedMigratorModelMigrate extends RModelAdmin
 		}
 
 		// Javascript flags
-		if ( $step->cid == $step->stop + 1 && $step->total != 0)
+		if ($step->cid == $step->stop + 1 && $step->total != 0)
 		{
 			$step->next = true;
 		}
 
-		if ($step->name == $step->laststep)
+		if ($step->total == $step->cid)
 		{
 			$step->end = true;
 		}
@@ -88,6 +98,9 @@ class RedMigratorModelMigrate extends RModelAdmin
 			$step->_updateStep();
 		}
 
+// RedMigratorHelper::writeFile('steps.txt', $table . ' - ' . $extensions . ' - ' . json_encode($step) . "\n");
+
+
 		if (!RedMigratorHelper::isCli())
 		{
 			echo $step->getParameters();
@@ -96,5 +109,7 @@ class RedMigratorModelMigrate extends RModelAdmin
 		{
 			return $step->getParameters();
 		}
+
+
 	}
 } // End class
