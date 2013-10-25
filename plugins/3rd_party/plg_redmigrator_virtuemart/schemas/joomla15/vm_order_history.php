@@ -27,9 +27,20 @@ class RedMigratorVirtuemartOrderhistory extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_order_history_id'] = $row['order_status_history_id'];
-            $row['virtuemart_order_id'] = $row['order_id'];
-            $row['created_on'] = $row['date_added'];
+            if (isset($row['order_status_history_id']))
+            {
+                $row['virtuemart_order_history_id'] = $row['order_status_history_id'];    
+            }
+            
+            if (isset($row['order_id']))
+            {
+                $row['virtuemart_order_id'] = $row['order_id'];    
+            }
+            
+            if (isset($row['date_added']))
+            {
+                $row['created_on'] = $row['date_added'];    
+            }
 
             foreach ($row as $key => $value)
             {

@@ -30,11 +30,30 @@ class RedMigratorVirtuemartProductPrice extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_product_price_id'] = $row['product_price_id'];
-            $row['virtuemart_product_id'] = $row['product_id'];
-            $row['virtuemart_shoppergroup_id'] = $row['shopper_group_id'];
-            $row['created_on'] = $row['cdate'];
-            $row['modified_on'] = $row['mdate'];
+            if (isset($row['product_price_id']))
+            {
+                $row['virtuemart_product_price_id'] = $row['product_price_id'];    
+            }
+            
+            if (isset($row['product_id']))
+            {
+                $row['virtuemart_product_id'] = $row['product_id'];    
+            }
+            
+            if (isset($row['shopper_group_id']))
+            {
+                $row['virtuemart_shoppergroup_id'] = $row['shopper_group_id'];    
+            }
+            
+            if (isset($row['cdate']))
+            {
+                $row['created_on'] = $row['cdate'];    
+            }
+            
+            if (isset($row['mdate']))
+            {
+                $row['modified_on'] = $row['mdate'];    
+            }
 
             foreach ($row as $key => $value)
             {

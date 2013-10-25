@@ -27,16 +27,22 @@ class RedMigratorVirtuemartModule extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            if ($row['module_publish'] == 'Y')
+            if (isset($row['module_publish']))
             {
-                $row['published'] = 1;
+                if ($row['module_publish'] == 'Y')
+                {
+                    $row['published'] = 1;
+                }
+                else
+                {
+                    $row['published'] = 0;
+                } 
             }
-            else
+            
+            if (isset($row['list_order']))
             {
-                $row['published'] = 0;
+                $row['ordering'] = $row['list_order'];    
             }
-
-            $row['ordering'] = $row['list_order'];
 
             foreach ($row as $key => $value)
             {

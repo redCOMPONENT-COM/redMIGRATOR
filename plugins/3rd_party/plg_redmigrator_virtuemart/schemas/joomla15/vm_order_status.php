@@ -27,10 +27,20 @@ class RedMigratorVirtuemartOrderStatus extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_orderstate_id'] = $row['order_status_id'];
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
-            $row['ordering'] = $row['list_order'];
+            if (isset($row['order_status_id']))
+            {
+                $row['virtuemart_orderstate_id'] = $row['order_status_id'];    
+            }
             
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];    
+            }
+            
+            if (isset($row['list_order']))
+            {
+                $row['ordering'] = $row['list_order'];    
+            }
 
             foreach ($row as $key => $value)
             {

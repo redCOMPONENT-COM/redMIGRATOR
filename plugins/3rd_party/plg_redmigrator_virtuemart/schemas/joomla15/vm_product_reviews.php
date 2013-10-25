@@ -27,16 +27,26 @@ class RedMigratorVirtuemartProductReview extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_rating_review_id'] = $row['review_id'];
-            $row['virtuemart_product_id'] = $row['product_id'];
-
-            if ($row['published'] == 'Y')
+            if (isset($row['review_id']))
             {
-                $row['published'] = 1;
+                $row['virtuemart_rating_review_id'] = $row['review_id'];    
             }
-            else
+            
+            if (isset($row['product_id']))
             {
-                $row['published'] = 0;
+                $row['virtuemart_product_id'] = $row['product_id'];    
+            }
+            
+            if (isset($row['published']))
+            {
+                if ($row['published'] == 'Y')
+                {
+                    $row['published'] = 1;
+                }
+                else
+                {
+                    $row['published'] = 0;
+                }    
             }
 
             foreach ($row as $key => $value)

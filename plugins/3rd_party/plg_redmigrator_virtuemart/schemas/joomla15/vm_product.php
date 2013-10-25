@@ -58,21 +58,42 @@ class RedMigratorVirtuemartProduct extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_product_id'] = $row['product_id'];
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
-
-            if ($row['product_publish'] == 'Y')
+            if (isset($row['product_id']))
             {
-                $row['published'] = 1;
+                $row['virtuemart_product_id'] = $row['product_id'];
             }
-            else
-            {
-                $row['published'] = 0;
-            }     
             
-            $row['pordering'] = $row['product_order_levels'];
-            $row['created_on'] = $row['cdate'];
-            $row['modified_on'] = $row['mdate'];
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];    
+            }
+            
+            if (isset($row['product_publish']))
+            {
+                if ($row['product_publish'] == 'Y')
+                {
+                    $row['published'] = 1;
+                }
+                else
+                {
+                    $row['published'] = 0;
+                }    
+            }
+                 
+            if (isset($row['product_order_levels']))
+            {
+                $row['pordering'] = $row['product_order_levels'];    
+            }
+            
+            if (isset($row['cdate']))
+            {
+                $row['created_on'] = $row['cdate'];    
+            }
+            
+            if (isset($row['mdate']))
+            {
+                $row['modified_on'] = $row['mdate'];    
+            }
 
             foreach ($row as $key => $value)
             {
@@ -101,8 +122,15 @@ class RedMigratorVirtuemartProduct extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_product_id'] = $row['product_id'];
-            $row['slug'] = JApplication::stringURLSafe($row['product_name'] . '-' . $row['product_id']);
+            if (isset($row['product_id']))
+            {
+                $row['virtuemart_product_id'] = $row['product_id'];    
+            
+                if (isset($row['product_id']))
+                {
+                    $row['slug'] = JApplication::stringURLSafe($row['product_name'] . '-' . $row['product_id']);        
+                }
+            }
 
             foreach ($row as $key => $value)
             {
@@ -129,8 +157,11 @@ class RedMigratorVirtuemartProduct extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_product_id'] = $row['product_id'];
-
+            if (isset($row['product_id']))
+            {
+                $row['virtuemart_product_id'] = $row['product_id'];    
+            }
+            
             $session = JFactory::getSession();
             $mediaId = $session->get('mediaId', 0, 'redmigrator_virtuemart');
             
@@ -169,8 +200,17 @@ class RedMigratorVirtuemartProduct extends RedMigrator
             // Change fields' name
             $row['file_mimetype'] = 0; // sua sau
             $row['file_type'] = 0; // sua sau
-            $row['file_url'] = $row['product_full_image'];
-            $row['file_url_thumb'] = $row['product_thumb_image'];
+
+            if (isset($row['product_full_image']))
+            {
+                $row['file_url'] = $row['product_full_image'];    
+            }
+            
+            if (isset($row['product_thumb_image']))
+            {
+                $row['file_url_thumb'] = $row['product_thumb_image'];    
+            }
+                        
             $row['file_is_product_image'] = 1;
 
             foreach ($row as $key => $value)

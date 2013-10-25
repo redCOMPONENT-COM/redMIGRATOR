@@ -23,8 +23,15 @@ class RedMigratorVirtuemartProductManufacture extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_product_id'] = $row['product_id'];
-            $row['virtuemart_manufacturer_id'] = $row['manufacturer_id'];
+            if (isset($row['product_id']))
+            {
+                $row['virtuemart_product_id'] = $row['product_id'];    
+            }
+            
+            if (isset($row['manufacturer_id']))
+            {
+                $row['virtuemart_manufacturer_id'] = $row['manufacturer_id'];    
+            }
 
             foreach ($row as $key => $value)
             {

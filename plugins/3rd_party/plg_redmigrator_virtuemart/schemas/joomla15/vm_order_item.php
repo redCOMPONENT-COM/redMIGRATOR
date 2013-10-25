@@ -35,12 +35,35 @@ class RedMigratorVirtuemartOrderItem extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_order_item_id'] = $row['order_item_id'];
-            $row['virtuemart_order_id'] = $row['order_id'];
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
-            $row['virtuemart_product_id'] = $row['product_id'];
-            $row['created_on'] = $row['cdate'];
-            $row['modified_on'] = $row['mdate'];
+            if (isset($row['order_item_id']))
+            {
+                $row['virtuemart_order_item_id'] = $row['order_item_id'];    
+            }
+            
+            if (isset($row['order_id']))
+            {
+                $row['virtuemart_order_id'] = $row['order_id'];    
+            }
+            
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];    
+            }
+            
+            if (isset($row['product_id']))
+            {
+                $row['virtuemart_product_id'] = $row['product_id'];    
+            }
+            
+            if (isset($row['cdate']))
+            {
+                $row['created_on'] = $row['cdate'];    
+            }
+            
+            if (isset($row['mdate']))
+            {
+                $row['modified_on'] = $row['mdate'];    
+            }
 
             foreach ($row as $key => $value)
             {

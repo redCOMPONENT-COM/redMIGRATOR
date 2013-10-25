@@ -27,8 +27,15 @@ class RedMigratorVirtuemartUserFieldValue extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_userfield_value_id'] = $row['fieldvalueid'];
-            $row['virtuemart_userfield_id'] = $row['fieldid'];
+            if (isset($row['fieldvalueid']))
+            {
+                $row['virtuemart_userfield_value_id'] = $row['fieldvalueid'];    
+            }
+            
+            if (isset($row['fieldid']))
+            {
+                $row['virtuemart_userfield_id'] = $row['fieldid'];    
+            }
 
             foreach ($row as $key => $value)
             {
