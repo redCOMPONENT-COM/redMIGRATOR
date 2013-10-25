@@ -124,7 +124,7 @@
                 class="text"
                 label="&lt;b&gt;Core skips&lt;/b&gt;"
                 />
-        <field
+        <!-- <field
                 name="skip_checks"
                 type="radio"
                 default="0"
@@ -134,7 +134,7 @@
                 >
             <option value="1">JYES</option>
             <option value="0">JNO</option>
-        </field>
+        </field> -->
         <field
                 name="skip_core_users"
                 type="radio"

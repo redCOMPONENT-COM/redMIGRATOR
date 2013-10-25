@@ -430,7 +430,12 @@ class RedMigratorModelCleanup extends RModelAdmin
 			throw new RuntimeException($e->getMessage());
 		}
 
-		// Done checks
+		// Init seession values
+		$session = JFactory::getSession();
+		$session->set('laststep', '', 'redmigrator_virtuemart');
+		$session->set('stepTotal', 0, 'redmigrator_virtuemart');
+
+		// Done cleanup
 		if (!RedMigratorHelper::isCli())
 		{
 			RedMigratorHelper::returnError(100, 'DONE');

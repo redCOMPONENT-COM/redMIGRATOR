@@ -13,6 +13,7 @@
 	<files>
 		<filename plugin="redmigrator_virtuemart">redmigrator_virtuemart.php</filename>
 		<folder>extensions</folder>
+		<folder>helpers</folder>
 		<folder>schemas</folder>
 		<folder>sql</folder>
 	</files>

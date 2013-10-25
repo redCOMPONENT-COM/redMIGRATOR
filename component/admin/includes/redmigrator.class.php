@@ -383,7 +383,7 @@ class RedMigrator
 					}
 				}
 
-				$this->_step->_nextID($total);
+				$this->_step->_nextCID($total);
 			}
 		}
 		elseif (is_object($rows))

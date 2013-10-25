@@ -54,11 +54,15 @@ class RedMigratorStep
 
 	public $laststep = '';
 
+	public $stepTotal = 0;
+
 	public $first = false;
 
 	public $next = false;
 
 	public $middle = false;
+
+	public $end = false;
 
 	public $extensions = false;
 
@@ -169,17 +173,55 @@ class RedMigratorStep
 			}
 		}
 
-		// Get total of steps
-		$query = $this->_db->getQuery(true);
-		$query->select('count(*)')
-				->from('#__redmigrator_steps')
-				->where('status != 2');
+		// Get the last step and save to session
+		$session = JFactory::getSession();
+		$laststep = $session->get('laststep', '', 'redmigrator_virtuemart');
 
-		$this->_db->setQuery($query);
+		if ($laststep == '')
+		{
+			// Reset the $query object
+			$query = $this->_db->getQuery(true);
 
-		$stepTotal = $this->_db->loadResult();
+			// Select last step
+			$query->select('name')
+					->from($this->_table)
+					->where('status = 0')
+					->order('id DESC')
+					->limit(1);
 
-		$return['stepTotal'] = $stepTotal;
+			$this->_db->setQuery($query);
+
+			$laststep = $this->_db->loadResult();
+
+			$session->set('laststep', $laststep, 'redmigrator_virtuemart');
+		}
+		else
+		{
+			$return['laststep'] = $laststep;
+		}
+
+		// Get total of steps and save to session
+		$stepTotal = $session->get('stepTotal', 0, 'redmigrator_virtuemart');
+
+		if ($stepTotal == 0)
+		{
+			// Reset the $query object
+			$query = $this->_db->getQuery(true);
+
+			$query->select('count(*)')
+					->from('#__redmigrator_steps')
+					->where('status = 0');
+
+			$this->_db->setQuery($query);
+
+			$stepTotal = $this->_db->loadResult();
+
+			$session->set('stepTotal', $stepTotal, 'redmigrator_virtuemart');
+		}
+		else
+		{
+			$return['stepTotal'] = $stepTotal;
+		}
 
 		return json_encode($return);
 	}
@@ -248,6 +290,7 @@ class RedMigratorStep
 				{
 					$this->stop = $this->total - 1;
 					$this->next = true;
+					$this->end = true;
 				}
 				else
 				{
@@ -279,7 +322,9 @@ class RedMigratorStep
 			$this->debug = "{{{5}}}";
 		}
 
-		// Updating the status flag
+		
+
+		// Updating the status flag to database
 		$this->_updateStep();
 
 		return $this->getParameters();
@@ -294,19 +339,19 @@ class RedMigratorStep
 	{
 		// Getting the data
 		$query = $this->_db->getQuery(true);
-		$query->select('e.*');
-		$query->from($this->_table . ' AS e');
+		$query->select('*');
+		$query->from($this->_table);
 
 		if (!empty($name))
 		{
-			$query->where("e.name = '{$name}'");
+			$query->where("name = '{$name}'");
 		}
 		else
 		{
-			$query->where("e.status != 2");
+			$query->where("status != 2");
 		}
 
-		$query->order('e.id ASC');
+		$query->order('id ASC');
 		$query->limit(1);
 
 		$this->_db->setQuery($query);
@@ -325,20 +370,6 @@ class RedMigratorStep
 		{
 			return false;
 		}
-
-		// Reset the $query object
-		$query->clear();
-
-		// Select last step
-		$query->select('name');
-		$query->from($this->_table);
-		$query->where("status = 0");
-
-		$query->order('id DESC');
-		$query->limit(1);
-
-		$this->_db->setQuery($query);
-		$step['laststep'] = $this->_db->loadResult();
 
 		// Set the parameters
 		$this->setParameters($step);
@@ -391,13 +422,13 @@ class RedMigratorStep
 	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 */
-	public function _updateID($id)
+	public function _updateCID($cid)
 	{
 		$name = $this->_getStepName();
 
 		$query = $this->_db->getQuery(true);
 		$query->update($this->_table);
-		$query->set("`cid` = '{$id}'");
+		$query->set("`cid` = '{$cid}'");
 		$query->where("name = {$this->_db->quote($name)}");
 
 		// Execute the query
@@ -412,11 +443,16 @@ class RedMigratorStep
 	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 */
-	public function _nextID($total = false)
+	public function _nextCID($total = false)
 	{
-		$update_cid = $this->_getStepID() + 1;
-		$this->_updateID($update_cid);
-		echo RedMigratorHelper::isCli() ? "•" : "";
+		$update_cid = $this->_getStepCID() + 1;
+
+		$this->_updateCID($update_cid);
+
+		if (RedMigratorHelper::isCli())
+		{
+			echo "•";
+		}
 	}
 
 	/**
@@ -426,7 +462,7 @@ class RedMigratorStep
 	 *
 	 * @since   3.0.0
 	 */
-	public function _getStepID()
+	public function _getStepCID()
 	{
 		$this->_load();
 
