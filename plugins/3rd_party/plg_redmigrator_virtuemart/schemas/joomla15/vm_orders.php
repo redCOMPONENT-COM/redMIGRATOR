@@ -40,15 +40,46 @@ class RedMigratorVirtuemartOrder extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_order_id'] = $row['order_id'];
-            $row['virtuemart_user_id'] = $row['user_id'];
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
-            $row['order_shipment'] = $row['order_shipping'];
-            $row['order_shipment_tax'] = $row['order_shipping_tax'];
-            $row['created_on'] = $row['cdate'];
-            $row['modified_on'] = $row['mdate'];
-            $row['virtuemart_shipmentmethod_id'] = $row['ship_method_id'];
-
+            if (isset($row['order_id']))
+            {
+                $row['virtuemart_order_id'] = $row['order_id'];    
+            }
+            
+            if (isset($row['user_id']))
+            {
+                $row['virtuemart_user_id'] = $row['user_id'];    
+            }
+            
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];    
+            }
+            
+            if (isset($row['order_shipping']))
+            {
+                $row['order_shipment'] = $row['order_shipping'];    
+            }
+            
+            if (isset($row['order_shipping_tax']))
+            {
+                $row['order_shipment_tax'] = $row['order_shipping_tax'];    
+            }
+            
+            if (isset($row['cdate']))
+            {
+                $row['created_on'] = $row['cdate'];    
+            }
+            
+            if (isset($row['mdate']))
+            {
+                $row['modified_on'] = $row['mdate'];    
+            }
+            
+            if (isset($row['ship_method_id']))
+            {
+                $row['virtuemart_shipmentmethod_id'] = $row['ship_method_id'];    
+            }
+            
             // Remove fields in old table which are not in new talbe
             foreach ($row as $key => $value)
             {

@@ -26,8 +26,15 @@ class RedMigratorVirtuemartShopperGroup extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_shoppergroup_id'] = $row['shopper_group_id'];
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
+            if (isset($row['shopper_group_id']))
+            {
+                $row['virtuemart_shoppergroup_id'] = $row['shopper_group_id'];    
+            }
+            
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];    
+            }
 
             foreach ($row as $key => $value)
             {

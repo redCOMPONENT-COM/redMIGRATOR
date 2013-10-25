@@ -24,8 +24,15 @@ class RedMigratorVirtuemartManufacturer extends RedMigrator
         {
             $row = (array) $row;
 
-            $row['virtuemart_manufacturer_id'] = $row['manufacturer_id'];
-            $row['virtuemart_manufacturercategories_id'] = $row['mf_category_id'];
+            if (isset($row['manufacturer_id']))
+            {
+                $row['virtuemart_manufacturer_id'] = $row['manufacturer_id'];    
+            }
+            
+            if (isset($row['mf_category_id']))
+            {
+                $row['virtuemart_manufacturercategories_id'] = $row['mf_category_id'];    
+            }
 
             foreach ($row as $key => $value)
             {
@@ -55,8 +62,15 @@ class RedMigratorVirtuemartManufacturer extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_manufacturer_id'] = $row['manufacturer_id'];
-            $row['slug'] = JApplication::stringURLSafe($row['mf_name'] . '-' . $row['manufacturer_id']);
+            if (isset($row['manufacturer_id']))
+            {
+                $row['virtuemart_manufacturer_id'] = $row['manufacturer_id'];
+                
+                if (isset($row['mf_name']))
+                {
+                    $row['slug'] = JApplication::stringURLSafe($row['mf_name'] . '-' . $row['manufacturer_id']);                            
+                }    
+            }
 
             foreach ($row as $key => $value)
             {

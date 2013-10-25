@@ -41,9 +41,20 @@ class RedMigratorVirtuemartOrderUserInfo extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_order_userinfo_id'] = $row['order_info_id'];
-            $row['virtuemart_order_id'] = $row['order_id'];
-            $row['virtuemart_user_id'] = $row['user_id'];
+            if (isset($row['order_info_id']))
+            {
+                $row['virtuemart_order_userinfo_id'] = $row['order_info_id'];
+            }
+            
+            if (isset($row['order_id']))
+            {
+                $row['virtuemart_order_id'] = $row['order_id'];    
+            }
+            
+            if (isset($row['user_id']))
+            {
+                $row['virtuemart_user_id'] = $row['user_id'];    
+            }
 
             JLoader::import("helpers.virtuemart", JPATH_PLUGINS . "/redmigrator/redmigrator_virtuemart");
             
@@ -61,7 +72,10 @@ class RedMigratorVirtuemartOrderUserInfo extends RedMigrator
                 $row['virtuemart_country_id'] = $countryId;
             }                
             
-            $row['email'] = $row['user_email'];
+            if (isset($row['user_email']))
+            {
+                $row['email'] = $row['user_email'];    
+            }
 
             foreach ($row as $key => $value)
             {

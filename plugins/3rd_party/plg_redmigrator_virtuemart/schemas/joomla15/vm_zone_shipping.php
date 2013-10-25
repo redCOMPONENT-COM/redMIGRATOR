@@ -27,7 +27,10 @@ class RedMigratorVirtuemartZoneShipping extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_worldzone_id'] = $row['zone_id'];
+            if (isset($row['zone_id']))
+            {
+                $row['virtuemart_worldzone_id'] = $row['zone_id'];    
+            }
 
             foreach ($row as $key => $value)
             {

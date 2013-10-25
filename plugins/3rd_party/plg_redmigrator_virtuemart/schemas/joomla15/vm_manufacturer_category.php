@@ -22,7 +22,10 @@ class RedMigratorVirtuemartManufacturerCategory extends RedMigrator
         {
             $row = (array) $row;
 
-            $row['virtuemart_manufacturercategories_id'] = $row['mf_category_id'];
+            if (isset($row['mf_category_id']))
+            {
+                $row['virtuemart_manufacturercategories_id'] = $row['mf_category_id'];
+            }
 
             foreach ($row as $key => $value)
             {
@@ -50,9 +53,16 @@ class RedMigratorVirtuemartManufacturerCategory extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_manufacturercategories_id'] = $row['mf_category_id'];
-            $row['slug'] = JApplication::stringURLSafe($row['mf_category_name'] . '-' . $row['mf_category_id']);
+            if (isset($row['mf_category_id']))
+            {
+                $row['virtuemart_manufacturercategories_id'] = $row['mf_category_id'];
 
+                if (isset($row['mf_category_id']))    
+                {
+                    $row['slug'] = JApplication::stringURLSafe($row['mf_category_name'] . '-' . $row['mf_category_id']);        
+                }
+            }
+            
             foreach ($row as $key => $value)
             {
                 if (!in_array($key, $arrFields))

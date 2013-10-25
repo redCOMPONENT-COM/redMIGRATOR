@@ -26,8 +26,15 @@ class RedMigratorVirtuemartState extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_state_id'] = $row['state_id'];
-            $row['virtuemart_country_id'] = $row['country_id'];
+            if (isset($row['state_id']))
+            {
+                $row['virtuemart_state_id'] = $row['state_id'];    
+            }
+            
+            if (isset($row['country_id']))
+            {
+                $row['virtuemart_country_id'] = $row['country_id'];    
+            }
 
             // Remove fields in old table which are not in new talbe
             foreach ($row as $key => $value)

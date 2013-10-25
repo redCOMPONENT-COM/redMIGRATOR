@@ -43,13 +43,35 @@ class RedMigratorVirtuemartVendor extends RedMigrator
         {
             $row = (array) $row;
 
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
-            $row['virtuemart_created_on'] = $row['cdate'];
-            $row['virtuemart_modified_on'] = $row['mdate'];
-            $row['vendor_params'] = 'vendor_min_pov="' . $row['vendor_min_pov'] . '"|'
-                                    . 'vendor_freeshipment=' . $row['vendor_freeshipping'] . '|'
-                                    . 'vendor_address_format="' . $row['vendor_address_format'] . '"|'
-                                    . 'vendor_date_format="' . $row['vendor_date_format'] . '"|';
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];    
+            }
+            
+            if (isset($row['cdate']))
+            {
+                $row['virtuemart_created_on'] = $row['cdate'];    
+            }
+            
+            if (isset($row['mdate']))
+            {
+                $row['virtuemart_modified_on'] = $row['mdate'];    
+            }
+            
+            if (isset($row['vendor_min_pov']))
+            {
+                $row['vendor_params'] = 'vendor_min_pov="' . $row['vendor_min_pov'] . '"|';    
+            }
+
+            if (isset($row['vendor_freeshipping']))
+            {
+                $row['vendor_params'] .= 'vendor_freeshipment=' . $row['vendor_freeshipping'] . '|';
+            }
+            
+            if (isset($row['vendor_address_format']))
+            {
+                $row['vendor_params'] .= 'vendor_address_format="' . $row['vendor_address_format'] . '"|';
+            }
 
             foreach ($row as $key => $value)
             {
@@ -80,9 +102,16 @@ class RedMigratorVirtuemartVendor extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
-            $row['slug'] = JApplication::stringURLSafe($row['vendor_name']);
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];
 
+                if (isset($row['vendor_name']))    
+                {
+                    $row['slug'] = JApplication::stringURLSafe($row['vendor_name'] . '-' . $row['vendor_id']);        
+                }
+            }
+            
             foreach ($row as $key => $value)
             {
                 if (!in_array($key, $arrFields))
@@ -108,7 +137,10 @@ class RedMigratorVirtuemartVendor extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];    
+            }
 
             $session = JFactory::getSession();
             $mediaId = $session->get('mediaId', 0, 'redmigrator_virtuemart');
@@ -148,8 +180,16 @@ class RedMigratorVirtuemartVendor extends RedMigrator
             // Change fields' name
             $row['file_mimetype'] = 0; // sua sau
             $row['file_type'] = 0; // sua sau
-            $row['file_url'] = $row['vendor_full_image'];
-            $row['file_url_thumb'] = $row['vendor_thumb_image'];
+
+            if (isset($row['vendor_full_image']))
+            {
+                $row['file_url'] = $row['vendor_full_image'];    
+            }
+            
+            if (isset($row['vendor_thumb_image']))
+            {
+                $row['file_url_thumb'] = $row['vendor_thumb_image'];    
+            }
 
             foreach ($row as $key => $value)
             {

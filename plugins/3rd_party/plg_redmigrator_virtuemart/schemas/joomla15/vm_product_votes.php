@@ -24,8 +24,15 @@ class RedMigratorVirtuemartProductVote extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_product_id'] = $row['product_id'];
-            $row['vote'] = $row['allvotes'];
+            if (isset($row['product_id']))
+            {
+                $row['virtuemart_product_id'] = $row['product_id'];    
+            }
+            
+            if (isset($row['allvotes']))
+            {
+                $row['vote'] = $row['allvotes'];    
+            }            
 
             foreach ($row as $key => $value)
             {

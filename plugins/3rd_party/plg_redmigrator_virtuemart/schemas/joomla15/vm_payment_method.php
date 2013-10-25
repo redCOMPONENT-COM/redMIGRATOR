@@ -23,9 +23,20 @@ class RedMigratorVirtuemartPaymentMethod extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_paymentmethod_id'] = $row['payment_method_id'];
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
-            $row['virtuemart_ordering'] = $row['list_order'];
+            if (isset($row['payment_method_id']))
+            {
+                $row['virtuemart_paymentmethod_id'] = $row['payment_method_id'];    
+            }
+            
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];    
+            }
+            
+            if (isset($row['list_order']))
+            {
+                $row['virtuemart_ordering'] = $row['list_order'];    
+            }
 
             foreach ($row as $key => $value)
             {
@@ -52,9 +63,20 @@ class RedMigratorVirtuemartPaymentMethod extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_paymentmethod_id'] = $row['payment_method_id'];
-            $row['payment_name'] = $row['payment_method_name'];
-            $row['slug'] = JApplication::stringURLSafe($row['payment_method_name'] . '-' . $row['payment_method_id']);
+            if (isset($row['payment_method_id']))
+            {
+                $row['virtuemart_paymentmethod_id'] = $row['payment_method_id'];    
+            }
+            
+            if (isset($row['payment_method_name']))
+            {
+                $row['payment_name'] = $row['payment_method_name'];
+
+                if (isset($row['payment_method_id']))
+                {
+                    $row['slug'] = JApplication::stringURLSafe($row['payment_method_name'] . '-' . $row['payment_method_id']);        
+                }    
+            }
 
             foreach ($row as $key => $value)
             {

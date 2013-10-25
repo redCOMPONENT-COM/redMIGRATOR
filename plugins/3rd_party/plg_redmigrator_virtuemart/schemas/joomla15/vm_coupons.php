@@ -27,7 +27,10 @@ class RedMigratorVirtuemartCoupon extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_coupon_id'] = $row['coupon_id'];
+            if (isset($row['coupon_id']))
+            {
+                $row['virtuemart_coupon_id'] = $row['coupon_id'];
+            }
 
             // Remove fields in old table which are not in new talbe
             foreach ($row as $key => $value)

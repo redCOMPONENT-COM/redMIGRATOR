@@ -49,21 +49,42 @@ class RedMigratorVirtuemartCategory extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_category_id'] = $row['category_id'];
-            $row['virtuemart_vendor_id'] = $row['vendor_id'];
-
-            if ($row['category_publish'] == 'Y')
+            if (isset($row['category_id']))
             {
-                $row['published'] = 1;
-            }
-            else
-            {
-                $row['published'] = 0;
+                $row['virtuemart_category_id'] = $row['category_id'];
             }
 
-            $row['created_on'] = $row['cdate'];
-            $row['modified_on'] = $row['mdate'];
-            $row['ordering'] = $row['list_order'];
+            if (isset($row['vendor_id']))
+            {
+                $row['virtuemart_vendor_id'] = $row['vendor_id'];
+            }
+
+            if (isset($row['category_publish']))
+            {
+                if ($row['category_publish'] == 'Y')
+                {
+                    $row['published'] = 1;
+                }
+                else
+                {
+                    $row['published'] = 0;
+                }
+            }
+            
+            if (isset($row['cdate']))
+            {
+                $row['created_on'] = $row['cdate'];
+            }
+
+            if (isset($row['mdate']))
+            {
+                $row['modified_on'] = $row['mdate'];
+            }
+
+            if (isset($row['list_order']))
+            {
+                $row['ordering'] = $row['list_order'];
+            }
 
             // Remove fields in old table which are not in new talbe
             foreach ($row as $key => $value)
@@ -92,8 +113,15 @@ class RedMigratorVirtuemartCategory extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_category_id'] = $row['category_id'];
-            $row['slug'] = JApplication::stringURLSafe($row['category_name']);
+            if (isset($row['category_id']))
+            {
+                $row['virtuemart_category_id'] = $row['category_id'];
+
+                if (isset($row['category_name']))
+                {
+                    $row['slug'] = JApplication::stringURLSafe($row['category_name'] . '-' . $row['category_id']);
+                }
+            }
 
             foreach ($row as $key => $value)
             {
@@ -119,7 +147,10 @@ class RedMigratorVirtuemartCategory extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_category_id'] = $row['category_id'];
+            if (isset($row['category_id']))
+            {
+                $row['virtuemart_category_id'] = $row['category_id'];
+            }
 
             $session = JFactory::getSession();
             $mediaId = $session->get('mediaId', 0, 'redmigrator_virtuemart');
@@ -155,8 +186,16 @@ class RedMigratorVirtuemartCategory extends RedMigrator
 
             // Change fields' name
             $row['file_mimetype'] = '';
-            $row['file_url'] = $row['category_full_image'];
-            $row['file_url_thumb'] = $row['category_thumb_image'];
+
+            if (isset($row['category_full_image']))
+            {
+                $row['file_url'] = $row['category_full_image'];
+            }
+            
+            if (isset($row['category_thumb_image']))
+            {
+                $row['file_url_thumb'] = $row['category_thumb_image'];
+            }            
 
             foreach ($row as $key => $value)
             {

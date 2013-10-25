@@ -26,15 +26,21 @@ class RedMigratorVirtuemartCurrency extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_currency_id'] = $row['currency_id'];
-
-            if (strlen(trim($row['currency_code'])) == 2)
+            if (isset($row['currency_id']))
             {
-                $row['currency_code_2'] = $row['currency_code'];
+                $row['virtuemart_currency_id'] = $row['currency_id'];
             }
-            else
+
+            if (isset($row['currency_code']))
             {
-                $row['currency_code_3'] = $row['currency_code'];
+                if (strlen(trim($row['currency_code'])) == 2)
+                {
+                    $row['currency_code_2'] = $row['currency_code'];
+                }
+                else
+                {
+                    $row['currency_code_3'] = $row['currency_code'];
+                }
             }
 
             // Remove fields in old table which are not in new talbe

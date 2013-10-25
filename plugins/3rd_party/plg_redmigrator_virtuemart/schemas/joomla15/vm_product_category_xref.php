@@ -23,8 +23,15 @@ class RedMigratorVirtuemartProductCategory extends RedMigrator
             $row = (array) $row;
 
             // Change fields' name
-            $row['virtuemart_product_id'] = $row['product_id'];
-            $row['virtuemart_category_id'] = $row['category_id'];
+            if (isset($row['product_id']))
+            {
+                $row['virtuemart_product_id'] = $row['product_id'];    
+            }
+            
+            if (isset($row['category_id']))
+            {
+                $row['virtuemart_category_id'] = $row['category_id'];    
+            }
 
             foreach ($row as $key => $value)
             {
