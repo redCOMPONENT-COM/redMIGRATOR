@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>K2 for Joomla</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table title="K2 Attachment" tbl_key="" destination="k2_attackments" type="k2" class="RedMigratorK2Attackment">k2_attackments</table>
+
+		<table title="K2 Category" tbl_key="" destination="k2_categories" type="k2" class="RedMigratorK2Category">k2_categories</table>
+
+		<table title="K2 Comment" tbl_key="" destination="k2_comments" type="k2" class="RedMigratorK2Comment">k2_comments</table>
+
+		<table title="K2 Extra field" tbl_key="" destination="k2_extra_fields" type="k2" class="RedMigratorK2ExtraField">k2_extra_fields</table>
+
+		<table title="K2 Extra field group" tbl_key="" destination="k2_extra_fields_groups" type="k2" class="RedMigratorK2ExtraFieldGroup">k2_extra_fields_groups</table>
+
+		<table title="K2 Items" tbl_key="" destination="k2_items" type="k2" class="RedMigratorK2Item">k2_items</table>
+
+		<table title="K2 Rating" tbl_key="" destination="k2_rating" type="k2" class="RedMigratorK2Rating">k2_rating</table>
+
+		<table title="K2 Tag" tbl_key="" destination="k2_tags" type="k2" class="RedMigratorK2Tag">k2_tags</table>
+
+		<table title="K2 Tag Xref" tbl_key="" destination="k2_tags_xref" type="k2" class="RedMigratorK2TagXref">k2_tags_xref</table>
+
+		<table title="K2 User" tbl_key="" destination="k2_users" type="k2" class="RedMigratorK2User">k2_users</table>
+
+		<table title="K2 User Group" tbl_key="" destination="k2_user_groups" type="k2" class="RedMigratorK2UserGroup">k2_user_groups</table>
+	</tables>
+
+</redmigrator>
