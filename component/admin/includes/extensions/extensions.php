@@ -200,17 +200,17 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 	{
 		JLoader::import('joomla.filesystem.folder');
 
-		/*$types = array(
+		$types = array(
 			'/^com_(.+)$/e',		// Com_componentname
 			'/^mod_(.+)$/e',		// Mod_modulename
 			'/^plg_(.+)_(.+)$/e',	// Plg_folder_pluginname
-			'/^tpl_(.+)$/e');		// Tpl_templatename*/
+			'/^tpl_(.+)$/e');		// Tpl_templatename
 
-		/*$classes = array(
+		$classes = array(
 			"'RedMigratorComponent'.ucfirst('\\1')",				// RedMigratorComponentComponentname
 			"'RedMigratorModule'.ucfirst('\\1')",					// RedMigratorModuleModulename
 			"'RedMigratorPlugin'.ucfirst('\\1').ucfirst('\\2')",	// RedMigratorPluginPluginname
-			"'RedMigratorTemplate'.ucfirst('\\1')");				// RedMigratorTemplateTemplatename*/
+			"'RedMigratorTemplate'.ucfirst('\\1')");				// RedMigratorTemplateTemplatename
 
 		// Getting the plugins list
 		$query = $this->_db->getQuery(true);

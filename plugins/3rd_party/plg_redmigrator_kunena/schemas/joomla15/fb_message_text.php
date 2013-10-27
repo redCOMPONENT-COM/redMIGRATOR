@@ -11,6 +11,27 @@
 
 class RedMigratorKunenaMessageText extends RedMigrator
 {
+    public function dataHook($rows)
+    {
+        $arrFields = array('mesid',
+                            'message'
+                        );
 
+        // Do some custom post processing on the list.
+        foreach ($rows as &$row)
+        {
+            $row = (array) $row;
+
+            foreach ($row as $key => $value)
+            {
+                if (!in_array($key, $arrFields))
+                {
+                    unset($row[$key]);
+                }
+            }
+        }
+
+        return $rows;
+    }
 }
 ?>
