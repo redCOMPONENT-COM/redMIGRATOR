@@ -11,6 +11,29 @@
 
 class RedMigratorKunenaAnnouncement extends RedMigrator
 {
+    public function dataHook($rows)
+    {
+        $arrFields = array('id',
+                            'title',
+                            'sdescription',
+                            'description',
+                            'created',
+                            'published',
+                            'ordering',
+                            'showdate'
+                        );
 
+        // Do some custom post processing on the list.
+        foreach ($rows as &$row)
+        {
+            foreach ($row as $key => $value)
+            {
+                if (!in_array($key, $arrFields))
+                {
+                    unset($row[$key]);
+                }
+            }
+        }
+    }
 }
 ?>
