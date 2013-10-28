@@ -46,9 +46,40 @@ class RedMigratorKunenaMessage extends RedMigrator
                     unset($row[$key]);
                 }
             }
+
+            if ($row['parent'] == 0)
+            {
+                $this->insertIntoTopic($row);
+            }
         }
 
         return $rows;
+    }
+
+    public function insertIntoTopic($row)
+    {
+        $query = $this->_db->getQuery(true);
+
+        $query->clear();
+
+        $query->insert('#__kunena_topics')
+                ->set('category_id = ' . $row['catid'])
+                ->set('subject = "' . $row['subject'] . '"')
+                ->set('locked = ' . $row['locked'])
+                ->set('hold = ' . $row['hold'])
+                ->set('ordering = ' . $row['ordering'])
+                ->set('hits = ' . $row['hits'])
+                ->set('moved_id = ' . $row['moved'])
+                ->set('first_post_id = ' . $row['id'])
+                ->set('first_post_time = ' . $row['time'])
+                ->set('first_post_userid = ' . $row['userid'])
+                ->set('last_post_id = ' . $row['id'])
+                ->set('last_post_time = ' . $row['time'])
+                ->set('last_post_userid = ' . $row['userid']);
+
+        $this->_db->setQuery($query);
+
+        $this->_db->query();
     }
 }
 ?>

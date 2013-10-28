@@ -34,6 +34,8 @@ class RedMigratorKunenaAnnouncement extends RedMigrator
                 }
             }
         }
+
+        return $rows;
     }
 }
 ?>
