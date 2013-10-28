@@ -16,8 +16,10 @@ class RedMigratorKunenaCategory extends RedMigrator
         $arrFields = array('id',
                             'parent_id',
                             'name',
+                            'alias',
                             'icon_id',
                             'locked',
+                            'access',
                             'pub_access',
                             'pub_recurse',
                             'admin_access',
@@ -33,6 +35,7 @@ class RedMigratorKunenaCategory extends RedMigrator
                             'class_sfx',
                             'numTopics',
                             'numPosts',
+                            'last_topic_id',
                             'last_post_id',
                             'last_post_time'
                         );
@@ -48,10 +51,12 @@ class RedMigratorKunenaCategory extends RedMigrator
                 $row['parent_id'] = $row['parent'];
             }
 
-            if (isset($row['name']) && isset($row['id']))
+            if (isset($row['name']))
             {
-                $row['alias'] = JApplication::stringURLSafe($row['name'] . '-' . $row['id']);
+                $row['alias'] = JApplication::stringURLSafe($row['name']);
             }
+
+            $row['access'] = 1;
 
             if (isset($row['cat_emoticon']))
             {
@@ -68,6 +73,13 @@ class RedMigratorKunenaCategory extends RedMigrator
                 $row['last_post_time'] = $row['time_last_msg'];
             }
 
+            if (isset($row['numTopics']) && isset($row['numPosts']))
+            {
+                $row['numPosts'] = $row['numTopics'] + $row['numPosts'];
+            }
+
+            $row['last_topic_id'] = $this->getLastTopicId($row['id']);
+
             foreach ($row as $key => $value)
             {
                 if (!in_array($key, $arrFields))
@@ -75,8 +87,50 @@ class RedMigratorKunenaCategory extends RedMigrator
                     unset($row[$key]);
                 }
             }
-        }
+
+            $this->insertIntoAlias($row);
+        }        
 
         return $rows;
+    }
+
+    public function insertIntoAlias($row)
+    {
+        $query = $this->_db->getQuery(true);
+
+        $query->clear();
+
+        $query->insert('#__kunena_aliases')
+                ->set('alias = "' . $row['alias'] . '"')
+                ->set('type = "catid"')
+                ->set('item = ' . $row['id'])
+                ->set('state = 1');
+
+        $this->_db->setQuery($query);
+
+        $this->_db->query();
+    }
+
+    public function getLastTopicId($catId)
+    {
+        $query = $this->_db->getQuery(true);
+
+        $query->clear();
+
+        $query->select('id, first_post_time')
+                ->from('#__kunena_topics')
+                ->where('category_id = ' . $catId)
+                ->order('first_post_time DESC');
+
+        $this->_db->setQuery($query);
+
+        $arrId = $this->_db->loadAssoc();
+
+        if ($arrId)
+        {
+           return $arrId['id'];
+        }
+
+        return 0;
     }
 }
