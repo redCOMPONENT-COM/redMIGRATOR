@@ -18,6 +18,7 @@ class RedMigratorVirtuemartModule extends RedMigrator
                             'module_description',
                             'module_perms',
                             'published',
+                            'is_admin',
                             'ordering'
                         );
 
@@ -38,6 +39,17 @@ class RedMigratorVirtuemartModule extends RedMigrator
                     $row['published'] = 0;
                 } 
             }
+
+            if ($row['module_name'] == 'msgs' || $row['module_name'] == 'shop'
+                    || $row['module_name'] == 'account' || $row['module_name'] == 'checkout')
+            {
+                $row['is_admin'] = 0;    
+            }
+            else
+            {
+                $row['is_admin'] = 1;
+            }
+            
             
             if (isset($row['list_order']))
             {

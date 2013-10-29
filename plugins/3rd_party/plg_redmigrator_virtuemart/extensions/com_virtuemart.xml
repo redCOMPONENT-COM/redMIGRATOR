@@ -21,7 +21,8 @@
 
 		<table title="VIRTUEMART Manufacturer - Category" tbl_key="" destination="virtuemart_manufacturercategories" type="virtuemart" class="RedMigratorVirtuemartManufacturerCategory">vm_manufacturer_category</table>
 
-		<table title="VIRTUEMART Module" tbl_key="module_id" destination="virtuemart_modules" type="virtuemart" class="RedMigratorVirtuemartModule">vm_module</table>
+		<!-- Remove -->
+		<!-- <table title="VIRTUEMART Module" tbl_key="module_id" destination="virtuemart_modules" type="virtuemart" class="RedMigratorVirtuemartModule">vm_module</table> -->
 
 		<table title="VIRTUEMART Order" tbl_key="order_id" destination="virtuemart_orders" type="virtuemart" class="RedMigratorVirtuemartOrder">vm_orders</table>
 
