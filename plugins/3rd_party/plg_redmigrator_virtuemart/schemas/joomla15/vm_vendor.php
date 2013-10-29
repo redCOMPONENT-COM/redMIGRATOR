@@ -165,7 +165,12 @@ class RedMigratorVirtuemartVendor extends RedMigrator
 
     public function insertIntoMedias($rows)
     {
-        $arrFields = array('file_mimetype',
+        JLoader::import('joomla.filesystem.folder');
+        JLoader::import('joomla.filesystem.file');
+        JLoader::import('helpers.virtuemart', JPATH_PLUGINS . '/redmigrator/redmigrator_virtuemart');
+
+        $arrFields = array('file_title',
+                            'file_mimetype',
                             'file_type',
                             'file_url',
                             'file_url_thumb',
@@ -177,18 +182,46 @@ class RedMigratorVirtuemartVendor extends RedMigrator
         {
             $row = (array) $row;
 
-            // Change fields' name
-            $row['file_mimetype'] = 0; // sua sau
-            $row['file_type'] = 0; // sua sau
+            $oldMediaDir = JPATH_ADMINISTRATOR . '/components/com_redmigrator/includes/media/joomla15/shop_image/vendor';
 
-            if (isset($row['vendor_full_image']))
+            if (JFolder::exists($oldMediaDir))
             {
-                $row['file_url'] = $row['vendor_full_image'];    
-            }
-            
-            if (isset($row['vendor_thumb_image']))
-            {
-                $row['file_url_thumb'] = $row['vendor_thumb_image'];    
+                $descFolder = JPATH_SITE . '/images/stories/virtuemart/vendor';
+
+                if (!JFolder::exists($descFolder))
+                {
+                    JFolder::create($descFolder);
+                }
+
+                if (isset($row['vendor_full_image']))
+                {
+                    $row['file_title'] = $row['vendor_full_image'];
+
+                    $src = $oldMediaDir . '/' . $row['vendor_full_image'];
+
+                    if (JFile::exists($src))
+                    {
+                        $row['file_mimetype'] = VirtuemartHelper::getMimeType($src);
+                        $row['file_type'] = 'vendor';
+                        $row['file_url'] = 'images/stories/virtuemart/vendor/' . $row['vendor_full_image'];
+                        
+                        $desc = $descFolder . '/' . $row['vendor_full_image'];
+                        JFile::copy($src, $desc);
+                    }
+                }
+
+                if (isset($row['vendor_thumb_image']))
+                {
+                    $srcThumb = $oldMediaDir . '/' . $row['vendor_thumb_image'];
+
+                    if (JFile::exists($src))
+                    {
+                        $row['file_url_thumb'] = 'images/stories/virtuemart/vendor/' . $row['vendor_thumb_image'];
+                        
+                        $descThumb = $descFolder . '/' . $row['vendor_thumb_image'];
+                        JFile::copy($src, $desc);
+                    }
+                }
             }
 
             foreach ($row as $key => $value)
@@ -200,7 +233,6 @@ class RedMigratorVirtuemartVendor extends RedMigrator
             }            
         }
 
-        JLoader::import("helpers.virtuemart", JPATH_PLUGINS . "/redmigrator/redmigrator_virtuemart");
         VirtuemartHelper::insertData('#__virtuemart_medias', $rows);
     }
 
