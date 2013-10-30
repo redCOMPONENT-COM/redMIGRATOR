@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>redEVENT for Joomla</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table title="redEVENT Attachment" tbl_key="" destination="redevent_attackments" type="redevent" class="RedMigratorRedeventAttackment">redevent_attackments</table>
+
+		<table title="redEVENT Category" tbl_key="" destination="redevent_categories" type="redevent" class="RedMigratorRedeventCategory">redevent_categories</table>
+
+		<!-- Remove -->
+		<!-- <table title="redEVENT Country" tbl_key="" destination="redevent_countries" type="redevent" class="RedMigratorRedeventCountry">redevent_countries</table> -->
+
+		<table title="redEVENT Event" tbl_key="" destination="redevent_events" type="redevent" class="RedMigratorRedeventEvent">redevent_events</table>
+
+		<table title="redEVENT Event Category Xref" tbl_key="" destination="redevent_event_category_xref" type="redevent" class="RedMigratorRedeventEventCategoryXref">redevent_event_category_xref</table>
+
+		<table title="redEVENT Event Venue Xref" tbl_key="" destination="redevent_event_venue_xref" type="redevent" class="RedMigratorRedeventEventVenueXref">redevent_event_venue_xref</table>
+
+		<table title="redEVENT Field" tbl_key="" destination="redevent_fields" type="redevent" class="RedMigratorRedeventField">redevent_fields</table>
+
+		<table title="redEVENT Group member" tbl_key="" destination="redevent_groupmembers" type="redevent" class="RedMigratorRedeventGroupmember">redevent_groupmembers</table>
+
+		<table title="redEVENT Group" tbl_key="" destination="redevent_groups" type="redevent" class="RedMigratorRedeventGroup">redevent_groups</table>
+
+		<table title="redEVENT Group Category" tbl_key="" destination="redevent_groups_categories" type="redevent" class="RedMigratorRedeventGroupCategory">redevent_groups_categories</table>
+
+		<table title="redEVENT Group Venue" tbl_key="" destination="redevent_groups_venues" type="redevent" class="RedMigratorRedeventGroupVenue">redevent_groups_venues</table>
+
+		<table title="redEVENT Group Venue Category" tbl_key="" destination="redevent_groups_venues_categories" type="redevent" class="RedMigratorRedeventGroupVenueCategory">redevent_groups_venues_categories</table>
+
+		<table title="redEVENT Price group" tbl_key="" destination="redevent_pricegroups" type="redevent" class="RedMigratorRedeventPricegroup">redevent_pricegroups</table>
+
+		<table title="redEVENT Recurrence" tbl_key="" destination="redevent_recurrences" type="redevent" class="RedMigratorRedeventRecurrence">redevent_recurrences</table>
+
+		<table title="redEVENT Register" tbl_key="" destination="redevent_register" type="redevent" class="RedMigratorRedeventRegister">redevent_register</table>
+
+		<table title="redEVENT Repeat" tbl_key="" destination="redevent_repeats" type="redevent" class="RedMigratorRedeventRepeat">redevent_repeats</table>
+
+		<table title="redEVENT Role" tbl_key="" destination="redevent_roles" type="redevent" class="RedMigratorRedeventRole">redevent_roles</table>
+
+		<table title="redEVENT Role Redmember" tbl_key="" destination="redevent_roles_redmember" type="redevent" class="RedMigratorRedeventRoleRedmember">redevent_roles_redmember</table>
+
+		<table title="redEVENT Session Pricegroup" tbl_key="" destination="redevent_sessions_pricegroups" type="redevent" class="RedMigratorRedeventSessionPricegroup">redevent_sessions_pricegroups</table>
+
+		<table title="redEVENT Session Role" tbl_key="" destination="redevent_sessions_roles" type="redevent" class="RedMigratorRedeventSessionRole">redevent_sessions_roles</table>
+
+		<table title="redEVENT Setting" tbl_key="" destination="redevent_settings" type="redevent" class="RedMigratorRedeventSetting">redevent_settings</table>
+
+		<table title="redEVENT Text library" tbl_key="" destination="redevent_textlibrary" type="redevent" class="RedMigratorRedeventTextlibrary">redevent_textlibrary</table>
+
+		<table title="redEVENT Venue" tbl_key="" destination="redevent_venues" type="redevent" class="RedMigratorRedeventVenue">redevent_venues</table>
+
+		<table title="redEVENT Venue Category" tbl_key="" destination="redevent_venues_categories" type="redevent" class="RedMigratorRedeventVenueCategory">redevent_venues_categories</table>
+
+		<table title="redEVENT Venue Category Xref" tbl_key="" destination="redevent_venue_category_xref" type="redevent" class="RedMigratorRedeventVenueCategoryXref">redevent_venue_category_xref</table>
+	</tables>
+
+</redmigrator>
