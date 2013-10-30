@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>K2 for Joomla</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table title="K2 Config" tbl_key="" destination="acymailing_config" type="acymailing" class="RedMigratorAcymailingConfig">acymailing_config</table>
+
+		<table title="K2 Field" tbl_key="" destination="acymailing_fields" type="acymailing" class="RedMigratorAcymailingField">acymailing_fields</table>
+
+		<table title="K2 Filter" tbl_key="" destination="acymailing_filter" type="acymailing" class="RedMigratorAcymailingFilter">acymailing_filter</table>
+
+		<table title="K2 Geolocation" tbl_key="" destination="acymailing_geolocation" type="acymailing" class="RedMigratorAcymailingGeolocation">acymailing_geolocation</table>
+
+		<table title="K2 History" tbl_key="" destination="acymailing_history" type="acymailing" class="RedMigratorAcymailingHistory">acymailing_history</table>
+
+		<table title="K2 List" tbl_key="" destination="acymailing_list" type="acymailing" class="RedMigratorAcymailingList">acymailing_list</table>
+
+		<table title="K2 Listcampaign" tbl_key="" destination="acymailing_listcampaign" type="acymailing" class="RedMigratorAcymailingListcampaign">acymailing_listcampaign</table>
+
+		<table title="K2 Listmail" tbl_key="" destination="acymailing_listmail" type="acymailing" class="RedMigratorAcymailingListmail">acymailing_listmail</table>
+
+		<table title="K2 Listsub" tbl_key="" destination="acymailing_listsub" type="acymailing" class="RedMigratorAcymailingListsub">acymailing_listsub</table>
+
+		<table title="K2 Mail" tbl_key="" destination="acymailing_mail" type="acymailing" class="RedMigratorAcymailingMail">acymailing_mail</table>
+
+		<table title="K2 Rule" tbl_key="" destination="acymailing_rules" type="acymailing" class="RedMigratorAcymailingRule">acymailing_rules</table>
+
+		<table title="K2 Stat" tbl_key="" destination="acymailing_stats" type="acymailing" class="RedMigratorAcymailingStat">acymailing_stats</table>
+
+		<table title="K2 Subscriber" tbl_key="" destination="acymailing_subscriber" type="acymailing" class="RedMigratorAcymailingSubscriber">acymailing_subscriber</table>
+
+		<table title="K2 Template" tbl_key="" destination="acymailing_template" type="acymailing" class="RedMigratorAcymailingTemplate">acymailing_template</table>
+
+		<table title="K2 Url" tbl_key="" destination="acymailing_url" type="acymailing" class="RedMigratorAcymailingUrl">acymailing_url</table>
+
+		<table title="K2 Urlclick" tbl_key="" destination="acymailing_urlclick" type="acymailing" class="RedMigratorAcymailingUrlclick">acymailing_urlclick</table>
+
+		<table title="K2 Userstat" tbl_key="" destination="acymailing_userstats" type="acymailing" class="RedMigratorAcymailingUserstat">acymailing_userstats</table>
+	</tables>
+
+</redmigrator>
