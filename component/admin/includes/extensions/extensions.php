@@ -44,7 +44,13 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 			return false;
 		}
 
-		return ($this->_processExtensions() == 0) ? false : true;
+		if (!$this->_processExtensions())
+		{
+			return false;
+		}
+
+		//return ($this->_processExtensions() == 0) ? false : true;
+		return true;
 	}
 
 	/**
@@ -323,6 +329,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 			} // End foreach
 		} // End foreach
 
-		return $this->count;
+		//return $this->count;
+		return true;
 	}
 } // End class

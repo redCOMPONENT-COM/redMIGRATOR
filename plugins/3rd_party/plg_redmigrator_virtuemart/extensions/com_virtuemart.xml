@@ -5,6 +5,8 @@
 
 	<!-- The tables to copy to the new site. -->
 	<tables>
+		<table title="VIRTUEMART Auth Group" tbl_key="" destination="virtuemart_permgroups" type="virtuemart" class="RedMigratorVirtuemartAuthGroup">vm_auth_group</table>
+
 		<table title="VIRTUEMART Category" tbl_key="category_id" destination="virtuemart_categories" type="virtuemart" class="RedMigratorVirtuemartCategory">vm_category</table>
 
 		<table title="VIRTUEMART Category Xref" tbl_key="" destination="virtuemart_category_categories" type="virtuemart" class="RedMigratorVirtuemartCategoryCategory">vm_category_xref</table>
@@ -51,6 +53,8 @@
 		<table title="VIRTUEMART Product Vote" tbl_key="" destination="virtuemart_rating_votes" type="virtuemart" class="RedMigratorVirtuemartProductVote">vm_product_votes</table>
 
 		<table title="VIRTUEMART Shopper group" tbl_key="shopper_group_id" destination="virtuemart_shoppergroups" type="virtuemart" class="RedMigratorVirtuemartShopperGroup">vm_shopper_group</table>
+
+		<table title="VIRTUEMART Shopper Vendor Xref" tbl_key="" destination="virtuemart_vmuser_shoppergroups" type="virtuemart" class="RedMigratorVirtuemartShopperVendorXref">vm_shopper_vendor_xref</table>
 
 		<table title="VIRTUEMART User field" tbl_key="fieldid" destination="virtuemart_userfields" type="virtuemart" class="RedMigratorVirtuemartUserField">vm_userfield</table>
 
