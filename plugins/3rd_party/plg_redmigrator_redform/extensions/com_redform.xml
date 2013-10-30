@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>K2 for Joomla</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table title="redFORM Configuration" tbl_key="" destination="rwf_configuration" type="redform" class="RedMigratorRedformConfiguration">rwf_configuration</table>
+
+		<table title="redFORM Field" tbl_key="" destination="rwf_fields" type="redform" class="RedMigratorRedformField">rwf_fields</table>
+
+		<table title="redFORM Form" tbl_key="" destination="rwf_forms" type="redform" class="RedMigratorRedformForm">rwf_forms</table>
+
+		<table title="redFORM Mailinglist" tbl_key="" destination="rwf_mailinglists" type="redform" class="RedMigratorRedformMailinglist">rwf_mailinglists</table>
+
+		<table title="redFORM Payment" tbl_key="" destination="rwf_payment" type="redform" class="RedMigratorRedformPayment">rwf_payment</table>
+
+		<table title="redFORM Submitter" tbl_key="" destination="rwf_submitters" type="redform" class="RedMigratorRedformSubmitter">rwf_submitters</table>
+
+		<table title="redFORM Value" tbl_key="" destination="rwf_values" type="redform" class="RedMigratorRedformValue">rwf_values</table>
+	</tables>
+
+</redmigrator>
