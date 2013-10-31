@@ -29,6 +29,8 @@
 
 		<table title="redMEMBER Mail" tbl_key="" destination="redmember_mail" type="redmember" class="RedMigratorRedmemberMail">redmember_mail</table>
 
+		<table title="redMEMBER Membershipfee" tbl_key="" destination="redmember_membership" type="redmember" class="RedMigratorRedmemberMembershipfee">redmember_membershipfee</table>
+
 		<table title="redMEMBER Newsletter" tbl_key="" destination="redmember_newsletter" type="redmember" class="RedMigratorRedmemberNewsletter">redmember_newsletter</table>
 
 		<table title="redMEMBER Newsletter Subscription" tbl_key="" destination="redmember_newsletter_subscription" type="redmember" class="RedMigratorRedmemberNewsletterSubscription">redmember_newsletter_subscription</table>
@@ -46,6 +48,10 @@
 		<table title="redMEMBER Tab" tbl_key="" destination="redmember_tab" type="redmember" class="RedMigratorRedmemberTab">redmember_tab</table>
 
 		<table title="redMEMBER Template" tbl_key="" destination="redmember_template" type="redmember" class="RedMigratorRedmemberTemplate">redmember_template</table>
+
+		<table title="redMEMBER User" tbl_key="" destination="redmember_users" type="redmember" class="RedMigratorRedmemberUser">redmember_users</table>
+
+		<table title="redMEMBER User type" tbl_key="" destination="redmember_usergroups" type="redmember" class="RedMigratorRedmemberUserType">redmember_usertype</table>
 
 		<table title="redMEMBER Vatgroup" tbl_key="" destination="redmember_vatgroup" type="redmember" class="RedMigratorRedmemberVatgroup">redmember_vatgroup</table>
 
