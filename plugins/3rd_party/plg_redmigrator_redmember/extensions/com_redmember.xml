@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>redMEMBER for Joomla</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table title="redMEMBER Country" tbl_key="" destination="redmember_country" type="redmember" class="RedMigratorRedmemberCountry">redmember_country</table>
+
+		<table title="redMEMBER Currency" tbl_key="" destination="redmember_currency" type="redmember" class="RedMigratorRedmemberCurrency">redmember_currency</table>
+
+		<table title="redMEMBER Field" tbl_key="" destination="redmember_fields" type="redmember" class="RedMigratorRedmemberField">redmember_fields</table>
+
+		<table title="redMEMBER Field Value" tbl_key="" destination="redmember_fields_values" type="redmember" class="RedMigratorRedmemberFieldValue">redmember_fields_values</table>
+
+		<table title="redMEMBER Filemanager" tbl_key="" destination="redmember_filemanager" type="redmember" class="RedMigratorRedmemberFilemanager">redmember_filemanager</table>
+
+		<table title="redMEMBER Filemanager Category" tbl_key="" destination="redmember_filemanager_categories" type="redmember" class="RedMigratorRedmemberFilemanagerCategory">redmember_filemanager_categories</table>
+
+		<table title="redMEMBER Forum Category" tbl_key="" destination="redmember_forum_category" type="redmember" class="RedMigratorRedmemberForumCategory">redmember_forum_category</table>
+
+		<table title="redMEMBER Forum Post" tbl_key="" destination="redmember_forum_post" type="redmember" class="RedMigratorRedmemberForumPost">redmember_forum_post</table>
+
+		<table title="redMEMBER Forum Section" tbl_key="" destination="redmember_forum_section" type="redmember" class="RedMigratorRedmemberForumSection">redmember_forum_section</table>
+
+		<table title="redMEMBER Forum Subscribe" tbl_key="" destination="redmember_forum_subscribe" type="redmember" class="RedMigratorRedmemberForumSubscribe">redmember_forum_subscribe</table>
+
+		<table title="redMEMBER Forum Thread" tbl_key="" destination="redmember_forum_thread" type="redmember" class="RedMigratorRedmemberForumThread">redmember_forum_thread</table>
+
+		<table title="redMEMBER Mail" tbl_key="" destination="redmember_mail" type="redmember" class="RedMigratorRedmemberMail">redmember_mail</table>
+
+		<table title="redMEMBER Newsletter" tbl_key="" destination="redmember_newsletter" type="redmember" class="RedMigratorRedmemberNewsletter">redmember_newsletter</table>
+
+		<table title="redMEMBER Newsletter Subscription" tbl_key="" destination="redmember_newsletter_subscription" type="redmember" class="RedMigratorRedmemberNewsletterSubscription">redmember_newsletter_subscription</table>
+
+		<table title="redMEMBER Newsletter Tracker" tbl_key="" destination="redmember_newsletter_tracker" type="redmember" class="RedMigratorRedmemberNewsletterTracker">redmember_newsletter_tracker</table>
+
+		<table title="redMEMBER Payment Method" tbl_key="" destination="redmember_payment_method" type="redmember" class="RedMigratorRedmemberPaymentMethod">redmember_payment_method</table>
+
+		<table title="redMEMBER Search" tbl_key="" destination="redmember_search" type="redmember" class="RedMigratorRedmemberSearch">redmember_search</table>
+
+		<table title="redMEMBER Search Form" tbl_key="" destination="redmember_search_form" type="redmember" class="RedMigratorRedmemberSearchForm">redmember_search_form</table>
+
+		<table title="redMEMBER State" tbl_key="" destination="redmember_state" type="redmember" class="RedMigratorRedmemberState">redmember_state</table>
+
+		<table title="redMEMBER Tab" tbl_key="" destination="redmember_tab" type="redmember" class="RedMigratorRedmemberTab">redmember_tab</table>
+
+		<table title="redMEMBER Template" tbl_key="" destination="redmember_template" type="redmember" class="RedMigratorRedmemberTemplate">redmember_template</table>
+
+		<table title="redMEMBER Vatgroup" tbl_key="" destination="redmember_vatgroup" type="redmember" class="RedMigratorRedmemberVatgroup">redmember_vatgroup</table>
+
+		<table title="redMEMBER Vatrate" tbl_key="" destination="vatrates" type="redmember" class="RedMigratorRedmemberVatrate">redmember_vatrates</table>
+	</tables>
+
+</redmigrator>
