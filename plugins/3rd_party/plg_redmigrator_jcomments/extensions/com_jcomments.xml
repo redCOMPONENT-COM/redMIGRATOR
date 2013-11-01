@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>JComment for Joomla</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table title="JComments jcomments" tbl_key="" destination="jcomments" type="jcomments" class="RedMigratorJComment">jcomments</table>
+
+		<table title="JComments Blacklist" tbl_key="" destination="jcomments_blacklist" type="jcomments" class="RedMigratorJCommentBlacklist">jcomments_blacklist</table>
+
+		<table title="JComments Custom bbcode" tbl_key="" destination="jcomments_custom_bbcodes" type="jcomments" class="RedMigratorJCommentCustomBbcode">jcomments_custom_bbcodes</table>
+
+		<table title="JComments Object" tbl_key="" destination="jcomments_objects" type="jcomments" class="RedMigratorJCommentObject">jcomments_objects</table>
+
+		<table title="JComments Report" tbl_key="" destination="jcomments_reports" type="jcomments" class="RedMigratorJCommentReport">jcomments_reports</table>
+
+		<table title="JComments Setting" tbl_key="" destination="jcomments_settings" type="jcomments" class="RedMigratorJCommentSetting">jcomments_settings</table>
+
+		<table title="JComments Subscription" tbl_key="" destination="jcomments_subscriptions" type="jcomments" class="RedMigratorJCommentSubscription">jcomments_subscriptions</table>
+
+		<table title="JComments Version" tbl_key="" destination="jcomments_version" type="jcomments" class="RedMigratorJCommentVersion">jcomments_version</table>
+
+		<table title="JComments Vote" tbl_key="" destination="jcomments_votes" type="jcomments" class="RedMigratorJCommentVote">jcomments_votes</table>
+	</tables>
+
+</redmigrator>
