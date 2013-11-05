@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>Acesef for Joomla</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table title="Acesef Bookmark" tbl_key="" destination="acesef_bookmarks" type="acesef" class="RedMigratorAcesefBookmark">acesef_bookmarks</table>
+
+		<table title="Acesef Extension" tbl_key="" destination="acesef_extensions" type="acesef" class="RedMigratorAcesefExtension">acesef_extensions</table>
+
+		<table title="Acesef Ilink" tbl_key="" destination="acesef_ilinks" type="acesef" class="RedMigratorAcesefIlink">acesef_ilinks</table>
+
+		<table title="Acesef Metadata" tbl_key="" destination="acesef_metadata" type="acesef" class="RedMigratorAcesefMetadata">acesef_metadata</table>
+
+		<table title="Acesef Sitemap" tbl_key="" destination="acesef_sitemap" type="acesef" class="RedMigratorAcesefSitemap">acesef_sitemap</table>
+
+		<table title="Acesef Tag" tbl_key="" destination="acesef_tags" type="acesef" class="RedMigratorAcesefTag">acesef_tags</table>
+
+		<table title="Acesef Tag map" tbl_key="" destination="acesef_tags_map" type="acesef" class="RedMigratorAcesefTagMap">acesef_tags_map</table>
+
+		<table title="Acesef Url" tbl_key="" destination="acesef_urls" type="acesef" class="RedMigratorAcesefUrl">acesef_urls</table>
+
+		<table title="Acesef Url moved" tbl_key="" destination="acesef_urls_moved" type="acesef" class="RedMigratorAcesefUrlMoved">acesef_urls_moved</table>
+	</tables>
+
+</redmigrator>
