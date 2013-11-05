@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>JEvents for Joomla</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table title="JEvents categories" tbl_key="" destination="categories" type="jevents" class="RedMigratorJEventsCategory">jevents_categories</table>
+
+		<table title="JEvents Catmap" tbl_key="" destination="jevents_catmap" type="jevents" class="RedMigratorJEventsCatmap">jevents_catmap</table>
+		
+		<table title="JEvents Exception" tbl_key="" destination="jevents_exception" type="jevents" class="RedMigratorJEventsException">jevents_exception</table>
+
+		<table title="JEvents Icsfile" tbl_key="" destination="jevents_icsfile" type="jevents" class="RedMigratorJEventsIcsfile">jevents_icsfile</table>
+
+		<table title="JEvents Repetition" tbl_key="" destination="jevents_repetition" type="jevents" class="RedMigratorJEventsRepetition">jevents_repetition</table>
+
+		<table title="JEvents Rrule" tbl_key="" destination="jevents_rrule" type="jevents" class="RedMigratorJEventsRrule">jevents_rrule</table>
+
+		<table title="JEvents Vevdetail" tbl_key="" destination="jevents_vevdetail" type="jevents" class="RedMigratorJEventsVevdetail">jevents_vevdetail</table>
+
+		<table title="JEvents Vevent" tbl_key="" destination="jevents_vevent" type="jevents" class="RedMigratorJEventsVevent">jevents_vevent</table>
+
+		<table title="JEvents Default" tbl_key="" destination="jev_defaults" type="jevents" class="RedMigratorJEventsDefault">jev_defaults</table>
+
+		<table title="JEvents User" tbl_key="" destination="jev_users" type="jevents" class="RedMigratorJEventsUser">jev_users</table>
+	</tables>
+
+</redmigrator>
