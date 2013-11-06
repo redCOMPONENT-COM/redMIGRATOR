@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
  * @subpackage  REST
  * @since       3.0
  */
-class JRESTDispatcher
+class RedRESTDispatcher
 {
 	/**
 	 * @var    array  Associative array of parameters for the REST message.

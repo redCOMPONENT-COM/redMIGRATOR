@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
  * @subpackage  REST
  * @since       1.0
  */
-class JRESTAuthorizer
+class RedRESTAuthorizer
 {
 	/**
 	 * Authorize an REST signed request for a protected resource.
