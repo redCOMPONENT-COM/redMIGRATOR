@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__redmember_country`,
 `#__redmember_currency`,
 `#__redmember_fields`,

@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__virtuemart_adminmenuentries`,
 `#__virtuemart_calcs`,
 `#__virtuemart_calc_categories`,

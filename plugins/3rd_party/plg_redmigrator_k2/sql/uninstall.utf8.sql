@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__k2_attachments`,
 `#__k2_categories`,
 `#__k2_comments`,

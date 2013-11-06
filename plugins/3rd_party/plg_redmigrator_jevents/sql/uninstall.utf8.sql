@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__jevents_catmap`,
 `#__jevents_exception`,
 `#__jevents_icsfile`,

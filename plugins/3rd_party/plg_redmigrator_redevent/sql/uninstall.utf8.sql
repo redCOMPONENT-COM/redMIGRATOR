@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__redevent_attachments`,
 `#__redevent_categories`,
 `#__redevent_countries`,

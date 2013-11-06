@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__kunena_aliases`,
 `#__kunena_announcement`,
 `#__kunena_attachments`,
