@@ -72,7 +72,7 @@ class PlgSystemRedMigrator extends JPlugin
 		$request = false;
 
 		// Get the REST message from the current request.
-		$rest = new JRESTMessage;
+		$rest = new RedRESTMessage;
 
 		if ($rest->loadFromRequest())
 		{
@@ -83,7 +83,7 @@ class PlgSystemRedMigrator extends JPlugin
 		if ($request == true)
 		{
 			// Check the username and pass
-			$auth = new JRESTAuthorizer;
+			$auth = new RedRESTAuthorizer;
 
 			if (!$auth->authorize($db, $rest->_parameters))
 			{
@@ -94,7 +94,7 @@ class PlgSystemRedMigrator extends JPlugin
 			}
 
 			// Check the username and pass
-			$dispatcher = new JRESTDispatcher;
+			$dispatcher = new RedRESTDispatcher;
 
 			$return = $dispatcher->execute($rest->_parameters);
 
