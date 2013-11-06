@@ -109,7 +109,7 @@ class RedMigratorTableExtensions_Categories extends RedMigratorTable
 	 * @param	Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
-	function migrate( )
+	function migrate()
 	{
 		$this->params = $this->convertParams($this->params);
 		$this->access = $this->access == 0 ? 1 : $this->access + 1;

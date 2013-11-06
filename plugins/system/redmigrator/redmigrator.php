@@ -144,9 +144,9 @@ class PlgSystemRedMigrator extends JPlugin
 	/**
 	 * populateDatabase
 	 */
-	function populateDatabase(& $db, $sqlfile)
+	function populateDatabase(&$db, $sqlfile)
 	{
-		if( !($buffer = file_get_contents($sqlfile)))
+		if(!($buffer = file_get_contents($sqlfile)))
 		{
 			return -1;
 		}

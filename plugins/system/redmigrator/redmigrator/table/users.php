@@ -128,7 +128,7 @@ class RedMigratorTableUsers extends RedMigratorTable
 	 * @param   Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
-	function migrate ()
+	function migrate()
 	{
 		// Fixing the params compatible with 2.5/3.0
 		$this->params = $this->convertParams($this->params);

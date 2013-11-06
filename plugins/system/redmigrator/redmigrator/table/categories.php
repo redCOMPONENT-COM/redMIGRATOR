@@ -110,7 +110,7 @@ class RedMigratorTableCategories extends RedMigratorTable
 	 * @param	Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
-	function migrate( )
+	function migrate()
 	{
 		$this->params = $this->convertParams($this->params);
 		$this->title = str_replace("'", "&#39;", $this->title);
