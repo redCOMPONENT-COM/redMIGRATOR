@@ -82,7 +82,7 @@ class RedMigratorTableWeblinks extends RedMigratorTable
 	/**
 	 * Weblinks migration
 	 */
-	function migrate ()
+	function migrate()
 	{
 		// Fixing state
 		$this->state = $this->published;

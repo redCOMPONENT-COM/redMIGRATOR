@@ -97,7 +97,7 @@ class RedMigratorTableExt_Plugins extends RedMigratorTable
 	 * @param	Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
-	function migrate( )
+	function migrate()
 	{
 		$this->params = isset($this->params) ? $this->convertParams($this->params) : '';
 

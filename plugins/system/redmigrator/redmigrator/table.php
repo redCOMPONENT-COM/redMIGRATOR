@@ -149,7 +149,7 @@ class RedMigratorTable extends JTable
 		$limit = "LIMIT {$oid}, 1";
 
 		// Get the row
-		$query = "SELECT {$select} FROM {$table} {$as} {$join} {$where}{$where_or} {$group_by} {$order} {$limit}";
+		$query = "SELECT {$select} FROM {$table} {$as} {$join} {$where} {$where_or} {$group_by} {$order} {$limit}";
 		$db->setQuery($query);
 		$row = $db->loadAssoc();
 
@@ -182,7 +182,7 @@ class RedMigratorTable extends JTable
 
 		$name = $this->_getStepName();
 
-		$query = "UPDATE `redmigrator_plugin_steps` SET `cid` = '{$id}' WHERE name = ".$db->quote($name);
+		$query = "UPDATE `redmigrator_plugin_steps` SET `cid` = '{$id}' WHERE name = " . $db->quote($name);
 
 		$db->setQuery( $query );
 		return $db->query();
@@ -203,7 +203,7 @@ class RedMigratorTable extends JTable
 		$name = $this->_getStepName();
 
 		$query = 'SELECT `cid` FROM redmigrator_plugin_steps'
-		. ' WHERE name = '.$db->quote($name);
+		. ' WHERE name = ' . $db->quote($name);
 		$db->setQuery( $query );
 		$stepid = (int) $db->loadResult();
 
@@ -267,37 +267,48 @@ class RedMigratorTable extends JTable
 		$conditions = $this->getConditionsHook();
 
 		$where = '';
-		if (isset($conditions['where'])) {
-			$where = count( $conditions['where'] ) ? 'WHERE ' . implode( ' AND ', $conditions['where'] ) : '';
+
+		if (isset($conditions['where']))
+		{
+			$where = count($conditions['where']) ? 'WHERE ' . implode(' AND ', $conditions['where']) : '';
 		}
 
 		$where_or = '';
-		if (isset($conditions['where_or'])) {
-			$where_or = count( $conditions['where_or'] ) ? 'WHERE ' . implode( ' OR ', $conditions['where_or'] ) : '';
+
+		if (isset($conditions['where_or']))
+		{
+			$where_or = count($conditions['where_or']) ? 'WHERE ' . implode(' OR ', $conditions['where_or']) : '';
 		}
-		$as = isset($conditions['as']) ? 'AS '.$conditions['as'] : '';
+
+		$as = isset($conditions['as']) ? 'AS ' . $conditions['as'] : '';
 
 		$join = '';
-		if (isset($conditions['join'])) {
-			$join = count( $conditions['join'] ) ? implode( ' ', $conditions['join'] ) : '';
+
+		if (isset($conditions['join']))
+		{
+			$join = count($conditions['join']) ? implode(' ', $conditions['join']) : '';
 		}
 
 		$group_by = '';
-		if (isset($conditions['group_by'])) {
+
+		if (isset($conditions['group_by']))
+		{
 			$group_by = isset($conditions['group_by']) ? "GROUP BY " . $conditions['group_by'] : "";
 		}
 
 		// Get Total
-		$query = "SELECT COUNT(*) FROM {$this->_tbl} {$as} {$join} {$where}{$where_or} {$group_by}";
-		$db->setQuery( $query );
+		$query = "SELECT COUNT(*) FROM {$this->_tbl} {$as} {$join} {$where} {$where_or} {$group_by}";
+		$db->setQuery($query);
 		$total = (int) $db->loadResult();
 
-		if (is_int($total)) {
+		if (is_int($total))
+		{
 			return $total;
 		}
 		else
 		{
-			$this->setError( $db->getErrorMsg() );
+			$this->setError($db->getErrorMsg());
+
 			return false;
 		}
 	}
@@ -306,7 +317,8 @@ class RedMigratorTable extends JTable
  	* Writes to file all the selected database tables structure with SHOW CREATE TABLE
 	* @param string $table The table name
 	*/
-	public function getTableStructure() {
+	public function getTableStructure()
+	{
 		// Getting the database instance
 		$db = JFactory::getDbo();
 
@@ -322,6 +334,7 @@ class RedMigratorTable extends JTable
 
 		// Sanitize input to an array and iterate over the list.
 		settype($tables, 'array');
+
 		foreach ($tables as $table)
 		{
 			// Set the query to get the table CREATE statement.
@@ -338,7 +351,6 @@ class RedMigratorTable extends JTable
 
 		$structure = str_replace('TYPE', 'ENGINE', $structure);
 		$structure = str_replace($db->getPrefix(), '#__', $structure);
-		//$structure = str_replace('MyISAM', 'InnoDB', $structure);
 
 		return $structure;
 	}
@@ -359,15 +371,18 @@ class RedMigratorTable extends JTable
 		$table = $this->_tbl;
 		$prefix = $db->getPrefix();
 
-		$table = str_replace ('#__', $prefix, $table); 
+		$table = str_replace('#__', $prefix, $table);
 
 		// Set the query to get the tables statement.
 		$db->setQuery('SHOW TABLES');
 		$tables = $db->loadResultArray();
 
-		if (in_array($table, $tables)) {
+		if (in_array($table, $tables))
+		{
 			return 'YES';
-		}else{
+		}
+		else
+		{
 			return 'NO';
 		}
 	}
@@ -388,7 +403,7 @@ class RedMigratorTable extends JTable
 		$table = $this->_tbl;
 		$prefix = $db->getPrefix();
 
-		$table = str_replace ('#__', $prefix, $table); 
+		$table = str_replace('#__', $prefix, $table);
 
 		// Set the query to get the tables statement.
 		$query = "SELECT params FROM {$table} WHERE `option` = 'com_content' LIMIT 1";
@@ -409,20 +424,22 @@ class RedMigratorTable extends JTable
 	{
 		$array = array();
 
-		foreach (get_object_vars( $this ) as $k => $v)
+		foreach (get_object_vars($this) as $k => $v)
 		{
-			if (is_array($v) or is_object($v) or $v === NULL)
+			if (is_array($v) or is_object($v) or $v === null)
 			{
 				continue;
 			}
+
 			if ($k[0] == '_')
-			{ // internal field
+			{
+				// Internal field
 				continue;
 			}
-			
+
 			$array[$k] = $v;
 		}
-		
+
 		$json = json_encode($array);
 
 		return $json;
@@ -460,5 +477,5 @@ class RedMigratorTable extends JTable
 	protected function convertParamsHook(&$object)
 	{
 		// Do customisation of the params field here for specific data.
-	}	
+	}
 }

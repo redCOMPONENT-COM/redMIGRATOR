@@ -126,7 +126,7 @@ class RedMigratorTableMenus extends RedMigratorTable
 	 * @param	Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
-	function migrate( )
+	function migrate()
 	{
 		// Fixing access
 		$this->access++;

@@ -83,10 +83,6 @@ class RedMigratorFiles
 		$return['total'] = $this->getTotal();
 		$return['name'] = 'images';
 
-		//sort($this->_images);
-
-		//print_r($this->_images);
-
 		return json_encode($return);
 	}
 

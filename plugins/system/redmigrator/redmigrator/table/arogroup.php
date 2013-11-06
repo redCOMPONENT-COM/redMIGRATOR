@@ -40,18 +40,18 @@ class RedMigratorTableAROGroup extends RedMigratorTable
 	var $_type = 'arogroup';
 
 	protected $usergroup_map = array(
-		// Old	=> // New
-		0		=> 0,	// ROOT
-		28		=> 1,	// USERS (=Public)
-		29		=> 1,	// Public Frontend
-		18		=> 2,	// Registered
-		19		=> 3,	// Author
-		20		=> 4,	// Editor
-		21		=> 5,	// Publisher
-		30		=> 6,	// Public Backend (=Manager)
-		23		=> 6,	// Manager
-		24		=> 7,	// Administrator
-		25		=> 8,	// Super Administrator
+		/*Old	=> New*/
+		0		=> 0,	/*ROOT*/
+		28		=> 1,	/*USERS (=Public)*/
+		29		=> 1,	/*Public Frontend*/
+		18		=> 2,	/*Registered*/
+		19		=> 3,	/*Author*/
+		20		=> 4,	/*Editor*/
+		21		=> 5,	/*Publisher*/
+		30		=> 6,	/*Public Backend (=Manager)*/
+		23		=> 6,	/*Manager*/
+		24		=> 7,	/*Administrator*/
+		25		=> 8,	/*Super Administrator*/
 	);
 
 	function __construct(&$db)
@@ -83,7 +83,7 @@ class RedMigratorTableAROGroup extends RedMigratorTable
 	 *
 	 * @access	public
 	 */
-	function migrate( )
+	function migrate()
 	{
 		// Note, if we are here, these are custom groups we didn't know about.
 		if (isset($this->parent_id))

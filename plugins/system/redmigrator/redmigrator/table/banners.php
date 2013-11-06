@@ -19,9 +19,11 @@ defined('JPATH_BASE') or die();
  * @subpackage	Table
  * @since		1.5
  */
-class RedMigratorTableBanners extends RedMigratorTable {
+class RedMigratorTableBanners extends RedMigratorTable
+{
 	/** @var int(11) */
 	var $id = null;
+
 	/** @var int(11) */
 	var $cid = null;
 
@@ -131,7 +133,7 @@ class RedMigratorTableBanners extends RedMigratorTable {
 	 * @param	Array	Result to migrate
 	 * @return	Array	Migrated result
 	 */
-	function migrate( )
+	function migrate()
 	{
 		unset($this->bid);
 	}
