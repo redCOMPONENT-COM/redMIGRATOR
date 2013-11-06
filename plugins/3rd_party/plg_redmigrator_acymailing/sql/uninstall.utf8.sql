@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__acymailing_config`,
 `#__acymailing_fields`,
 `#__acymailing_filter`,

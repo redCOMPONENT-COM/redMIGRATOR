@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__acesef_bookmarks`,
 `#__acesef_extensions`,
 `#__acesef_ilinks`,

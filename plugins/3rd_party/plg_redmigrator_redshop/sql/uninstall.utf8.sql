@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__redshop_accessmanager`,
 `#__redshop_attribute_set`,
 `#__redshop_cart`,

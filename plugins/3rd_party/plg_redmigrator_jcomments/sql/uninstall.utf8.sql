@@ -1,4 +1,4 @@
-DROP TABLE
+DROP TABLE IF EXISTS
 `#__jcomments`,
 `#__jcomments_blacklist`,
 `#__jcomments_custom_bbcodes`,
