@@ -13,7 +13,12 @@ class RedMigratorK2Item extends RedMigrator
 {
     public function dataHook($rows)
     {
-        $row['access'] = 1;
+        foreach ($rows as &$row)
+        {
+            $row = (array) $row;
+            
+            $row['access'] = 1;
+        }
 
         return $rows;
     }
