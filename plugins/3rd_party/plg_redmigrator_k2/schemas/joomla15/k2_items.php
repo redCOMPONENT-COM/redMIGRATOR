@@ -11,5 +11,11 @@
 
 class RedMigratorK2Item extends RedMigrator
 {
+    public function dataHook($rows)
+    {
+        $row['access'] = 1;
+
+        return $rows;
+    }
 }
 ?>
