@@ -20,6 +20,9 @@ error_reporting(0);
 // Error reporting(E_ALL);
 // Ini_set('display_errors','1');
 
+// Set unlimit timeout
+ini_set('max_execution_time', 0);
+
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_redmigrator'))
 {

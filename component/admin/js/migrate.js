@@ -231,7 +231,7 @@ var redmigrator = new Class({
 				{
 					$('error').setStyle('display', 'block');
 					text = document.getElementById('error');
-					text.innerHTML = "Timeout";
+					text.innerHTML = response;
 				}
 			}
 		});
