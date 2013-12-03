@@ -173,7 +173,7 @@ class RedMigratorModelChecks extends RModelAdmin
 		}
 
 		// Checking tables
-		if ($params->skip_core_users != 1)
+		/*if ($params->skip_core_users != 1)
 		{
 			$query->clear();
 			$query->select('COUNT(id)');
@@ -186,7 +186,7 @@ class RedMigratorModelChecks extends RModelAdmin
                 //RedMigratorHelper::returnError(100, $users_count);
 				throw new Exception('COM_REDMIGRATOR_ERROR_DATABASE_USERS');
 			}
-		}
+		}*/
 
 		
 

@@ -26,6 +26,17 @@
                 description="COM_REDMIGRATOR_CONFIG_LIMIT_DESC"
                 default="100"
                 />
+	     <field
+                name="core_version"
+                type="radio"
+                default="0"
+                label="COM_REDMIGRATOR_CONFIG_CORE_VERSION"
+                description=""
+                class="btn-group"
+                >
+            <option value="0">COM_REDMIGRATOR_CONFIG_J15</option>
+            <option value="1">COM_REDMIGRATOR_CONFIG_J25</option>
+        </field>
     </fieldset>
     <fieldset
             name="rest"
