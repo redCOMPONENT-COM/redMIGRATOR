@@ -46,13 +46,31 @@ class RedMigratorModelCleanup extends RModelAdmin
 
 		// Set all cid, status and cache to 0
 		$query = $this->_db->getQuery(true);
-		$query->update('#__redmigrator_steps')->set('cid = 0, status = 0, cache = 0');
+		$query->update('#__redmigrator_steps')
+				->set('cid = 0, status = 0, cache = 0');
 		$this->_db->setQuery($query)->execute();
 
 		// Convert the params to array
 		$core_skips = (array) $params;
 
-		// Skiping the steps setted by user
+		$core_version = $core_skips['core_version'];
+
+		$query->clear();
+		$query->update('#__redmigrator_steps')
+				->set('status = 2');
+
+		if ($core_version == 0) // Migrate from J15
+		{
+			$query->where('type = "core25"');
+		}
+		else // Migrate from J25
+		{
+			$query->where('type = "core15"');
+		}
+
+		$this->_db->setQuery($query)->execute();
+
+		// Skipping the steps setted by user
 		foreach ($core_skips as $k => $v)
 		{
 			$core = substr($k, 0, 9);
@@ -64,8 +82,10 @@ class RedMigratorModelCleanup extends RModelAdmin
 				{
 					$query->clear();
 
-					// Set all status to 0 and clear state
-					$query->update('#__redmigrator_steps')->set('status = 2')->where("name = '{$name}'");
+					// Set all status to 2 and clear state
+					$query->update('#__redmigrator_steps')
+							->set('status = 2')
+							->where("name = '{$name}'");
 
 					try
 					{
@@ -80,7 +100,17 @@ class RedMigratorModelCleanup extends RModelAdmin
 
 					if ($name == 'users')
 					{
-						$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'arogroup\'');
+						$query->update('#__redmigrator_steps')
+								->set('status = 2');
+
+						if ($core_version == 0)
+						{
+							$query->where('name = "arogroup"');
+						}
+						else
+						{
+							$query->where('name = "usergroups" OR name = "usernotes" OR name = "userprofiles"');
+						}
 
 						try
 						{
@@ -92,7 +122,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 						}
 
 						$query->clear();
-						$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'usergroupmap\'');
+						$query->update('#__redmigrator_steps')
+								->set('status = 2')
+								->where('name = "usergroupmap"');
 
 						try
 						{
@@ -106,7 +138,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 
 					if ($name == 'categories')
 					{
-						$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'sections\'');
+						$query->update('#__redmigrator_steps')
+								->set('status = 2')
+								->where('name = "sections"');
 
 						try
 						{
@@ -125,7 +159,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 				if ($v == 1)
 				{
 					$query->clear();
-					$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'extensions\'');
+					$query->update('#__redmigrator_steps')
+							->set('status = 2')
+							->where('name = "extensions"');
 
 					try
 					{
@@ -168,7 +204,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 		{
 			// Insert needed value
 			$query->clear();
-			$query->insert('#__redmigrator_menus')->columns('`old`, `new`')->values("0, 0");
+			$query->insert('#__redmigrator_menus')
+					->columns('`old`, `new`')
+					->values("0, 0");
 
 			try
 			{
@@ -181,7 +219,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 
 			// Clear the default database
 			$query->clear();
-			$query->delete()->from('#__redmigrator_default_menus')->where('id > 100');
+			$query->delete()
+					->from('#__redmigrator_default_menus')
+					->where('id > 100');
 
 			try
 			{
@@ -419,7 +459,7 @@ class RedMigratorModelCleanup extends RModelAdmin
 		$query->clear();
 		$query->delete()
 				->from('#__redmigrator_steps')
-				->where('type != "core"');
+				->where('type != "core15" AND type != "core25"');
 
 		try
 		{
@@ -434,6 +474,12 @@ class RedMigratorModelCleanup extends RModelAdmin
 		$session = JFactory::getSession();
 		$session->set('laststep', '', 'redmigrator_virtuemart');
 		$session->set('stepTotal', 0, 'redmigrator_virtuemart');
+
+		// Map usergroup old id to new id
+		$session->set('arrUsergroups', array(), 'redmigrator_j25');
+
+		// Map user old id to new id
+		$session->set('arrUsers', array(), 'redmigrator_j25');
 
 		// Done cleanup
 		if (!RedMigratorHelper::isCli())

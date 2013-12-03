@@ -78,9 +78,19 @@ class RedMigratorHelper
 					JLoader::register($class, $file_checks);
 				}
 			}
-			elseif ($type == "core") // Joomla core
+			elseif ($type == "core15") // Joomla core15
 			{
 				$file_core = JPATH_COMPONENT_ADMINISTRATOR . "/includes/schemas/joomla15/{$name}.php";
+
+				// Require the file
+				if (JFile::exists($file_core))
+				{
+					JLoader::register($class, $file_core);
+				}
+			}
+			elseif ($type == "core25") // Joomla core25
+			{
+				$file_core = JPATH_COMPONENT_ADMINISTRATOR . "/includes/schemas/joomla25/{$name}.php";
 
 				// Require the file
 				if (JFile::exists($file_core))
@@ -161,13 +171,51 @@ class RedMigratorHelper
      *
      * @since	2.5.0
      */
-    public static function returnError ($number, $text)
+    public static function returnError($number, $text)
     {
         $message['number'] = $number;
         $message['text'] = JText::_($text);
         echo json_encode($message);
         exit;
     }
+
+	/**
+	 * Get next id will be inserted into the table
+	 *
+	 * @param $table
+	 *
+	 * @return mixed
+	 */
+	public static function getAutoIncrement($table)
+	{
+		$conf = JFactory::getConfig();
+		$db = JFactory::getDbo();
+		$database = $conf->get('db');
+
+		$query = "SHOW TABLE STATUS FROM `" . $database . "` WHERE name ='" . $db->getPrefix() . $table . "'";
+
+		$db->setQuery($query);
+		$row = $db->loadObject();
+
+		return $row->Auto_increment;
+	}
+
+	public static function lookupNewId($sessionEntry, $oldId)
+	{
+		$session = JFactory::getSession();
+
+		$arrUsergroups = $session->get($sessionEntry, null, 'redmigrator_j25');
+
+		foreach ($arrUsergroups as $usergroup)
+		{
+			if ($usergroup['old_id'] == $oldId)
+			{
+				return (int) $usergroup['new_id'];
+			}
+		}
+
+		return 0;
+	}
 
     /**
      * Only for developer debug

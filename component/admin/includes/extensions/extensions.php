@@ -29,24 +29,29 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 
 	public function upgrade()
 	{
-		if (!$this->upgradeComponents())
-		{
-			return false;
-		}
+		$core_version = $this->params->core_version;
 
-		if (!$this->upgradeModules())
+		if ($core_version == 0)
 		{
-			return false;
-		}
+			if (!$this->upgradeComponents())
+			{
+				return false;
+			}
 
-		if (!$this->upgradePlugins())
-		{
-			return false;
-		}
+			if (!$this->upgradeModules())
+			{
+				return false;
+			}
 
-		if (!$this->_processExtensions())
-		{
-			return false;
+			if (!$this->upgradePlugins())
+			{
+				return false;
+			}
+
+			if (!$this->_processExtensions())
+			{
+				return false;
+			}
 		}
 
 		//return ($this->_processExtensions() == 0) ? false : true;

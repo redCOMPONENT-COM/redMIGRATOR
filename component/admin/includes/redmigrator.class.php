@@ -304,7 +304,8 @@ class RedMigrator
 			$this->ready = $this->afterHook($rows);
 		}
 
-		if ($this->_step->name == $this->_step->laststep && $this->_step->cache == 0
+		if ($this->_step->name == $this->_step->laststep
+			&& $this->_step->cache == 0
 			&& $this->getTotal() == $this->_step->cid)
 		{
 			$this->ready = $this->afterAllStepsHook();
