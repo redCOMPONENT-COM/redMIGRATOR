@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>Flexicontent for Joomla</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table title="Flexicontent AdvSearch Index" tbl_key="" destination="flexicontent_advsearch_index" type="flexicontent" class="RedMigratorFlexicontentAdvsearchIndex">flexicontent_advsearch_index</table>
+
+		<table title="Flexicontent Authors Ext" tbl_key="" destination="flexicontent_authors_ext" type="flexicontent" class="RedMigratorFlexicontentAuthorsExt">flexicontent_authors_ext</table>
+
+		<table title="Flexicontent Cats Item Relations" tbl_key="" destination="flexicontent_cats_item_relations" type="flexicontent" class="RedMigratorFlexicontentCatsItemRelations">flexicontent_cats_item_relations</table>
+
+		<table title="Flexicontent Favourites" tbl_key="" destination="flexicontent_favourites" type="flexicontent" class="RedMigratorFlexicontentFavourites">flexicontent_favourites</table>
+
+		<table title="Flexicontent Fields" tbl_key="" destination="flexicontent_fields" type="flexicontent" class="RedMigratorFlexicontentFields">flexicontent_fields</table>
+
+		<table title="Flexicontent Fields Item Relations" tbl_key="" destination="flexicontent_fields_item_relations" type="flexicontent" class="RedMigratorFlexicontentFieldsItemRelations">flexicontent_fields_item_relations</table>
+
+		<table title="Flexicontent Fields Type Relations" tbl_key="" destination="flexicontent_fields_type_relations" type="flexicontent" class="RedMigratorFlexicontentFieldsTypeRelations">flexicontent_fields_type_relations</table>
+
+		<table title="Flexicontent Files" tbl_key="" destination="flexicontent_files" type="flexicontent" class="RedMigratorFlexicontentFiles">flexicontent_files</table>
+
+		<table title="Flexicontent Items Ext" tbl_key="" destination="flexicontent_items_ext" type="flexicontent" class="RedMigratorFlexicontentItemsExt">flexicontent_items_ext</table>
+
+		<table title="Flexicontent Items Extravote" tbl_key="" destination="flexicontent_items_extravote" type="flexicontent" class="RedMigratorFlexicontentItemsExtravote">flexicontent_items_extravote</table>
+
+		<table title="Flexicontent Items Versions" tbl_key="" destination="flexicontent_items_versions" type="flexicontent" class="RedMigratorFlexicontentItemsVersions">flexicontent_items_versions</table>
+
+		<table title="Flexicontent Tags" tbl_key="" destination="flexicontent_tags" type="flexicontent" class="RedMigratorFlexicontentTags">flexicontent_tags</table>
+
+		<table title="Flexicontent Tags Item Relations" tbl_key="" destination="flexicontent_tags_item_relations" type="flexicontent" class="RedMigratorFlexicontentTagsItemRelations">flexicontent_tags_item_relations</table>
+
+		<table title="Flexicontent Templates" tbl_key="" destination="flexicontent_templates" type="flexicontent" class="RedMigratorFlexicontentTemplates">flexicontent_templates</table>
+
+		<table title="Flexicontent Versions" tbl_key="" destination="flexicontent_versions" type="flexicontent" class="RedMigratorFlexicontentVersions">flexicontent_versions</table>
+	</tables>
+
+</redmigrator>
