@@ -68,7 +68,7 @@ class RedMigratorModelChecks extends RModelAdmin
 		}
 
 		// Define the message array
-		$message = array();
+		/*$message = array();
 		$message['status'] = "ERROR";
 
 		// Getting the data
@@ -81,7 +81,7 @@ class RedMigratorModelChecks extends RModelAdmin
 		if ($nine < 10)
 		{
 			throw new Exception('COM_REDMIGRATOR_ERROR_TABLE_STEPS_NOT_VALID');
-		}
+		}*/
 
 		// Check safe_mode_gid
 		if (@ini_get('safe_mode_gid') && @ini_get('safe_mode'))
@@ -134,7 +134,7 @@ class RedMigratorModelChecks extends RModelAdmin
 		}
 
 		// Convert the params to array
-		$core_skips = (array) $params;
+		/*$core_skips = (array) $params;
 		$flag = false;
 
 		// Check is all skips is set
@@ -155,10 +155,10 @@ class RedMigratorModelChecks extends RModelAdmin
 		if ($flag === false)
 		{
 			throw new Exception('COM_REDMIGRATOR_ERROR_SKIPS_ALL');
-		}
+		}*/
 
 		// Checking tables
-		if ($params->skip_core_contents != 1)
+		/*if ($params->skip_core_contents != 1)
 		{
 			$query->clear();
 			$query->select('COUNT(id)');
@@ -170,7 +170,7 @@ class RedMigratorModelChecks extends RModelAdmin
 			{
 				throw new Exception('COM_REDMIGRATOR_ERROR_DATABASE_CONTENT');
 			}
-		}
+		}*/
 
 		// Checking tables
 		/*if ($params->skip_core_users != 1)
@@ -187,8 +187,6 @@ class RedMigratorModelChecks extends RModelAdmin
 				throw new Exception('COM_REDMIGRATOR_ERROR_DATABASE_USERS');
 			}
 		}*/
-
-		
 
 		// Done checks
 		if (!RedMigratorHelper::isCli())

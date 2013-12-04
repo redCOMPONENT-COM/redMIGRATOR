@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `#__redmigrator_steps` (
 -- Dumping data for table `#__redmigrator_steps`
 --
 
-INSERT INTO `#__redmigrator_steps` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `type`, `class`, `status`, `cache`, `extension`, `total`, `start`, `stop`, `first`) VALUES
+/*INSERT INTO `#__redmigrator_steps` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `type`, `class`, `status`, `cache`, `extension`, `total`, `start`, `stop`, `first`) VALUES
 (1, 'users', 'Users', 'id', 'users', 'users', 0, 'core', 'RedMigratorUsers', 0, 0, 0, 0, 0, 0, 0),
 (2, 'arogroup', 'Users Groups', 'id', 'core_acl_aro_groups', 'usergroups', 0, 'core', 'RedMigratorUsergroups', 0, 0, 0, 0, 0, 0, 0),
 (3, 'usergroupmap', 'Users Groups', 'aro_id', 'core_acl_groups_aro_map', 'user_usergroup_map', 0, 'core', 'RedMigratorUsergroupMap', 0, 0, 0, 0, 0, 0, 0),
@@ -176,7 +176,7 @@ INSERT INTO `#__redmigrator_steps` (`id`, `name`, `title`, `tbl_key`, `source`, 
 (14, 'banners_tracks', 'Banners Tracks', 'banner_id', 'bannertrack', 'banner_tracks', 0, 'core', 'RedMigratorBannersTracks', 0, 0, 0, 0, 0, 0, 0),
 (15, 'contacts', 'Contacts', 'id', 'contact_details', 'contact_details', 0, 'core', 'RedMigratorContacts', 0, 0, 0, 0, 0, 0, 0),
 (16, 'newsfeeds', 'NewsFeeds', 'id', 'newsfeeds', 'newsfeeds', 0, 'core', 'RedMigratorNewsfeeds', 0, 0, 0, 0, 0, 0, 0),
-(17, 'weblinks', 'Weblinks', 'id', 'weblinks', 'weblinks', 0, 'core', 'RedMigratorWeblinks', 0, 0, 0, 0, 0, 0, 0);
+(17, 'weblinks', 'Weblinks', 'id', 'weblinks', 'weblinks', 0, 'core', 'RedMigratorWeblinks', 0, 0, 0, 0, 0, 0, 0);*/
 
 -- --------------------------------------------------------
 

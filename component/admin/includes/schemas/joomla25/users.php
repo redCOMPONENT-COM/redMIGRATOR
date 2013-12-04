@@ -14,7 +14,7 @@
  *
  * This class takes the users from the source site and inserts them into the target site.
  */
-class RedMigratorJ25Users extends RedMigrator
+class RedMigratorUsers extends RedMigrator
 {
 	/**
 	 * Change structure of table and value of fields

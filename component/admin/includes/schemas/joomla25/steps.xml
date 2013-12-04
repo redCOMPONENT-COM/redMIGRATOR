@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!DOCTYPE redmigrator>
+<redmigrator>
+	<name>Joomla 2.5 core</name>
+
+	<tables>
+		<table name="users" title="Users" source="users" destination="users" type="core25" class="RedMigratorUsers" />
+
+		<table name="usergroups" title="Users groups" source="usergroups" destination="usergroups" type="core25" class="RedMigratorUsergroups" />
+
+		<table name="usergroupmap" title="Users groups" source="user_usergroup_map" destination="user_usergroup_map" type="core25" class="RedMigratorUsergroupMap" />
+
+		<table name="usernotes" title="Users notes" source="user_notes" destination="user_notes" type="core25" class="RedMigratorUsernotes" />
+
+		<table name="userprofiles" title="Users profile" source="user_profiles" destination="user_profiles" type="core25" class="RedMigratorUserprofiles" />
+	</tables>
+
+</redmigrator>

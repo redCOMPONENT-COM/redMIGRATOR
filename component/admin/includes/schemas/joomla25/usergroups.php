@@ -14,7 +14,7 @@
  *
  * This class takes the usergroups from the source site and inserts them into the target site.
  */
-class RedMigratorJ25Usergroups extends RedMigrator
+class RedMigratorUsergroups extends RedMigrator
 {
 	/**
 	 * Change structure of table and value of fields

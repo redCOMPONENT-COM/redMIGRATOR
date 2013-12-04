@@ -243,6 +243,77 @@ class RedMigratorHelper
 		return $newId;
 	}
 
+	/**
+	 * Fill data from xml file to #__redmigrator_steps table
+	 *
+	 * @param $xmlfile The path of xml file
+	 */
+	public static function populateSteps($xmlfile)
+	{
+		$xml = simplexml_load_file($xmlfile);
+
+		$db = JFactory::getDbo();
+
+		// Adding tables to migrate
+		if (!empty($xml->tables[0]))
+		{
+			$count = count($xml->tables[0]->table);
+
+			for ($i = 0; $i < $count; $i++)
+			{
+				$table = new StdClass;
+				$attributes = $xml->tables->table[$i]->attributes();
+
+				if (isset($attributes->name) && $attributes->name != "")
+				{
+					$table->name = (string) $attributes->name;
+				}
+				else
+				{
+					$table->name = (string) $xml->tables->table[$i];
+				}
+
+				$table->title = (string) $attributes->title;
+
+				if (isset($attributes->tbl_key) && $attributes->tbl_key != "")
+				{
+					$table->tbl_key = (string) $attributes->tbl_key;
+				}
+				else
+				{
+					$table->tbl_key = "";
+				}
+
+				if (isset($attributes->source) && $attributes->source != "")
+				{
+					$table->source = (string) $attributes->source;
+				}
+				else
+				{
+					$table->source = $table->name;
+				}
+
+				if (isset($attributes->destination) && $attributes->destination != "")
+				{
+					$table->destination = (string) $attributes->destination;
+				}
+				else
+				{
+					$table->destination = $table->source;
+				}
+
+				$table->type = (string) $attributes->type;
+
+				$table->class = (string) $attributes->class;
+
+				if (!$db->insertObject('#__redmigrator_steps', $table))
+				{
+					throw new Exception($db->getErrorMsg());
+				}
+			}
+		}
+	}
+
     /**
      * Only for developer debug
      *
