@@ -5,24 +5,26 @@
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- *
+ * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
 /**
- * Upgrade class for Users
+ * Upgrade class for the Usergroup Map
  *
- * This class takes the users from the source site and inserts them into the target site.
+ * This translates the group mapping table from 2.5 to 3.0.
+ * User id's are maintained in this upgrade process.
+ *
  */
-class RedMigratorJ25Usernotes extends RedMigrator
+class RedMigratorUsergroupMap extends RedMigrator
 {
 	/**
-	 * Change structure of table and value of fields
-	 * so data can be inserted into target db
+	 * Sets the data in the destination database.
 	 *
-	 * @param $rows Rows of source db
+	 * @return	void
 	 *
-	 * @return mixed
+	 * @since	0.4.
+	 * @throws	Exception
 	 */
 	public function dataHook($rows)
 	{
@@ -37,10 +39,10 @@ class RedMigratorJ25Usernotes extends RedMigrator
 				$row['user_id'] = $newUserId;
 			}
 
-			if (!empty($row['created_user_id']))
+			if (!empty($row['group_id']))
 			{
-				$newCreatedUserId = RedMigratorHelper::lookupNewId('arrUsers', $row['created_user_id']);
-				$row['created_user_id'] = $newCreatedUserId;
+				$newGroupId = RedMigratorHelper::lookupNewId('arrUsergroups', $row['group_id']);
+				$row['group_id'] = $newGroupId;
 			}
 		}
 
