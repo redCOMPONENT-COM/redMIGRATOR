@@ -200,21 +200,47 @@ class RedMigratorHelper
 		return $row->Auto_increment;
 	}
 
+	/**
+	 * Find new id from old
+	 * Algorithm: Binarysearch
+	 *
+	 * @param $sessionEntry Table name
+	 * @param $oldId Old id
+	 *
+	 * @return int
+	 */
 	public static function lookupNewId($sessionEntry, $oldId)
 	{
 		$session = JFactory::getSession();
 
 		$arrUsergroups = $session->get($sessionEntry, null, 'redmigrator_j25');
 
-		foreach ($arrUsergroups as $usergroup)
+		$first = 0;
+		$last = count($arrUsergroups) - 1;
+		$middle = ($first + $last) / 2;
+
+		$newId = 0;
+
+		while($first <= $last)
 		{
-			if ($usergroup['old_id'] == $oldId)
+			if ((int) $arrUsergroups[$middle]['old_id'] < $oldId)
 			{
-				return (int) $usergroup['new_id'];
+				$first = $middle + 1;
 			}
+			elseif ((int) $arrUsergroups[$middle]['old_id'] == $oldId)
+			{
+				$newId = (int) $arrUsergroups[$middle]['new_id'];
+				break;
+			}
+			else
+			{
+				$last = $middle - 1;
+			}
+
+			$middle = ($first + $last)/2;
 		}
 
-		return 0;
+		return $newId;
 	}
 
     /**
