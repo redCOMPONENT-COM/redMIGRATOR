@@ -47,12 +47,12 @@ class RedMigratorUsers extends RedMigrator
 			// Save the map to session
 			$session->set('arrUsers', $arrUsers, 'redmigrator_j25');
 
+			$row['id'] = null;
+
 			if (version_compare(PHP_VERSION, '3.0', '>='))
 			{
 				unset($row['usertype']);
 			}
-
-			$row['id'] = null;
 
 			if ($this->checkUserExist($row['username'], $row['email']))
 			{

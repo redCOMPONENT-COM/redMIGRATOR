@@ -133,61 +133,6 @@ class RedMigratorModelChecks extends RModelAdmin
 			}
 		}
 
-		// Convert the params to array
-		/*$core_skips = (array) $params;
-		$flag = false;
-
-		// Check is all skips is set
-		foreach ($core_skips as $k => $v)
-		{
-			$core = substr($k, 0, 9);
-			$name = substr($k, 10, 18);
-
-			if ($core == "skip_core")
-			{
-				if ($v == 0)
-				{
-					$flag = true;
-				}
-			}
-		}
-
-		if ($flag === false)
-		{
-			throw new Exception('COM_REDMIGRATOR_ERROR_SKIPS_ALL');
-		}*/
-
-		// Checking tables
-		/*if ($params->skip_core_contents != 1)
-		{
-			$query->clear();
-			$query->select('COUNT(id)');
-			$query->from("`#__content`");
-			$this->_db->setQuery($query);
-			$content_count = $this->_db->loadResult();
-
-			if ($content_count > 0)
-			{
-				throw new Exception('COM_REDMIGRATOR_ERROR_DATABASE_CONTENT');
-			}
-		}*/
-
-		// Checking tables
-		/*if ($params->skip_core_users != 1)
-		{
-			$query->clear();
-			$query->select('COUNT(id)');
-			$query->from("`#__users`");
-			$this->_db->setQuery($query);
-			$users_count = $this->_db->loadResult();
-
-			if ($users_count > 1)
-			{
-                //RedMigratorHelper::returnError(100, $users_count);
-				throw new Exception('COM_REDMIGRATOR_ERROR_DATABASE_USERS');
-			}
-		}*/
-
 		// Done checks
 		if (!RedMigratorHelper::isCli())
 		{

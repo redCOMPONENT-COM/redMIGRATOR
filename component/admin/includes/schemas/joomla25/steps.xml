@@ -16,6 +16,10 @@
 
 		<table name="categories" title="Categories" source="categories" destination="categories" type="core25" class="RedMigratorCategories" />
 
+		<table name="content" title="Content" source="content" destination="content" type="core25" class="RedMigratorContent" />
+
+		<table name="content_frontpage" title="Content frontpage" source="content_frontpage" destination="content_frontpage" type="core25" class="RedMigratorContentFrontpage" />
+
 		<table name="weblinks" title="Weblinks" source="weblinks" destination="weblinks" type="core25" class="RedMigratorWeblinks" />
 	</tables>
 

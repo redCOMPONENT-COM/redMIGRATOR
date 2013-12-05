@@ -56,10 +56,8 @@ class RedMigratorModelCleanup extends RModelAdmin
 		// Install core steps
 		$schemasPath = JPATH_COMPONENT_ADMINISTRATOR . "/includes/schemas";
 
-		// Init seession values
+		// Init session values
 		$session = JFactory::getSession();
-		// $session->set('laststep', '', 'redmigrator_virtuemart');
-		// $session->set('stepTotal', 0, 'redmigrator_virtuemart');
 
 		if ($core_version == 0) // J15 core
 		{
@@ -74,6 +72,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 
 			// Map category old id to new id
 			$session->set('arrCategories', array(), 'redmigrator_j25');
+
+			// Map content old id to new id
+			$session->set('arrContent', array(), 'redmigrator_j25');
 
 			// Map user old id to new id
 			$session->set('arrUsers', array(), 'redmigrator_j25');
@@ -194,13 +195,14 @@ class RedMigratorModelCleanup extends RModelAdmin
 		$tables[] = '#__redmigrator_menus';
 		$tables[] = '#__redmigrator_modules';
 		$tables[] = '#__redmigrator_default_categories';
-		$tables[] = '#__menu_types';
-		$tables[] = '#__content';
+		// $tables[] = '#__menu_types';
+		// $tables[] = '#__content';
 
-		for ($i=0; $i<count($tables); $i++)
+		for ($i=0; $i < count($tables); $i++)
 		{
 			$query->clear();
-			$query->delete()->from("{$tables[$i]}");
+			$query->delete()
+					->from("{$tables[$i]}");
 
 			try
 			{
