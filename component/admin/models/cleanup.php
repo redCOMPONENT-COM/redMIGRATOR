@@ -56,6 +56,11 @@ class RedMigratorModelCleanup extends RModelAdmin
 		// Install core steps
 		$schemasPath = JPATH_COMPONENT_ADMINISTRATOR . "/includes/schemas";
 
+		// Init seession values
+		$session = JFactory::getSession();
+		// $session->set('laststep', '', 'redmigrator_virtuemart');
+		// $session->set('stepTotal', 0, 'redmigrator_virtuemart');
+
 		if ($core_version == 0) // J15 core
 		{
 			$xmlfile = $schemasPath . "/joomla15/steps.xml";
@@ -63,32 +68,18 @@ class RedMigratorModelCleanup extends RModelAdmin
 		else // J25 core
 		{
 			$xmlfile = $schemasPath . "/joomla25/steps.xml";
+
+			// Map usergroup old id to new id
+			$session->set('arrUsergroups', array(), 'redmigrator_j25');
+
+			// Map category old id to new id
+			$session->set('arrCategories', array(), 'redmigrator_j25');
+
+			// Map user old id to new id
+			$session->set('arrUsers', array(), 'redmigrator_j25');
 		}
 
 		RedMigratorHelper::populateSteps($xmlfile);
-
-		// Set all cid, status and cache to 0
-		/*$query = $this->_db->getQuery(true);
-		$query->update('#__redmigrator_steps')
-				->set('cid = 0, status = 0, cache = 0');
-		$this->_db->setQuery($query)->execute();*/
-
-
-
-		/*$query->clear();
-		$query->update('#__redmigrator_steps')
-				->set('status = 2');*/
-
-		/*if ($core_version == 0) // Migrate from J15
-		{
-			$query->where('type = "core25"');
-		}
-		else // Migrate from J25
-		{
-			$query->where('type = "core15"');
-		}
-
-		$this->_db->setQuery($query)->execute();*/
 
 		$query = $this->_db->getQuery(true);
 
@@ -439,7 +430,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 			if ($modules_id > 86)
 			{
 				$query->clear();
-				$query->update('#__redmigrator_steps')->set('status = 2')->where('name = \'modules\'');
+				$query->update('#__redmigrator_steps')
+						->set('status = 2')
+						->where('name = "modules"');
 
 				try
 				{
@@ -481,33 +474,6 @@ class RedMigratorModelCleanup extends RModelAdmin
 			}
 		}
 
-		// Delete all 3rd extension steps migrated before
-		/*$query->clear();
-		$query->delete()
-				->from('#__redmigrator_steps')
-				->where('type != "core15" AND type != "core25"');
-
-		try
-		{
-			$this->_db->setQuery($query)->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			throw new RuntimeException($e->getMessage());
-		}*/
-
-		// Init seession values
-		$session = JFactory::getSession();
-		// $session->set('laststep', '', 'redmigrator_virtuemart');
-		// $session->set('stepTotal', 0, 'redmigrator_virtuemart');
-
-		// Map usergroup old id to new id
-		$session->set('arrUsergroups', array(), 'redmigrator_j25');
-
-		// Map user old id to new id
-		$session->set('arrUsers', array(), 'redmigrator_j25');
-
-		// Done cleanup
 		if (!RedMigratorHelper::isCli())
 		{
 			RedMigratorHelper::returnError(100, 'DONE');

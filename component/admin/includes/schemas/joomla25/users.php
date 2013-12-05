@@ -36,7 +36,7 @@ class RedMigratorUsers extends RedMigrator
 			$row = (array) $row;
 
 			// Create a map of old id and new id
-			$old_id = $row['id'];
+			$old_id = (int) $row['id'];
 			$new_id ++;
 			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
