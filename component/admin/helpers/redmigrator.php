@@ -217,7 +217,7 @@ class RedMigratorHelper
 
 		$first = 0;
 		$last = count($arrUsergroups) - 1;
-		$middle = ($first + $last) / 2;
+		$middle = (int) (($first + $last) / 2);
 
 		$newId = 0;
 
@@ -237,7 +237,7 @@ class RedMigratorHelper
 				$last = $middle - 1;
 			}
 
-			$middle = ($first + $last)/2;
+			$middle = (int) (($first + $last) / 2);
 		}
 
 		return $newId;

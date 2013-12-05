@@ -10,11 +10,13 @@
  */
 
 /**
- * Upgrade class for Usergroups
+ * Upgrade class for categories
  *
- * This class takes the usergroups from the source site and inserts them into the target site.
+ * This class takes the categories from the existing site and inserts them into the new site.
+ *
+ * @since  0.4.5
  */
-class RedMigratorUsergroups extends RedMigrator
+class RedMigratorCategories extends RedMigrator
 {
 	/**
 	 * Change structure of table and value of fields
@@ -28,7 +30,7 @@ class RedMigratorUsergroups extends RedMigrator
 	{
 		$session = JFactory::getSession();
 
-		$new_id = RedMigratorHelper::getAutoIncrement('usergroups') - 1;
+		$new_id = RedMigratorHelper::getAutoIncrement('categories') - 1;
 
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
@@ -49,18 +51,18 @@ class RedMigratorUsergroups extends RedMigrator
 				$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 			}
 
-			$arrUsergroups = $session->get('arrUsergroups', null, 'redmigrator_j25');
+			$arrCategories = $session->get('arrCategories', null, 'redmigrator_j25');
 
-			$arrUsergroups[] = $arrTemp;
+			$arrCategories[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrUsergroups', $arrUsergroups, 'redmigrator_j25');
+			$session->set('arrCategories', $arrCategories, 'redmigrator_j25');
 
 			if ((int) $row['parent_id'] != 0)
 			{
 				$row['id'] = null;
-				$row['title'] = $row['title'] . '_old';
-				$row['parent_id'] = RedMigratorHelper::lookupNewId('arrUsergroups', (int) $row['parent_id']);
+				$row['alias'] = $row['alias'] . '_old';
+				$row['parent_id'] = RedMigratorHelper::lookupNewId('arrCategories', (int) $row['parent_id']);
 				$row['lft'] = null;
 				$row['rgt'] = null;
 			}
@@ -87,7 +89,8 @@ class RedMigratorUsergroups extends RedMigrator
 				{
 					try
 					{
-						$objTable = JTable::getInstance('usergroup', 'JTable', array('dbo' => $this->_db));
+						$objTable = JTable::getInstance('category', 'JTable', array('dbo' => $this->_db));
+						$objTable->setLocation((int) $row['parent_id'], 'last-child');
 
 						// Bind data to save category
 						if (!$objTable->bind($row))
@@ -115,7 +118,8 @@ class RedMigratorUsergroups extends RedMigrator
 			{
 				try
 				{
-					$objTable = JTable::getInstance('usergroup', 'JTable', array('dbo' => $this->_db));
+					$objTable = JTable::getInstance('category', 'JTable', array('dbo' => $this->_db));
+					$objTable->setLocation($rows->parent_id, 'last-child');
 
 					// Bind data to save category
 					if (!$objTable->bind($rows))
@@ -139,7 +143,7 @@ class RedMigratorUsergroups extends RedMigrator
 	}
 
 	/**
-	 * Get the id of root usergroup
+	 * Get the id of root category
 	 *
 	 * @return mixed
 	 */
@@ -148,8 +152,8 @@ class RedMigratorUsergroups extends RedMigrator
 		$query = $this->_db->getQuery(true);
 
 		$query->select('id')
-				->from('#__usergroups')
-				->where('parent_id = 0');
+			->from('#__categories')
+			->where('parent_id = 0');
 
 		$this->_db->setQuery($query);
 

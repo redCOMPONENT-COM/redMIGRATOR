@@ -36,7 +36,7 @@ class RedMigratorUsers extends RedMigrator
 			$row = (array) $row;
 
 			// Create a map of old id and new id
-			$old_id = $row['id'];
+			$old_id = (int) $row['id'];
 			$new_id ++;
 			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
@@ -47,12 +47,12 @@ class RedMigratorUsers extends RedMigrator
 			// Save the map to session
 			$session->set('arrUsers', $arrUsers, 'redmigrator_j25');
 
+			$row['id'] = null;
+
 			if (version_compare(PHP_VERSION, '3.0', '>='))
 			{
 				unset($row['usertype']);
 			}
-
-			$row['id'] = null;
 
 			if ($this->checkUserExist($row['username'], $row['email']))
 			{

@@ -13,6 +13,14 @@
 		<table name="usernotes" title="Users notes" source="user_notes" destination="user_notes" type="core25" class="RedMigratorUsernotes" />
 
 		<table name="userprofiles" title="Users profile" source="user_profiles" destination="user_profiles" type="core25" class="RedMigratorUserprofiles" />
+
+		<table name="categories" title="Categories" source="categories" destination="categories" type="core25" class="RedMigratorCategories" />
+
+		<table name="content" title="Content" source="content" destination="content" type="core25" class="RedMigratorContent" />
+
+		<table name="content_frontpage" title="Content frontpage" source="content_frontpage" destination="content_frontpage" type="core25" class="RedMigratorContentFrontpage" />
+
+		<table name="weblinks" title="Weblinks" source="weblinks" destination="weblinks" type="core25" class="RedMigratorWeblinks" />
 	</tables>
 
 </redmigrator>
