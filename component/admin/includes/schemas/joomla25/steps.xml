@@ -4,7 +4,7 @@
 	<name>Joomla 2.5 core</name>
 
 	<tables>
-		<!--<table name="users" title="Users" source="users" destination="users" type="core25" class="RedMigratorUsers" />
+		<table name="users" title="Users" source="users" destination="users" type="core25" class="RedMigratorUsers" />
 
 		<table name="usergroups" title="Users groups" source="usergroups" destination="usergroups" type="core25" class="RedMigratorUsergroups" />
 
@@ -19,10 +19,12 @@
 		<table name="content" title="Content" source="content" destination="content" type="core25" class="RedMigratorContent" />
 
 		<table name="content_frontpage" title="Content frontpage" source="content_frontpage" destination="content_frontpage" type="core25" class="RedMigratorContentFrontpage" />
--->
+
 		<table name="menu" title="Menu" source="menu" destination="menu" type="core25" class="RedMigratorMenu" />
 
 		<table name="menu_types" title="Menu Types" source="menu_types" destination="menu_types" type="core25" class="RedMigratorMenuTypes" />
+
+		<table name="newsfeeds" title="Newsfeeds" source="newsfeeds" destination="newsfeeds" type="core25" class="RedMigratorNewsfeeds" />
 
 		<table name="weblinks" title="Weblinks" source="weblinks" destination="weblinks" type="core25" class="RedMigratorWeblinks" />
 	</tables>
