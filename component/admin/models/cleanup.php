@@ -67,9 +67,6 @@ class RedMigratorModelCleanup extends RModelAdmin
 		{
 			$xmlfile = $schemasPath . "/joomla25/steps.xml";
 
-			// Map usergroup old id to new id
-			$session->set('arrUsergroups', array(), 'redmigrator_j25');
-
 			// Map category old id to new id
 			$session->set('arrCategories', array(), 'redmigrator_j25');
 
@@ -78,6 +75,15 @@ class RedMigratorModelCleanup extends RModelAdmin
 
 			// Map user old id to new id
 			$session->set('arrUsers', array(), 'redmigrator_j25');
+
+			// Map usergroup old id to new id
+			$session->set('arrUsergroups', array(), 'redmigrator_j25');
+
+			// Map menu old id to new id
+			$session->set('arrMenu', array(), 'redmigrator_j25');
+
+			// Save menu items have parent item after in db
+			$session->set('arrMenuSwapped', array(), 'redmigrator_j25');
 		}
 
 		RedMigratorHelper::populateSteps($xmlfile);
@@ -291,7 +297,7 @@ class RedMigratorModelCleanup extends RModelAdmin
 			}
 
 			// Cleanup the entire menu
-			$query->clear();
+			/*$query->clear();
 			$query->delete()->from('#__menu')->where('id > 1');
 
 			try
@@ -301,7 +307,7 @@ class RedMigratorModelCleanup extends RModelAdmin
 			catch (RuntimeException $e)
 			{
 				throw new RuntimeException($e->getMessage());
-			}
+			}*/
 		}
 
 		// Delete uncategorised categories

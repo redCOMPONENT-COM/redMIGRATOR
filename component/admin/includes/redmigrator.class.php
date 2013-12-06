@@ -301,7 +301,7 @@ class RedMigrator
 
 		if ($this->getTotal() == $this->_step->cid)
 		{
-			$this->ready = $this->afterHook($rows);
+			$this->ready = $this->afterHook();
 		}
 
 		if ($this->_step->name == $this->_step->laststep
