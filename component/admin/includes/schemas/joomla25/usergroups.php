@@ -58,15 +58,58 @@ class RedMigratorUsergroups extends RedMigrator
 
 			if ((int) $row['parent_id'] != 0)
 			{
+				// Parent item was inserted, so lookup new id
+				if ((int) $row['id'] > (int) $row['parent_id'])
+				{
+					$row['parent_id'] = RedMigratorHelper::lookupNewId('arrUsergroups', (int) $row['parent_id']);
+				}
+				else // Parent item haven't been inserted, so will lookup new id and update item apter hook
+				{
+					$arrUsergroupsSwapped = $session->get('arrUsergroupsSwapped', null, 'redmigrator_j25');
+
+					$arrUsergroupsSwapped[] = array('new_id' => $new_id, 'old_parent_id' => (int) $row['parent_id']);
+
+					$session->set('arrUsergroupsSwapped', $arrUsergroupsSwappedSwapped, 'redmigrator_j25');
+
+					$row['parent_id'] = $new_root_id;
+				}
+
+				$row['title'] = $row['title'] . '_old_' . $row['id'];
 				$row['id'] = null;
-				$row['title'] = $row['title'] . '_old';
-				$row['parent_id'] = RedMigratorHelper::lookupNewId('arrUsergroups', (int) $row['parent_id']);
 				$row['lft'] = null;
 				$row['rgt'] = null;
 			}
 		}
 
 		return $rows;
+	}
+
+	/**
+	 * Update items have patent item after itself
+	 *
+	 * @return bool
+	 */
+	public function afterHook()
+	{
+		$session = JFactory::getSession();
+
+		$arrMenuSwapped = $session->get('arrUsergroupsSwapped', null, 'redmigrator_j25');
+
+		foreach ($arrMenuSwapped as $item)
+		{
+			$objTable = JTable::getInstance('usergroup', 'JTable', array('dbo' => $this->_db));
+
+			$objTable->load($item['new_id']);
+
+			$objTable->parent_id = RedMigratorHelper::lookupNewId('arrUsergroups', $item['old_parent_id']);
+
+			if (!@$objTable->store())
+			{
+				echo JError::raiseError(500, $objTable->getError());
+			}
+		}
+
+		return parent::afterHook();
 	}
 
 	/**

@@ -60,12 +60,9 @@ class RedMigratorMenu extends RedMigrator
 
 			if ((int) $row['parent_id'] != 0)
 			{
-				// $row['alias'] = $row['alias'] . '_old_' . $row['id'] . '_' . $row['parent_id'];
-
 				// Parent item was inserted, so lookup new id
 				if ((int) $row['id'] > (int) $row['parent_id'])
 				{
-					// $row['alias'] = $row['alias'] . '_old';
 					$row['parent_id'] = RedMigratorHelper::lookupNewId('arrMenu', (int) $row['parent_id']);
 				}
 				else // Parent item haven't been inserted, so will lookup new id and update item apter hook
@@ -76,7 +73,6 @@ class RedMigratorMenu extends RedMigrator
 
 					$session->set('arrMenuSwapped', $arrMenuSwapped, 'redmigrator_j25');
 
-					// $row['alias'] = $row['id'] . '_' . $row['parent_id'] . '_' . $row['alias'] . '_old';
 					$row['parent_id'] = $new_root_id;
 				}
 
@@ -87,6 +83,7 @@ class RedMigratorMenu extends RedMigrator
 				$row['rgt'] = null;
 			}
 
+			// In J3x, column ordering has been removed
 			if (version_compare(PHP_VERSION, '3.0', '>='))
 			{
 				unset($row['ordering']);
@@ -96,6 +93,11 @@ class RedMigratorMenu extends RedMigrator
 		return $rows;
 	}
 
+	/**
+	 * Update items have patent item after itself
+	 *
+	 * @return bool
+	 */
 	public function afterHook()
 	{
 		$session = JFactory::getSession();
