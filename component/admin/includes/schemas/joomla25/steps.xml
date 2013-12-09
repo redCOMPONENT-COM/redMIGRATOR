@@ -24,6 +24,10 @@
 
 		<table name="menu_types" title="Menu Types" source="menu_types" destination="menu_types" type="core25" class="RedMigratorMenuTypes" />
 
+		<table name="modules" title="Modules" source="modules" destination="modules" type="core25" class="RedMigratorModules" />
+
+		<table name="modules_menu" title="Modules Menu" source="modules_menu" destination="modules_menu" type="core25" class="RedMigratorModulesMenu" />
+
 		<table name="banners" title="Banners" source="banners" destination="banners" type="core25" class="RedMigratorBanners" />
 
 		<table name="banner_clients" title="Banner Clients" source="banner_clients" destination="banner_clients" type="core25" class="RedMigratorBannerClients" />

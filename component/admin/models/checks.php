@@ -67,22 +67,6 @@ class RedMigratorModelChecks extends RModelAdmin
 			}
 		}
 
-		// Define the message array
-		/*$message = array();
-		$message['status'] = "ERROR";
-
-		// Getting the data
-		$query = $this->_db->getQuery(true);
-		$query->select('COUNT(id)');
-		$query->from("`#__redmigrator_steps`");
-		$this->_db->setQuery($query);
-		$nine = $this->_db->loadResult();
-
-		if ($nine < 10)
-		{
-			throw new Exception('COM_REDMIGRATOR_ERROR_TABLE_STEPS_NOT_VALID');
-		}*/
-
 		// Check safe_mode_gid
 		if (@ini_get('safe_mode_gid') && @ini_get('safe_mode'))
 		{
