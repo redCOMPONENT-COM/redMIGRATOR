@@ -28,7 +28,7 @@
 
 		<table name="banner_clients" title="Banner Clients" source="banner_clients" destination="banner_clients" type="core25" class="RedMigratorBannerClients" />
 
-		<!--<table name="banners_tracks" title="Banners Tracks" tbl_key="banner_id" source="bannertrack" destination="banner_tracks" type="core15" class="RedMigratorBannersTracks" />-->
+		<table name="banner_tracks" title="Banner Tracks" source="banner_tracks" destination="banner_tracks" type="core25" class="RedMigratorBannerTracks" />
 
 		<table name="contacts" title="Contacts" source="contact_details" destination="contact_details" type="core25" class="RedMigratorContacts" />
 

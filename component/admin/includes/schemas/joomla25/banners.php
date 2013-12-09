@@ -28,9 +28,25 @@ class RedMigratorBanners extends RedMigrator
 	 */
 	public function dataHook($rows = null)
 	{
+		$session = JFactory::getSession();
+
+		$new_id = RedMigratorHelper::getAutoIncrement('banners') - 1;
+
 		foreach($rows as &$row)
 		{
 			$row = (array) $row;
+
+			// Create a map of old id and new id
+			$old_id = (int) $row['id'];
+			$new_id ++;
+			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
+
+			$arrBanners = $session->get('arrBanners', null, 'redmigrator_j25');
+
+			$arrBanners[] = $arrTemp;
+
+			// Save the map to session
+			$session->set('arrBanners', $arrBanners, 'redmigrator_j25');
 
 			$row['id'] = null;
 			$row['alias'] = $row['alias'] . '_old';
