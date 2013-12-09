@@ -24,6 +24,14 @@
 
 		<table name="menu_types" title="Menu Types" source="menu_types" destination="menu_types" type="core25" class="RedMigratorMenuTypes" />
 
+		<table name="banners" title="Banners" source="banners" destination="banners" type="core25" class="RedMigratorBanners" />
+<!--
+
+		<table name="banners_clients" title="Banners Clients" tbl_key="cid" source="bannerclient" destination="banner_clients" type="core15" class="RedMigratorBannersClients" />
+
+		<table name="banners_tracks" title="Banners Tracks" tbl_key="banner_id" source="bannertrack" destination="banner_tracks" type="core15" class="RedMigratorBannersTracks" />
+-->
+
 		<table name="contacts" title="Contacts" source="contact_details" destination="contact_details" type="core25" class="RedMigratorContacts" />
 
 		<table name="newsfeeds" title="Newsfeeds" source="newsfeeds" destination="newsfeeds" type="core25" class="RedMigratorNewsfeeds" />
