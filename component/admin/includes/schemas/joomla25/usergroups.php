@@ -69,13 +69,13 @@ class RedMigratorUsergroups extends RedMigrator
 
 					$arrUsergroupsSwapped[] = array('new_id' => $new_id, 'old_parent_id' => (int) $row['parent_id']);
 
-					$session->set('arrUsergroupsSwapped', $arrUsergroupsSwappedSwapped, 'redmigrator_j25');
+					$session->set('arrUsergroupsSwapped', $arrUsergroupsSwapped, 'redmigrator_j25');
 
 					$row['parent_id'] = $new_root_id;
 				}
 
-				$row['title'] = $row['title'] . '_old_' . $row['id'];
 				$row['id'] = null;
+				$row['title'] = $row['title'] . '_old';
 				$row['lft'] = null;
 				$row['rgt'] = null;
 			}
