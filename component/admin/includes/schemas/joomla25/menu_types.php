@@ -28,14 +28,33 @@ class RedMigratorMenuTypes extends RedMigrator
 	public function dataHook($rows)
 	{
 		// Do some custom post processing on the list.
-		foreach ($rows as &$row)
+		foreach ($rows as $k => &$row)
 		{
 			$row = (array) $row;
 
 			$row['id'] = null;
-			$row['menutype'] = $row['menutype'] . '_old';
+
+			if ($this->checkMenutypeExist($row['menutype']))
+			{
+				$rows[$k] = false;
+			}
 		}
 
 		return $rows;
+	}
+
+	protected function checkMenutypeExist($menutype)
+	{
+		$query = $this->_db->getQuery(true);
+
+		$query->select('count(id)')
+			->from('#__menu_types')
+			->where('menutype = "' . $menutype . '"');
+
+		$this->_db->setQuery($query);
+
+		$exist = $this->_db->loadResult();
+
+		return $exist;
 	}
 }

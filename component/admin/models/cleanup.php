@@ -45,6 +45,7 @@ class RedMigratorModelCleanup extends RModelAdmin
 		// Convert the params to array
 		$core_skips = (array) $params;
 
+		// Version of source joomla (J15 or J25)
 		$core_version = $core_skips['core_version'];
 
 		// Clean steps table
@@ -136,26 +137,12 @@ class RedMigratorModelCleanup extends RModelAdmin
 
 						if ($core_version == 0)
 						{
-							$query->where('name = "arogroup"');
+							$query->where('name = "arogroup" OR name ="usergroupmap"');
 						}
 						else
 						{
-							$query->where('name = "usergroups" OR name = "usernotes" OR name = "userprofiles"');
+							$query->where('name = "usergroups" OR name ="usergroupmap" OR name = "usernotes" OR name = "userprofiles"');
 						}
-
-						try
-						{
-							$this->_db->setQuery($query)->execute();
-						}
-						catch (RuntimeException $e)
-						{
-							throw new RuntimeException($e->getMessage());
-						}
-
-						$query->clear();
-						$query->update('#__redmigrator_steps')
-								->set('status = 2')
-								->where('name = "usergroupmap"');
 
 						try
 						{
@@ -212,14 +199,11 @@ class RedMigratorModelCleanup extends RModelAdmin
 		$tables[] = '#__redmigrator_menus';
 		$tables[] = '#__redmigrator_modules';
 		$tables[] = '#__redmigrator_default_categories';
-		// $tables[] = '#__menu_types';
-		// $tables[] = '#__content';
 
 		for ($i=0; $i < count($tables); $i++)
 		{
 			$query->clear();
-			$query->delete()
-					->from("{$tables[$i]}");
+			$query->delete()->from("{$tables[$i]}");
 
 			try
 			{

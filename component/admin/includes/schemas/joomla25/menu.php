@@ -76,11 +76,13 @@ class RedMigratorMenu extends RedMigrator
 					$row['parent_id'] = $new_root_id;
 				}
 
-				$row['menutype'] = $row['menutype'] . '_old';
+				// $row['menutype'] = $row['menutype'] . '_old';
 				$row['alias'] = $row['alias'] . '_old_' . $row['id'];
 				$row['id'] = null;
 				$row['lft'] = null;
 				$row['rgt'] = null;
+
+				$row['published'] = 0;
 			}
 
 			// In J3x, column ordering has been removed

@@ -169,10 +169,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_contents"
+                name="skip_core_content"
                 type="radio"
                 default="0"
-                label="Skip contents"
+                label="Skip content"
                 description=""
                 class="btn-group"
                 >
@@ -180,10 +180,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_contents_frontpage"
+                name="skip_core_content_frontpage"
                 type="radio"
                 default="0"
-                label="Skip contents frontpage"
+                label="Skip content frontpage"
                 description=""
                 class="btn-group"
                 >
@@ -191,10 +191,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_menus"
+                name="skip_core_menu"
                 type="radio"
                 default="0"
-                label="Skip menus"
+                label="Skip menu"
                 description=""
                 class="btn-group"
                 >
@@ -202,10 +202,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_menus_types"
+                name="skip_core_menu_types"
                 type="radio"
                 default="0"
-                label="Skip menus types"
+                label="Skip menu types"
                 description=""
                 class="btn-group"
                 >
@@ -227,7 +227,7 @@
                 name="skip_core_modules_menu"
                 type="radio"
                 default="0"
-                label="Skip modules menus"
+                label="Skip modules menu"
                 description=""
                 class="btn-group"
                 >
@@ -246,10 +246,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_banners_clients"
+                name="skip_core_banner_clients"
                 type="radio"
                 default="0"
-                label="Skip banners clients"
+                label="Skip banner clients"
                 description=""
                 class="btn-group"
                 >
@@ -257,10 +257,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_banners_tracks"
+                name="skip_core_banner_tracks"
                 type="radio"
                 default="0"
-                label="Skip banners tracks"
+                label="Skip banner tracks"
                 description=""
                 class="btn-group"
                 >
