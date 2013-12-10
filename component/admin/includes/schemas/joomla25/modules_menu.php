@@ -24,7 +24,7 @@ class RedMigratorModulesMenu extends RedMigrator
 	 */
 	public function dataHook($rows = null)
 	{
-		foreach ($rows as &$row)
+		foreach ($rows as $k => &$row)
 		{
 			// Convert the array into an object.
 			$row = (array) $row;
@@ -34,9 +34,15 @@ class RedMigratorModulesMenu extends RedMigrator
 				$row['moduleid'] = RedMigratorHelper::lookupNewId('arrModules', (int) $row['moduleid']);
 			}
 
-			if ($row['menuid'] != '' && (int) $row['menuid'] >= 0)
+			if ($row['menuid'] != '' && (int) $row['menuid'] > 0)
 			{
 				$row['menuid'] = RedMigratorHelper::lookupNewId('arrMenu', (int) $row['menuid']);
+			}
+
+			// Module or menu item doesn't exist
+			if ((int) $row['moduleid'] == -1 || (int) $row['menuid'] == -1)
+			{
+				$rows[$k] = false;
 			}
 		}
 

@@ -46,6 +46,8 @@ class RedMigratorModules extends RedMigrator
 			$session->set('arrModules', $arrModules, 'redmigrator_j25');
 
 			$row['id'] = null;
+
+			$row['published'] = 0;
 		}
 
 		return $rows;

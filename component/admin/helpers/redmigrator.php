@@ -219,7 +219,8 @@ class RedMigratorHelper
 		$last = count($arrUsergroups) - 1;
 		$middle = (int) (($first + $last) / 2);
 
-		$newId = 0;
+		// id not exist
+		$newId = -1;
 
 		while($first <= $last)
 		{
