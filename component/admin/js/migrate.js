@@ -183,7 +183,7 @@ var redmigrator = new Class({
 		{
 			self.ext_init(e);
 		}
-	}, // end function
+	}, // End function
 
 	/**
 	 * Run the migration
@@ -238,7 +238,7 @@ var redmigrator = new Class({
 
 		// Run the check
 		ext_init.send();
-	}, // end function
+	}, // End function
 
 	/**
 	 * Run the migration
@@ -381,7 +381,7 @@ var redmigrator = new Class({
 					preStep = object.name;
 				}
 
-				// Changing title and statusbar
+				// Changing title and status bar
 				pb4.set( (stepNo * 100) / object.stepTotal );
 
 				// Show step title in "Progress status"
@@ -398,6 +398,7 @@ var redmigrator = new Class({
 						currItem.innerHTML = object.cid;
 					}
 				}
+
 				totalItems.innerHTML = object.total;
 
 				// Start the checks
@@ -411,7 +412,7 @@ var redmigrator = new Class({
 						migrate.send();
 					}
 				}
-				else if (self.options.method == 'rest')
+				else if (self.options.method == 'restful')
 				{
 					if (object.total > 0)
 					{
@@ -428,7 +429,7 @@ var redmigrator = new Class({
 
 		step.send();
 
-	}, // end function
+	}, // End function
 
 	/**
 	 * Run the files copying

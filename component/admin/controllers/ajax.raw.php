@@ -21,20 +21,13 @@ defined('_JEXEC') or die;
 class RedMigratorControllerAjax extends RControllerAdmin
 {
 	/**
-	 * @var		string	The context for persistent state.
-	 * @since   3.0.3
-	 */
-	// protected $context = 'com_redmigrator.ajax';
-
-	/**
 	 * Proxy for getModel.
 	 *
-	 * @param   string	$name	The name of the model.
-	 * @param   string	$prefix	The prefix for the model class name.
+	 * @param   string	$name    The name of the model.
+	 * @param   string	$prefix  The prefix for the model class name.
+	 * @param   array   $config  Config
 	 *
-	 * @return  RedMigratorModel
-	 *
-	 * @since   3.0.3
+	 * @return RedMigratorModel
 	 */
 	public function getModel($name = '', $prefix = 'RedMigratorModel', $config = array())
 	{
@@ -45,6 +38,8 @@ class RedMigratorControllerAjax extends RControllerAdmin
 
 	/**
 	 * Run the RedMigrator checks
+	 *
+	 * @return none
 	 */
 	public function checks()
 	{
@@ -65,6 +60,8 @@ class RedMigratorControllerAjax extends RControllerAdmin
 
 	/**
 	 * Run the RedMigrator cleanup
+	 *
+	 * @return none
 	 */
 	public function cleanup()
 	{
@@ -84,6 +81,8 @@ class RedMigratorControllerAjax extends RControllerAdmin
 
 	/**
 	 * Run RedMigrator step
+	 *
+	 * @return none
 	 */
 	public function step()
 	{
@@ -93,7 +92,7 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		// Running the step
 		try
 		{
-			$model->step(false, true);
+			$model->step();
 		}
 		catch (Exception $e)
 		{
@@ -103,6 +102,8 @@ class RedMigratorControllerAjax extends RControllerAdmin
 
 	/**
 	 * Run RedMigrator migrate
+	 *
+	 * @return none
 	 */
 	public function migrate()
 	{
@@ -122,6 +123,8 @@ class RedMigratorControllerAjax extends RControllerAdmin
 
 	/**
 	 * Run RedMigrator extensions
+	 *
+	 * @return none
 	 */
 	public function extensions()
 	{

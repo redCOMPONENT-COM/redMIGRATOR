@@ -125,8 +125,6 @@ class RedMigratorContent extends RedMigrator
 		// Initialize values
 		$aliases = array();
 
-		$total = count($rows);
-
 		// Insert content data
 		foreach ($rows as $row)
 		{
@@ -202,7 +200,7 @@ class RedMigratorContent extends RedMigrator
 			}
 
 			// Updating the steps table
-			$this->_step->_nextCID($total);
+			$this->_step->_nextCID();
 		}
 
 		return false;

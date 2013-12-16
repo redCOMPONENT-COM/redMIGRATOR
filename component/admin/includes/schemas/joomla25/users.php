@@ -20,7 +20,7 @@ class RedMigratorUsers extends RedMigrator
 	 * Change structure of table and value of fields
 	 * so data can be inserted into target db
 	 *
-	 * @param $rows Rows of source db
+	 * @param   array  $rows  Rows of source db
 	 *
 	 * @return mixed
 	 */
@@ -67,8 +67,8 @@ class RedMigratorUsers extends RedMigrator
 	/**
 	 * Check if username or email exist in target db
 	 *
-	 * @param $username Username of source db
-	 * @param $email Email of source db
+	 * @param   string  $username  Username of source db
+	 * @param   string  $email     Email of source db
 	 *
 	 * @return mixed
 	 */

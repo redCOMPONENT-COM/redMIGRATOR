@@ -78,6 +78,12 @@ class RedMigratorStep
 	 */
 	protected $_db = null;
 
+	/**
+	 * Constructor
+	 *
+	 * @param null $name
+	 * @param bool $extensions
+	 */
 	function __construct($name = null, $extensions = false)
 	{
 		JLoader::import('legacy.component.helper');
@@ -100,14 +106,13 @@ class RedMigratorStep
 	}
 
 	/**
+	 * Get step instance
 	 *
 	 * @param   stdClass   $options  Parameters to be passed to the database driver.
 	 *
 	 * @return  redmigrator  A redmigrator object.
-	 *
-	 * @since  3.0.0
 	 */
-	static function getInstance($name = null, $extensions = false)
+	public static function getInstance($name = null, $extensions = false)
 	{
 		// Create our new redmigrator connector based on the options given.
 		try
@@ -229,7 +234,10 @@ class RedMigratorStep
 	/**
 	 * Get the next step
 	 *
-	 * @return   step object
+	 * @param   bool  $name  Name
+	 * @param   bool  $json  Json
+	 *
+	 * @return array|bool
 	 */
 	public function getStep($name = false, $json = true)
 	{
@@ -322,8 +330,6 @@ class RedMigratorStep
 			$this->debug = "{{{5}}}";
 		}
 
-		
-
 		// Updating the status flag to database
 		$this->_updateStep();
 
@@ -333,7 +339,9 @@ class RedMigratorStep
 	/**
 	 * Getting the current step from database and put it into object properties
 	 *
-	 * @return   step object
+	 * @param   null  $name  Name
+	 *
+	 * @return bool
 	 */
 	public function _load($name = null)
 	{
@@ -378,15 +386,14 @@ class RedMigratorStep
 	}
 
 	/**
-	 * updateStep
+	 * Update Step
 	 *
 	 * @return	none
-	 *
-	 * @since	2.5.2
 	 */
 	public function _updateStep()
 	{
 		$query = $this->_db->getQuery(true);
+
 		$query->update($this->_table);
 
 		$columns = array('status', 'cache', 'cid', 'total', 'start', 'stop', 'first');
@@ -395,14 +402,17 @@ class RedMigratorStep
 		{
 			if (!empty($this->$column))
 			{
-				$query->set("{$column} = {$this->$column}");
+				// $query->set("{$column} = {$this->$column}");
+				$query->set($column . " = " . $this->$column);
 			}
 		}
 
-		$query->where("name = {$this->_db->quote($this->name)}");
+		// $query->where("name = {$this->_db->quote($this->name)}");
+		$query->where("name = " . $this->_db->quote($this->name));
 
-		// Execute the query
-		$this->_db->setQuery($query)->execute();
+		$this->_db->setQuery($query);
+
+		$this->_db->execute();
 
 		// Check for query error.
 		$error = $this->_db->getErrorMsg();
@@ -416,10 +426,12 @@ class RedMigratorStep
 	}
 
 	/**
+	 * Update cid
+	 *
+	 * @param   int  $cid  Current id
 	 *
 	 * @return boolean True if the user and pass are authorized
 	 *
-	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 */
 	public function _updateCID($cid)
@@ -436,14 +448,13 @@ class RedMigratorStep
 	}
 
 	/**
-	 * Updating the steps table
+	 * Get next cid
 	 *
 	 * @return  boolean  True if the user and pass are authorized
 	 *
-	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 */
-	public function _nextCID($total = false)
+	public function _nextCID()
 	{
 		$update_cid = $this->_getStepCID() + 1;
 
@@ -459,8 +470,6 @@ class RedMigratorStep
 	 * Update the step id
 	 *
 	 * @return  int  The next id
-	 *
-	 * @since   3.0.0
 	 */
 	public function _getStepCID()
 	{
@@ -470,9 +479,9 @@ class RedMigratorStep
 	}
 
 	/**
-	 * @return string The step name
+	 * Get step name
 	 *
-	 * @since   3.0
+	 * @return string The step name
 	 */
 	public function _getStepName()
 	{

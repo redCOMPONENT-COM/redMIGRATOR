@@ -24,15 +24,15 @@ class RedMigratorModelMigrate extends RModelAdmin
 	/**
 	 * Migrate
 	 *
-	 * @return	none
+	 * @param   bool  $table       Table
+	 * @param   bool  $extensions  Extension
 	 *
-	 * @since	3.0.3
+	 * @return mixed
+	 *
+	 * @throws Exception
 	 */
-	function migrate($table = false, $json = true, $extensions = false)
+	function migrate($table = false, $extensions = false)
 	{
-		// $table = (bool) ($table != false) ? $table : JRequest::getCmd('table', '');
-		// $extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
-
 		if ($table === false)
 		{
 			$table = JRequest::getCmd('table', '');
@@ -89,7 +89,7 @@ class RedMigratorModelMigrate extends RModelAdmin
 			$step->stop = -1;
 		}
 
-		// Update #__RedMigrator_steps table if id = last_id
+		// Update #__redmigrator_steps table if id = last_id
 		if ( ( ($step->total <= $step->cid) || ($step->stop == -1) && ($empty == false) ) )
 		{
 			$step->next = true;
@@ -97,9 +97,6 @@ class RedMigratorModelMigrate extends RModelAdmin
 
 			$step->_updateStep();
 		}
-
-// RedMigratorHelper::writeFile('steps.txt', $table . ' - ' . $extensions . ' - ' . json_encode($step) . "\n");
-
 
 		if (!RedMigratorHelper::isCli())
 		{
@@ -109,7 +106,5 @@ class RedMigratorModelMigrate extends RModelAdmin
 		{
 			return $step->getParameters();
 		}
-
-
 	}
 } // End class

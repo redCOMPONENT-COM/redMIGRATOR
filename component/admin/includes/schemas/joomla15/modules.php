@@ -108,8 +108,6 @@ class RedMigratorModules extends RedMigrator
 		$map = self::getPositionsMap();
 		$map_keys = array_keys($map);
 
-		$total = count($rows);
-
 		foreach ($rows as $row)
 		{
 			// Convert the array into an object.
@@ -145,7 +143,7 @@ class RedMigratorModules extends RedMigrator
 			}
 
 			// Updating the steps table
-			$this->_step->_nextCID($total);
+			$this->_step->_nextCID();
 		}
 
 		return false;

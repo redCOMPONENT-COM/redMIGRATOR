@@ -103,8 +103,6 @@ class RedMigratorCategories extends RedMigratorCategory
 			}
 		}
 
-		$total = count($rows);
-
 		// Update the category
 		foreach ($rows as $category)
 		{
@@ -138,7 +136,7 @@ class RedMigratorCategories extends RedMigratorCategory
 			$this->insertCategory($category);
 
 			// Updating the steps table
-			$this->_step->_nextCID($total);
+			$this->_step->_nextCID();
 		}
 
 		return false;

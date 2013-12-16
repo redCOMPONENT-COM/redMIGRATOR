@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
  * @subpackage  REST
  * @since       3.0
  */
-class RedRESTDispatcher
+class RedRESTFULDispatcher
 {
 	/**
 	 * @var    array  Associative array of parameters for the REST message.
@@ -27,68 +27,133 @@ class RedRESTDispatcher
 	private $_parameters = array();
 
 	/**
-	 * @var    RedMigratorTable  RedMigratorTable object
-	 * @since  3.0
-	 */
-	private $_table = array();
-
-	/**
+	 * @param $parameters
 	 *
-	 * @return  boolean
-	 *
-	 * @since   3.0
+	 * @return bool
 	 */
 	public function execute($parameters)
+	{
+		// Loading params
+		$this->_parameters = $parameters;
+
+		$table = '';
+
+		if (isset($this->_parameters['HTTP_TABLE']))
+		{
+			$table = $this->_parameters['HTTP_TABLE'];
+		}
+
+		$task = '';
+
+		if (isset($this->_parameters['HTTP_TASK']))
+		{
+			$task = $this->_parameters['HTTP_TASK'];
+		}
+
+		$result = null;
+
+		if ($task == 'total')
+		{
+			if ($this->_checkTableExist($table))
+			{
+				$result = $this->_getTotal($table);
+			}
+			else
+			{
+				$result = 0;
+			}
+		}
+		elseif ($task == 'row')
+		{
+			$start = $this->_parameters['HTTP_START'];
+			$limit = $this->_parameters['HTTP_LIMIT'];
+
+			$result = $this->_getRow($table, $start, $limit);
+		}
+
+		if ($result !== null)
+		{
+			return json_encode($result);
+		}
+		else
+		{
+			JResponse::setHeader('status', 407);
+			JResponse::setBody('Can not get result');
+			JResponse::sendHeaders();
+			exit;
+		}
+	}
+
+	/**
+	 * Check if table exist in database
+	 *
+	 * @param $table
+	 *
+	 * @return bool
+	 */
+	protected function _checkTableExist($table)
 	{
 		// Getting the database instance
 		$db = JFactory::getDbo();
 
-		// Loading params
-		$this->_parameters = $parameters;
+		$table = $db->getPrefix() . $table;
 
-		$task = isset($this->_parameters['HTTP_TASK']) ? $this->_parameters['HTTP_TASK'] : '';
-		$name = $table = isset($this->_parameters['HTTP_TABLE']) ? $this->_parameters['HTTP_TABLE'] : '';
-		$files = isset($this->_parameters['HTTP_FILES']) ? $this->_parameters['HTTP_FILES'] : '';
+		// Set the query to get the tables statement.
+		$db->setQuery('SHOW TABLES');
 
-		// Fixing table if is extension
-		$table = (substr($table, 0, 4) == 'ext_') ? substr($table, 4) : $table;
+		$tables = $db->loadResultArray();
 
-		// Check task is only to test the connection
-		if ($task == 'check')
+		if (in_array($table, $tables))
 		{
 			return true;
-		}
-
-		// Loading table
-		if (isset($table))
-		{
-			JTable::addIncludePath(JPATH_ROOT . DS . 'plugins' . DS . 'system' . DS . 'redmigrator' . DS . 'table');
-			$class = @RedMigratorTable::getInstance($name, 'RedMigratorTable');
-
-			if (!is_object($class))
-			{
-				$class = RedMigratorTable::getInstance('generic', 'RedMigratorTable');
-				$class->changeTable($table);
-			}
-		}
-		elseif (isset($files))
-		{
-			require_once JPATH_ROOT . DS . 'plugins' . DS . 'system' . DS . 'redmigrator' . DS . 'files.php';
-			$class = new RedMigratorFiles;
-		}
-
-		// Get the method name
-		$method = 'get' . ucfirst($task);
-
-		// Does the method exist?
-		if (method_exists($class, $method))
-		{
-			return $class->$method();
 		}
 		else
 		{
 			return false;
 		}
+	}
 
+	/**
+	 * Get total of rows
+	 *
+	 * @param $table
+	 *
+	 * @return int
+	 */
+	protected function _getTotal($table)
+	{
+		$db = JFactory::getDbo();
+
+		$query = 'SELECT count(*) FROM ' . $db->getPrefix() . $table;
+
+		$db->setQuery($query);
+
+		$total = $db->loadResult();
+
+		return (int) $total;
+	}
+
+	/**
+	 * Get a row
+	 *
+	 * @param $table
+	 * @param $start
+	 * @param $limit
+	 *
+	 * @return mixed|string
+	 */
+	protected function _getRow($table, $start, $limit)
+	{
+		$db = JFactory::getDbo();
+
+		$query = 'SELECT *'
+			. ' FROM ' . $db->getPrefix() . $table
+			. ' LIMIT ' . $start . ', ' . $limit;
+
+		$db->setQuery($query);
+
+		$row = $db->loadAssocList();
+
+		return $row;
 	}
 }

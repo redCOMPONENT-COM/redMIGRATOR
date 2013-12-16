@@ -71,6 +71,11 @@ class RedMigrator
 	 */
 	public $canDrop = false;
 
+	/**
+	 * Constructor
+	 *
+	 * @param   RedMigratorStep  $step  Step
+	 */
 	function __construct(RedMigratorStep $step = null)
 	{
 		// Set the current step
@@ -105,7 +110,7 @@ class RedMigrator
 			$this->_total = RedMigratorHelper::getTotal($step);
 		}
 
-		// Set timelimit to 0
+		// Set time limit to 0
 		if (!@ini_get('safe_mode'))
 		{
 			if (!empty($this->params->timelimit))
@@ -135,12 +140,13 @@ class RedMigrator
 	}
 
 	/**
+	 * Get instance of RedMigrator
 	 *
-	 * @param   stdClass   $options  Parameters to be passed to the database driver.
+	 * @param   RedMigratorStep  $step  Step
 	 *
-	 * @return  RedMigrator  A RedMigrator object.
+	 * @return bool
 	 *
-	 * @since  3.0.0
+	 * @throws RuntimeException
 	 */
 	static function getInstance(RedMigratorStep $step = null)
 	{
@@ -189,8 +195,6 @@ class RedMigrator
 	 * The public entry point for the class.
 	 *
 	 * @return	boolean
-	 *
-	 * @since	0.4.
 	 */
 	public function upgrade()
 	{
@@ -210,10 +214,11 @@ class RedMigrator
 	/**
 	 * Sets the data in the destination database.
 	 *
-	 * @return	void
+	 * @param   bool  $rows  Rows
 	 *
-	 * @since	0.4.
-	 * @throws	Exception
+	 * @return bool|void
+	 *
+	 * @throws Exception
 	 */
 	protected function setDestinationData($rows = false)
 	{
@@ -222,7 +227,7 @@ class RedMigrator
 		// Get the source data.
 		if ($rows === false)
 		{
-			$rows = $this->dataSwitch();
+			$rows = $this->_driver->getSourceData();
 		}
 		else
 		{
@@ -315,49 +320,13 @@ class RedMigrator
 	}
 
 	/**
-	 * dataSwitch
+	 * Insert data
 	 *
-	 * @return	array	The requested data
+	 * @param   array or object  $rows  Rows
 	 *
-	 * @since	3.0.0
-	 * @throws	Exception
-	 */
-	protected function dataSwitch($name = null)
-	{
-		$method = $this->params->method;
-
-		$rows = array();
-
-		switch ($method)
-		{
-			case 'rest':
-				$name = ($name == null) ? $this->_step->_getStepName() : $name;
-
-				if ( in_array($name, $this->extensions_steps) )
-				{
-					$rows = $this->_driver->getSourceDataRest($name);
-				}
-				else
-				{
-					$rows = $this->_driver->getSourceDataRestIndividual($name);
-				}
-			break;
-
-			case 'database':
-				$rows = $this->_driver->getSourceDatabase();
-			break;
-		}
-
-		return $rows;
-	}
-
-	/**
-	 * insertData
+	 * @return bool
 	 *
-	 * @return	void
-	 *
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @throws Exception
 	 */
 	protected function insertData($rows)
 	{
@@ -384,7 +353,7 @@ class RedMigrator
 					}
 				}
 
-				$this->_step->_nextCID($total);
+				$this->_step->_nextCID();
 			}
 		}
 		elseif (is_object($rows))
@@ -405,11 +374,8 @@ class RedMigrator
 		return !empty($this->_step->error) ? false : true;
 	}
 
-	/*
-	 *
-	 * @return	void
-	 * @since	3.0.0
-	 * @throws	Exception
+	/**
+	 * @return array
 	 */
 	public static function getConditionsHook()
 	{
@@ -420,12 +386,12 @@ class RedMigrator
 		return $conditions;
 	}
 
-	/*
+	/**
 	 * Fake method of dataHook if it not exists
 	 *
-	 * @return	void
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @param $rows
+	 *
+	 * @return mixed
 	 */
 	public function dataHook($rows)
 	{
@@ -433,19 +399,12 @@ class RedMigrator
 		return $rows;
 	}
 
-	/*
+	/**
 	 * Fake method after hooks
 	 *
-	 * @return	void
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @return bool
 	 */
 	public function afterHook()
-	{
-		return true;
-	}
-
-	protected function afterAllDataHook()
 	{
 		return true;
 	}
@@ -463,8 +422,10 @@ class RedMigrator
 	}
 
 	/**
- 	* Get the table structure
-	*/
+	 * Get the table structure
+	 *
+	 * @return bool
+	 */
 	public function getTableStructure()
 	{
 		// Getting the source table
@@ -502,10 +463,10 @@ class RedMigrator
 	/**
 	 * Replace table name
 	 *
-	 * @return	string The replaced table
+	 * @param         $table      Table
+	 * @param   null  $structure  Structure
 	 *
-	 * @since 3.0.3
-	 * @throws	Exception
+	 * @return mixed
 	 */
 	protected function replaceTable($table, $structure = null)
 	{

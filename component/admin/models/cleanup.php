@@ -18,14 +18,11 @@ JLoader::register('RedMigratorStep', JPATH_COMPONENT_ADMINISTRATOR . '/includes/
 
 /**
  * RedMigrator Model
- *
  */
 class RedMigratorModelCleanup extends RModelAdmin
 {
 	/**
 	 * Cleanup
-	 *
-	 * @return	none
 	 */
 	function cleanup()
 	{
@@ -200,7 +197,7 @@ class RedMigratorModelCleanup extends RModelAdmin
 		$tables[] = '#__redmigrator_modules';
 		$tables[] = '#__redmigrator_default_categories';
 
-		for ($i=0; $i < count($tables); $i++)
+		for ($i = 0; $i < count($tables); $i++)
 		{
 			$query->clear();
 			$query->delete()->from("{$tables[$i]}");

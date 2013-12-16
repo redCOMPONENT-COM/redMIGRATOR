@@ -122,8 +122,6 @@ class RedMigratorUsergroups extends RedMigrator
 	{
 		if (is_array($rows))
 		{
-			$total = count($rows);
-
 			foreach ($rows as $row)
 			{
 				if ($row != false && (int) $row['parent_id'] != 0)
@@ -149,7 +147,7 @@ class RedMigratorUsergroups extends RedMigrator
 					}
 				}
 
-				$this->_step->_nextCID($total);
+				$this->_step->_nextCID();
 			}
 		}
 		elseif (is_object($rows))
