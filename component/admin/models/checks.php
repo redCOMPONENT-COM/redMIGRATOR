@@ -77,18 +77,18 @@ class RedMigratorModelChecks extends RModelAdmin
 		if ($params->method == "rest")
 		{
 			if (!isset($params->rest_hostname) || !isset($params->rest_username)
-					|| !isset($params->rest_password) || !isset($params->rest_key) )
+				|| !isset($params->rest_password) || !isset($params->rest_key) )
 			{
 				throw new Exception('COM_REDMIGRATOR_ERROR_REST_CONFIG');
 			}
 
 			if ($params->rest_hostname == 'http://www.example.org/' || $params->rest_hostname == ''
-					|| $params->rest_username == '' || $params->rest_password == '' || $params->rest_key == '')
+				|| $params->rest_username == '' || $params->rest_password == '' || $params->rest_key == '')
 			{
 				throw new Exception('COM_REDMIGRATOR_ERROR_REST_CONFIG');
 			}
 
-			// Checking the RESTful connection
+			// Checking the Restful connection
 			$driver = RedMigratorDriver::getInstance();
 			$code = $driver->requestRest('check');
 

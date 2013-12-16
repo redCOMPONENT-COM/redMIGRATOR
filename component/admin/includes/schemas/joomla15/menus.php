@@ -262,8 +262,6 @@ class RedMigratorMenu extends RedMigrator
 		// Initialize values
 		$unique_alias_suffix = 1;
 
-		$total = count($rows);
-
 		foreach ($rows as $row)
 		{
 			// Convert the array into an object.
@@ -362,7 +360,7 @@ class RedMigratorMenu extends RedMigrator
 			}
 
 			// Updating the steps table
-			$this->_step->_nextCID($total);
+			$this->_step->_nextCID();
 		}
 
 		return false;

@@ -8,6 +8,7 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 
@@ -18,34 +19,53 @@ defined('_JEXEC') or die;
 class RedMigratorDriverDatabase extends RedMigratorDriver
 {
 	/**
-	 * @var      
-	 * @since  3.0
+	 * Source database
+	 *
+	 * @var object
 	 */
 	public $_db_old = null;
 
 	/**
-	 * @var	conditions  
-	 * @since  3.0
+	 * @var null
 	 */
 	public $_conditions = null;
 
 	/**
-	 * @var    array  List of extensions steps
-	 * @since  12.1
+	 * @var array  List of extensions steps
 	 */
 	private $extensions_steps = array('extensions', 'ext_components', 'ext_modules', 'ext_plugins');
 
+	/**
+	 * Constructor
+	 *
+	 * @param RedMigratorStep $step
+	 */
 	function __construct(RedMigratorStep $step = null)
 	{
-		parent::__construct($step);
+        parent::__construct($step);
 
-		$class = (!empty($step->class)) ? $step->class : 'RedMigrator';
-		$name = (!empty($step->name)) ? $step->name : '';
-		$type = (!empty($step->type)) ? $step->type : 'core';
-		//$xmlpath = (!empty($step->xmlpath)) ? $step->xmlpath : '';
+        $class = 'RedMigrator';
+
+		if (!empty($step->class))
+        {
+            $class = $step->class;
+		}
+
+		$name = '';
+
+		if (!empty($step->name))
+		{
+			$name = $step->name;
+		}
+
+		$type = 'core';
+
+		if (!empty($step->type))
+		{
+			$type = $step->type;
+		}
 
 		RedMigratorHelper::requireClass($name, $type, $class);
-		//RedMigratorHelper::requireClass($name, $xmlpath, $class);
 
 		// @@ Fix bug using PHP < 5.2.3 version
 		$this->_conditions = call_user_func($class . '::getConditionsHook');
@@ -67,7 +87,36 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 	 * @access	public
 	 * @return	int	The total of rows
 	 */
-	public function getSourceDatabase( )
+	/*public function getSourceDatabase( )
+	{
+		// Get the conditions
+		$conditions = $this->getConditionsHook();
+
+		// Process the conditions
+		$query = $this->_processQuery($conditions, true);
+
+		// Setting the query
+		$this->_db_old->setQuery($query);
+
+		try
+		{
+			$rows = $this->_db_old->loadAssocList();
+		}
+		catch (Exception $e)
+		{
+			throw new Exception($e->getMessage());
+		}
+
+		return $rows;
+	}*/
+
+	/**
+	 * Get data from source database
+	 *
+	 * @return null
+	 * @throws Exception
+	 */
+	public function getSourceData()
 	{
 		// Get the conditions
 		$conditions = $this->getConditionsHook();

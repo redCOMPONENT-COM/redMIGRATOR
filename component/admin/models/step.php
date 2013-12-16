@@ -16,28 +16,31 @@ JLoader::register('RedMigrator', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redm
 JLoader::register('RedMigratorStep', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.step.class.php');
 
 /**
- * RedMigrator Model
- *
+ * Class RedMigratorModelStep
  */
 class RedMigratorModelStep extends RModelAdmin
 {
 	/**
 	 * Initial checks in RedMigrator
 	 *
-	 * @return	none
+	 * @param   bool  $name        Name of step
+	 * @param   bool  $extensions  True if migrate 3rd extension
 	 *
-	 * @since	1.2.0
+	 * @return mixed
 	 */
-	public function step($name = false, $json = true, $extensions = false)
+	public function step($name = false, $extensions = false)
 	{
 		// Check if extensions exists if not get it from URI request
-		$extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
+		if ($extensions === false)
+		{
+			$extensions = JRequest::getCmd('extensions', '');
+		}
 
 		// Getting the RedMigratorStep instance
 		$step = RedMigratorStep::getInstance(null, $extensions);
 
 		// Check if name exists
-		if (empty($name))
+		if ($name === false)
 		{
 			$name = $step->name;
 		}

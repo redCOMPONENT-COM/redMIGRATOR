@@ -14,7 +14,7 @@
             <option value="database">
                 COM_REDMIGRATOR_CONFIG_DATABASE_TITLE
             </option>
-            <option value="rest">
+            <option value="restful">
                 COM_REDMIGRATOR_CONFIG_REST_TITLE
             </option>
         </field>
@@ -39,11 +39,11 @@
         </field>
     </fieldset>
     <fieldset
-            name="rest"
+            name="restful"
             label="COM_REDMIGRATOR_CONFIG_REST_TITLE"
             description="COM_REDMIGRATOR_CONFIG_REST_TITLE_DESC">
         <field
-                name="rest_hostname"
+                name="restful_hostname"
                 type="text"
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_HOSTNAME"
@@ -51,7 +51,7 @@
                 default="http://www.example.org/"
                 />
         <field
-                name="rest_username"
+                name="restful_username"
                 type="text"
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_USERNAME"
@@ -59,7 +59,7 @@
                 default=""
                 />
         <field
-                name="rest_password"
+                name="restful_password"
                 type="password"
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_PASSWORD"
@@ -67,7 +67,7 @@
                 default=""
                 />
         <field
-                name="rest_key"
+                name="restful_key"
                 type="password"
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_KEY"
@@ -135,17 +135,6 @@
                 class="text"
                 label="&lt;b&gt;Core skips&lt;/b&gt;"
                 />
-        <!-- <field
-                name="skip_checks"
-                type="radio"
-                default="0"
-                label="Skip checks"
-                description=""
-                class="btn-group"
-                >
-            <option value="1">JYES</option>
-            <option value="0">JNO</option>
-        </field> -->
         <field
                 name="skip_core_users"
                 type="radio"

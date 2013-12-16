@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die;
 
+jimport('joomla.html.parameter');
+
 /**
  * REST Request Authorizer class
  *
@@ -17,26 +19,29 @@ defined('_JEXEC') or die;
  * @subpackage  REST
  * @since       1.0
  */
-class RedRESTAuthorizer
+class RedRESTFULAuthorizer
 {
 	/**
 	 * Authorize an REST signed request for a protected resource.
 	 *
 	 * @return  boolean  True if the user and pass are authorized
 	 *
-	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 */
 	public function authorize(&$db, $params)
 	{
 		// Getting the client key
 		$plugin =& JPluginHelper::getPlugin('system', 'redmigrator');
+
 		$pluginParams = new JParameter($plugin->params);
+
 		$client_key = trim($pluginParams->get('client_key'));
 
-		// Uncrypt the request
+		// Decode the request
 		$key = base64_decode($params['HTTP_KEY']);
+
 		$parts = explode(':', $key);
+
 		$key = trim($parts[0]);
 
 		if ($key != $client_key)
@@ -89,10 +94,23 @@ class RedRESTAuthorizer
 		$parts	= explode(':', $password_decode);
 		$password	= $parts[0];
 
+		if (version_compare(JVERSION, '1.6.0', '<'))
+		{
+			$query = 'SELECT u.id, u.password'
+				. ' FROM #__users AS u'
+				. ' LEFT JOIN #__core_acl_aro_groups AS ug ON u.gid = ug.id'
+				. ' WHERE username = ' . $db->quote($user) . ' AND ug.name = "Super Administrator"';
+		}
+		else
+		{
+			$query = 'SELECT u.id AS id, u.password AS password'
+				. ' FROM #__users AS u'
+				. ' LEFT JOIN #__user_usergroup_map AS uugm ON u.id = uugm.user_id'
+				. ' LEFT JOIN #__usergroups AS ug ON uugm.group_id = ug.id'
+				. ' WHERE u.username = ' . $db->quote($user) . ' AND ug.title = "Super Users"';
+		}
+
 		// Getting the local username and password
-		$query = 'SELECT `id`, `password`, `gid`'
-					. ' FROM #__users'
-					. ' WHERE username = ' . $db->quote($user);
 		$db->setQuery($query);
 		$user_result = $db->loadObject();
 
@@ -105,7 +123,7 @@ class RedRESTAuthorizer
 		if (!is_object($user_result))
 		{
 			JResponse::setHeader('status', 403);
-			JResponse::setBody('Username not found.');
+			JResponse::setBody('Username not found OR not a Super user');
 			JResponse::sendHeaders();
 			exit;
 		}
@@ -114,14 +132,6 @@ class RedRESTAuthorizer
 		{
 			JResponse::setHeader('status', 406);
 			JResponse::setBody('Username or password do not match');
-			JResponse::sendHeaders();
-			exit;
-		}
-
-		if ($user_result->gid != 25)
-		{
-			JResponse::setHeader('status', 401);
-			JResponse::setBody('Username is not Super Administrator');
 			JResponse::sendHeaders();
 			exit;
 		}

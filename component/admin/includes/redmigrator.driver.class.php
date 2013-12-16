@@ -8,6 +8,7 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 
@@ -18,44 +19,53 @@ defined('_JEXEC') or die;
 class RedMigratorDriver
 {
 	/**
-	 * @var      
-	 * @since  3.0
+	 * Config params
+	 *
+	 * @var object
 	 */
 	public $params = null;
 
 	/**
-	 * @var      
-	 * @since  3.0
+	 * Target database
+	 *
+	 * @var object
 	 */
-	public $_db = null;
+	protected $_db = null;
 
 	/**
+	 * Current step
+	 *
 	 * @var	array
-	 * @since  3.0
 	 */
 	protected $_step = null;
 
-	function __construct(RedMigratorStep $step = null)
+	/**
+	 * Constructor
+	 *
+	 * @param RedMigratorStep $step
+	 */
+	public function __construct(RedMigratorStep $step = null)
 	{
 		JLoader::import('legacy.component.helper');
 
-		// Set the step params
-		$this->_step = $step;
-
+		// Get config params
 		$this->params = RedMigratorHelper::getParams();
 
 		// Creating dabatase instance for this installation
 		$this->_db = JFactory::getDBO();
+
+		// Set the step params
+		$this->_step = $step;
 	}
 
 	/**
+	 * Create driver instance depend on $param->method (database or restful)
+	 *
 	 * @param   stdClass   $options  Parameters to be passed to the database driver.
 	 *
 	 * @return  RedMigrator  A RedMigrator object.
-	 *
-	 * @since  3.0.0
 	 */
-	static function getInstance(RedMigratorStep $step = null)
+	public static function getInstance(RedMigratorStep $step = null)
 	{
 		// Loading the JFile class
 		JLoader::import('joomla.filesystem.file');
@@ -90,6 +100,16 @@ class RedMigratorDriver
 		}
 
 		return $instance;
+	}
+
+	/**
+	 * Get data from source database
+	 *
+	 * @return null
+	 */
+	public function getSourceData()
+	{
+		return null;
 	}
 
 	/**

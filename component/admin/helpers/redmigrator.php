@@ -58,9 +58,11 @@ class RedMigratorHelper
 	/**
 	 * Require the correct file from step
 	 *
-	 * @return  int	The total number
+	 * @param   string  $name   Name
+	 * @param   null    $type   Type
+	 * @param   null    $class  Class
 	 *
-	 * @since   3.0.0
+	 * @return none
 	 */
 	public static function requireClass($name, $type = null, $class = null)
 	{
@@ -111,11 +113,11 @@ class RedMigratorHelper
 	}
 
 	/**
-	 * Getting the total 
+	 * Getting the total
 	 *
-	 * @return  int	The total number
+	 * @param   RedMigratorStep  $step  Step
 	 *
-	 * @since   3.0.0
+	 * @return int
 	 */
 	public static function getTotal(RedMigratorStep $step = null)
 	{
@@ -129,9 +131,12 @@ class RedMigratorHelper
 	/**
 	 * Populate a sql file
 	 *
-	 * @return  bool	True if succeful
+	 * @param   JDatabase  $db       Database
+	 * @param   string     $sqlfile  Sql script
 	 *
-	 * @since   3.1.0
+	 * @return bool|int
+	 *
+	 * @throws Exception
 	 */
 	public static function populateDatabase($db, $sqlfile)
 	{
@@ -164,25 +169,26 @@ class RedMigratorHelper
 		return true;
 	}
 
-    /**
-     * returnError
-     *
-     * @return	none
-     *
-     * @since	2.5.0
-     */
-    public static function returnError($number, $text)
-    {
-        $message['number'] = $number;
-        $message['text'] = JText::_($text);
-        echo json_encode($message);
-        exit;
-    }
+	/**
+	 * Return error to client
+	 *
+	 * @param   int     $number  Number
+	 * @param   string  $text    Text
+	 *
+	 * @return none
+	 */
+	public static function returnError($number, $text)
+	{
+		$message['number'] = $number;
+		$message['text'] = JText::_($text);
+		echo json_encode($message);
+		exit;
+	}
 
 	/**
 	 * Get next id will be inserted into the table
 	 *
-	 * @param $table
+	 * @param   string  $table  Table name
 	 *
 	 * @return mixed
 	 */
@@ -202,10 +208,10 @@ class RedMigratorHelper
 
 	/**
 	 * Find new id from old
-	 * Algorithm: Binarysearch
+	 * Algorithm: Binary search
 	 *
-	 * @param $sessionEntry Table name
-	 * @param $oldId Old id
+	 * @param   string  $sessionEntry  Table  name
+	 * @param   int     $oldId         Old id
 	 *
 	 * @return int
 	 */
@@ -219,10 +225,10 @@ class RedMigratorHelper
 		$last = count($arrUsergroups) - 1;
 		$middle = (int) (($first + $last) / 2);
 
-		// id not exist
+		// Id not exist
 		$newId = -1;
 
-		while($first <= $last)
+		while ($first <= $last)
 		{
 			if ((int) $arrUsergroups[$middle]['old_id'] < $oldId)
 			{
@@ -247,7 +253,9 @@ class RedMigratorHelper
 	/**
 	 * Fill data from xml file to #__redmigrator_steps table
 	 *
-	 * @param $xmlfile The path of xml file
+	 * @param   string  $xmlfile  The path of xml file
+	 *
+	 * @return none
 	 */
 	public static function populateSteps($xmlfile)
 	{
@@ -315,16 +323,18 @@ class RedMigratorHelper
 		}
 	}
 
-    /**
-     * Only for developer debug
-     *
-     * @return	none
-     *
-     */
-    public static function writeFile ($filename, $content)
-    {
-    	$handle = fopen(JPATH_COMPONENT_ADMINISTRATOR . '/'. $filename, 'a');
+	/**
+	 * Only for developer debug
+	 *
+	 * @param   string  $filename  File name
+	 * @param   string  $content   Content
+	 *
+	 * @return none
+	 */
+	public static function writeFile ($filename, $content)
+	{
+		$handle = fopen(JPATH_COMPONENT_ADMINISTRATOR . '/' . $filename, 'a');
 		fwrite($handle, $content);
 		fclose($handle);
-    }
+	}
 }

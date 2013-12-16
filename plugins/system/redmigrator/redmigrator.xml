@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5" type="plugin" group="system" method="upgrade">
-	<name>redMIGRATOR - System plugin</name>
+<extension version="3.0" type="plugin" group="system" method="upgrade">
+	<name>PLG_SYSTEM_REDMIGRATOR</name>
 	<author>redCOMPONENT</author>
 	<creationDate>April 13th, 2013</creationDate>
 	<copyright>Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.</copyright>
@@ -8,7 +8,8 @@
 	<authorEmail>email@redcomponent.com</authorEmail>
 	<authorUrl>http://www.redcomponent.com</authorUrl>
 	<version>3.0</version>
-	<description>RESTFul WebService for redmigrator</description>
+	<description>PLG_SYSTEM_REDMIGRATOR_XML_DESCRIPTION</description>
+	<scriptfile>install.j25.php</scriptfile>
 	<files>
 		<folder>redmigrator</folder>
 		<filename plugin="redmigrator">redmigrator.php</filename>
@@ -17,13 +18,16 @@
 		<language tag="en-GB">en-GB/en-GB.plg_system_redmigrator.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_system_redmigrator.sys.ini</language>
 	</languages>
-	<params>
-		<param
-			name="client_key"
-			type="password"
-			default=""
-			label="Key of the client side"
-			description="Key of the client side"
-		/>
-	</params>
-</install>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="client_key" type="password"
+					description="Key of the client side"
+					label="Key of the client side"
+					default="Key of the client side"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

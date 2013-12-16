@@ -84,8 +84,6 @@ class RedMigratorSections extends RedMigratorCategory
 	 */
 	public function dataHook($rows = null)
 	{
-		$total = count($rows);
-
 		// Insert the sections
 		foreach ($rows as $section)
 		{
@@ -95,7 +93,7 @@ class RedMigratorSections extends RedMigratorCategory
 			$this->insertCategory($section);
 
 			// Updating the steps table
-			$this->_step->_nextCID($total);
+			$this->_step->_nextCID();
 		}
 
 		return false;

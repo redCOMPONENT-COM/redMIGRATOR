@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  REST
  * @since       1.0
  */
-class RedRESTMessage
+class RedRESTFULMessage
 {
 	/**
 	 * @var    string  The HTTP request method for the message.
@@ -45,6 +45,8 @@ class RedRESTMessage
 		'HTTP_TASK',
 		'HTTP_TYPE',
 		'HTTP_TABLE',
+		'HTTP_START',
+		'HTTP_LIMIT',
 		'HTTP_FILES',
 		'HTTP_KEY',
 		'HTTP_USER',
