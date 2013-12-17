@@ -103,7 +103,7 @@ class RedMigratorUsergroups extends RedMigrator
 
 			$objTable->parent_id = RedMigratorHelper::lookupNewId('arrUsergroups', $item['old_parent_id']);
 
-			if (!@$objTable->store())
+			if (!$objTable->store())
 			{
 				echo JError::raiseError(500, $objTable->getError());
 			}

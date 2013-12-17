@@ -18,10 +18,30 @@
 
 class RedMigratorMenu extends RedMigrator
 {
+	private $arrSystemComponents = array('com_banners',
+											'com_banners_categories',
+											'com_banners_clients',
+											'com_banners_tracks',
+											'com_contact',
+											'com_contact_categories',
+											'com_messages',
+											'com_messages_add',
+											'com_messages_read',
+											'com_newsfeeds',
+											'com_newsfeeds_feeds',
+											'com_newsfeeds_categories',
+											'com_redirect',
+											'com_search',
+											'com_weblinks',
+											'com_weblinks_links',
+											'com_weblinks_categories',
+											'com_finder',
+											'com_joomlaupdate');
+
 	/**
 	 * Sets the data in the destination database.
 	 *
-	 * @param null $rows
+	 * @param   null  $rows  Rows
 	 *
 	 * @return null
 	 */
@@ -31,64 +51,76 @@ class RedMigratorMenu extends RedMigrator
 
 		$new_id = RedMigratorHelper::getAutoIncrement('menu') - 1;
 
-		foreach ($rows as &$row)
+		foreach ($rows as $k => &$row)
 		{
 			$row = (array) $row;
 
-			// Create a map of old id and new id
-			$old_id = (int) $row['id'];
-
-			$new_root_id = 1;
-
-			if ((int) $row['parent_id'] == 0)
+			// Not migrate system menus
+			if (in_array($row['title'], $this->arrSystemComponents))
 			{
-				$new_root_id = $this->getRootId();
-				$arrTemp = array('old_id' => $old_id, 'new_id' => $new_root_id);
+				$rows[$k] = false;
 			}
 			else
 			{
-				$new_id ++;
-				$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
-			}
+				// Create a map of old id and new id
+				$old_id = (int) $row['id'];
 
-			$arrMenu = $session->get('arrMenu', null, 'redmigrator_j25');
+				$new_root_id = 1;
 
-			$arrMenu[] = $arrTemp;
-
-			// Save the map to session
-			$session->set('arrMenu', $arrMenu, 'redmigrator_j25');
-
-			if ((int) $row['parent_id'] != 0)
-			{
-				// Parent item was inserted, so lookup new id
-				if ((int) $row['id'] > (int) $row['parent_id'])
+				if ((int) $row['parent_id'] == 0)
 				{
-					$row['parent_id'] = RedMigratorHelper::lookupNewId('arrMenu', (int) $row['parent_id']);
+					$new_root_id = $this->getRootId();
+					$arrTemp = array('old_id' => $old_id, 'new_id' => $new_root_id);
 				}
-				else // Parent item haven't been inserted, so will lookup new id and update item apter hook
+				else
 				{
-					$arrMenuSwapped = $session->get('arrMenuSwapped', null, 'redmigrator_j25');
-
-					$arrMenuSwapped[] = array('new_id' => $new_id, 'old_parent_id' => (int) $row['parent_id']);
-
-					$session->set('arrMenuSwapped', $arrMenuSwapped, 'redmigrator_j25');
-
-					$row['parent_id'] = $new_root_id;
+					$new_id ++;
+					$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 				}
 
-				// $row['menutype'] = $row['menutype'] . '_old';
-				$row['alias'] = $row['alias'] . '_old_' . $row['id'];
-				$row['id'] = null;
-				$row['lft'] = null;
-				$row['rgt'] = null;
+				$arrMenu = $session->get('arrMenu', null, 'redmigrator_j25');
 
-				$row['published'] = 0;
-			}
+				$arrMenu[] = $arrTemp;
 
-			// In J3x, column ordering has been removed
-			if (version_compare(PHP_VERSION, '3.0', '>='))
-			{
-				unset($row['ordering']);
+				// Save the map to session
+				$session->set('arrMenu', $arrMenu, 'redmigrator_j25');
+
+				// Not migrate root menu
+				if ((int) $row['parent_id'] == 0)
+				{
+					$rows[$k] = false;
+				}
+				else
+				{
+					// Parent item was inserted, so lookup new id
+					if ((int) $row['id'] > (int) $row['parent_id'])
+					{
+						$row['parent_id'] = RedMigratorHelper::lookupNewId('arrMenu', (int) $row['parent_id']);
+					}
+					else // Parent item haven't been inserted, so will lookup new id and update item apter hook
+					{
+						$arrMenuSwapped = $session->get('arrMenuSwapped', null, 'redmigrator_j25');
+
+						$arrMenuSwapped[] = array('new_id' => $new_id, 'old_parent_id' => (int) $row['parent_id']);
+
+						$session->set('arrMenuSwapped', $arrMenuSwapped, 'redmigrator_j25');
+
+						$row['parent_id'] = $new_root_id;
+					}
+
+					$row['alias'] = $row['alias'] . '_old_' . $row['id'];
+					$row['id'] = null;
+					$row['lft'] = null;
+					$row['rgt'] = null;
+
+					$row['published'] = 0;
+
+					// In J3x, column ordering has been removed
+					if (version_compare(PHP_VERSION, '3.0', '>='))
+					{
+						unset($row['ordering']);
+					}
+				}
 			}
 		}
 
@@ -116,7 +148,7 @@ class RedMigratorMenu extends RedMigrator
 
 			$objTable->setLocation($objTable->parent_id, 'last-child');
 
-			if (!@$objTable->store())
+			if (!$objTable->store())
 			{
 				echo JError::raiseError(500, $objTable->getError());
 			}
@@ -137,7 +169,7 @@ class RedMigratorMenu extends RedMigrator
 		{
 			foreach ($rows as $row)
 			{
-				if ($row != false && (int) $row['parent_id'] != 0)
+				if ($row != false)
 				{
 					try
 					{
@@ -151,7 +183,7 @@ class RedMigratorMenu extends RedMigrator
 							echo JError::raiseError(500, $objTable->getError());
 						}
 
-						if (!@$objTable->store())
+						if (!$objTable->store())
 						{
 							echo JError::raiseError(500, $objTable->getError());
 						}
@@ -167,7 +199,7 @@ class RedMigratorMenu extends RedMigrator
 		}
 		elseif (is_object($rows))
 		{
-			if ($rows != false && $rows->parent_id != 0)
+			if ($rows != false)
 			{
 				try
 				{
@@ -181,7 +213,7 @@ class RedMigratorMenu extends RedMigrator
 						echo JError::raiseError(500, $objTable->getError());
 					}
 
-					if (!@$objTable->store())
+					if (!$objTable->store())
 					{
 						echo JError::raiseError(500, $objTable->getError());
 					}

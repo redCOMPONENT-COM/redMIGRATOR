@@ -82,38 +82,10 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 	}
 
 	/**
-	 * Get total of the rows of the table
-	 *
-	 * @access	public
-	 * @return	int	The total of rows
-	 */
-	/*public function getSourceDatabase( )
-	{
-		// Get the conditions
-		$conditions = $this->getConditionsHook();
-
-		// Process the conditions
-		$query = $this->_processQuery($conditions, true);
-
-		// Setting the query
-		$this->_db_old->setQuery($query);
-
-		try
-		{
-			$rows = $this->_db_old->loadAssocList();
-		}
-		catch (Exception $e)
-		{
-			throw new Exception($e->getMessage());
-		}
-
-		return $rows;
-	}*/
-
-	/**
 	 * Get data from source database
 	 *
 	 * @return null
+	 *
 	 * @throws Exception
 	 */
 	public function getSourceData()
