@@ -159,24 +159,24 @@ CREATE TABLE IF NOT EXISTS `#__redmigrator_steps` (
 -- Dumping data for table `#__redmigrator_steps`
 --
 
-/*INSERT INTO `#__redmigrator_steps` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `type`, `class`, `status`, `cache`, `extension`, `total`, `start`, `stop`, `first`) VALUES
-(1, 'users', 'Users', 'id', 'users', 'users', 0, 'core', 'RedMigratorUsers', 0, 0, 0, 0, 0, 0, 0),
-(2, 'arogroup', 'Users Groups', 'id', 'core_acl_aro_groups', 'usergroups', 0, 'core', 'RedMigratorUsergroups', 0, 0, 0, 0, 0, 0, 0),
-(3, 'usergroupmap', 'Users Groups', 'aro_id', 'core_acl_groups_aro_map', 'user_usergroup_map', 0, 'core', 'RedMigratorUsergroupMap', 0, 0, 0, 0, 0, 0, 0),
-(4, 'categories', 'Categories', 'id', 'categories', 'categories', 0, 'core', 'RedMigratorCategories', 0, 0, 0, 0, 0, 0, 0),
-(5, 'sections', 'Sections', 'id', 'sections', 'categories', 0, 'core', 'RedMigratorSections', 0, 0, 0, 0, 0, 0, 0),
-(6, 'contents', 'Contents', 'id', 'content', 'content', 0, 'core', 'RedMigratorContent', 0, 0, 0, 0, 0, 0, 0),
-(7, 'contents_frontpage', 'FrontPage Contents', 'content_id', 'content_frontpage', 'content_frontpage', 0, 'core', 'RedMigratorContentFrontpage', 0, 0, 0, 0, 0, 0, 0),
-(8, 'menus', 'Menus', 'id', 'menu', 'menu', 0, 'core', 'RedMigratorMenu', 0, 0, 0, 0, 0, 0, 0),
-(9, 'menus_types', 'Menus Types', 'id', 'menu_types', 'menu_types', 0, 'core', 'RedMigratorMenusTypes', 0, 0, 0, 0, 0, 0, 0),
-(10, 'modules', 'Core Modules', 'id', 'modules', 'modules', 0, 'core', 'RedMigratorModules', 0, 0, 0, 0, 0, 0, 0),
-(11, 'modules_menu', 'Modules Menus', 'moduleid', 'modules_menu', 'modules_menu', 0, 'core', 'RedMigratorModulesMenu', 0, 0, 0, 0, 0, 0, 0),
-(12, 'banners', 'Banners', 'id', 'banner', 'banners', 0, 'core', 'RedMigratorBanners', 0, 0, 0, 0, 0, 0, 0),
-(13, 'banners_clients', 'Banners Clients', 'cid', 'bannerclient', 'banner_clients', 0, 'core', 'RedMigratorBannersClients', 0, 0, 0, 0, 0, 0, 0),
-(14, 'banners_tracks', 'Banners Tracks', 'banner_id', 'bannertrack', 'banner_tracks', 0, 'core', 'RedMigratorBannersTracks', 0, 0, 0, 0, 0, 0, 0),
-(15, 'contacts', 'Contacts', 'id', 'contact_details', 'contact_details', 0, 'core', 'RedMigratorContacts', 0, 0, 0, 0, 0, 0, 0),
-(16, 'newsfeeds', 'NewsFeeds', 'id', 'newsfeeds', 'newsfeeds', 0, 'core', 'RedMigratorNewsfeeds', 0, 0, 0, 0, 0, 0, 0),
-(17, 'weblinks', 'Weblinks', 'id', 'weblinks', 'weblinks', 0, 'core', 'RedMigratorWeblinks', 0, 0, 0, 0, 0, 0, 0);*/
+-- INSERT INTO `#__redmigrator_steps` (`id`, `name`, `title`, `tbl_key`, `source`, `destination`, `cid`, `type`, `class`, `status`, `cache`, `extension`, `total`, `start`, `stop`, `first`) VALUES
+-- (1, 'users', 'Users', 'id', 'users', 'users', 0, 'core', 'RedMigratorUsers', 0, 0, 0, 0, 0, 0, 0),
+-- (2, 'arogroup', 'Users Groups', 'id', 'core_acl_aro_groups', 'usergroups', 0, 'core', 'RedMigratorUsergroups', 0, 0, 0, 0, 0, 0, 0),
+-- (3, 'usergroupmap', 'Users Groups', 'aro_id', 'core_acl_groups_aro_map', 'user_usergroup_map', 0, 'core', 'RedMigratorUsergroupMap', 0, 0, 0, 0, 0, 0, 0),
+-- (4, 'categories', 'Categories', 'id', 'categories', 'categories', 0, 'core', 'RedMigratorCategories', 0, 0, 0, 0, 0, 0, 0),
+-- (5, 'sections', 'Sections', 'id', 'sections', 'categories', 0, 'core', 'RedMigratorSections', 0, 0, 0, 0, 0, 0, 0),
+-- (6, 'contents', 'Contents', 'id', 'content', 'content', 0, 'core', 'RedMigratorContent', 0, 0, 0, 0, 0, 0, 0),
+-- (7, 'contents_frontpage', 'FrontPage Contents', 'content_id', 'content_frontpage', 'content_frontpage', 0, 'core', 'RedMigratorContentFrontpage', 0, 0, 0, 0, 0, 0, 0),
+-- (8, 'menus', 'Menus', 'id', 'menu', 'menu', 0, 'core', 'RedMigratorMenu', 0, 0, 0, 0, 0, 0, 0),
+-- (9, 'menus_types', 'Menus Types', 'id', 'menu_types', 'menu_types', 0, 'core', 'RedMigratorMenusTypes', 0, 0, 0, 0, 0, 0, 0),
+-- (10, 'modules', 'Core Modules', 'id', 'modules', 'modules', 0, 'core', 'RedMigratorModules', 0, 0, 0, 0, 0, 0, 0),
+-- (11, 'modules_menu', 'Modules Menus', 'moduleid', 'modules_menu', 'modules_menu', 0, 'core', 'RedMigratorModulesMenu', 0, 0, 0, 0, 0, 0, 0),
+-- (12, 'banners', 'Banners', 'id', 'banner', 'banners', 0, 'core', 'RedMigratorBanners', 0, 0, 0, 0, 0, 0, 0),
+-- (13, 'banners_clients', 'Banners Clients', 'cid', 'bannerclient', 'banner_clients', 0, 'core', 'RedMigratorBannersClients', 0, 0, 0, 0, 0, 0, 0),
+-- (14, 'banners_tracks', 'Banners Tracks', 'banner_id', 'bannertrack', 'banner_tracks', 0, 'core', 'RedMigratorBannersTracks', 0, 0, 0, 0, 0, 0, 0),
+-- (15, 'contacts', 'Contacts', 'id', 'contact_details', 'contact_details', 0, 'core', 'RedMigratorContacts', 0, 0, 0, 0, 0, 0, 0),
+-- (16, 'newsfeeds', 'NewsFeeds', 'id', 'newsfeeds', 'newsfeeds', 0, 'core', 'RedMigratorNewsfeeds', 0, 0, 0, 0, 0, 0, 0),
+-- (17, 'weblinks', 'Weblinks', 'id', 'weblinks', 'weblinks', 0, 'core', 'RedMigratorWeblinks', 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
