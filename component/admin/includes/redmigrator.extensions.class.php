@@ -113,7 +113,7 @@ class RedMigratorExtensions extends RedMigrator
 	/**
 	 * Get extension version from the Joomla! 1.5 site
 	 *
-	 * @param	string  Relative  path to manifest file from Joomla! 1.5 JPATH_ROOT
+	 * @param   string  $manifest  Relative path to manifest file from Joomla! 1.5 JPATH_ROOT
 	 *
 	 * @return	string Version string
 	 *

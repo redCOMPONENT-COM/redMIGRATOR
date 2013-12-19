@@ -21,17 +21,22 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 	/**
 	 * count adapters
 	 * @var int
-	 * @since	1.1.0
+	 * @since 1.1.0
 	 */
 	public $count = 0;
 
 	protected $extensions = array();
 
+	/**
+	 * Upgrade
+	 *
+	 * @return bool
+	 */
 	public function upgrade()
 	{
-		$core_version = $this->params->core_version;
+		// $core_version = $this->params->core_version;
 
-		if ($core_version == 0)
+		/*if ($core_version == 0)
 		{
 			if (!$this->upgradeComponents())
 			{
@@ -47,14 +52,13 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 			{
 				return false;
 			}
+		}*/
 
-			if (!$this->_processExtensions())
-			{
-				return false;
-			}
+		if (!$this->_processExtensions())
+		{
+			return false;
 		}
 
-		//return ($this->_processExtensions() == 0) ? false : true;
 		return true;
 	}
 
@@ -63,10 +67,9 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 	 *
 	 * @return  bool
 	 *
-	 * @since	1.1.0
 	 * @throws	Exception
 	 */
-	protected function upgradeComponents()
+	/*protected function upgradeComponents()
 	{
 		// Getting the step
 		$step = RedMigratorStep::getInstance('ext_components', true);
@@ -82,7 +85,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 		$step->_updateStep(true);
 
 		return true;
-	}
+	}*/
 
 	/**
 	 * Upgrade the modules
@@ -92,7 +95,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 	 * @since	1.1.0
 	 * @throws	Exception
 	 */
-	protected function upgradeModules()
+	/*protected function upgradeModules()
 	{
 		// Getting the step
 		$step = RedMigratorStep::getInstance('ext_modules', true);
@@ -107,7 +110,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 		$step->_updateStep(true);
 
 		return true;
-	}
+	}*/
 
 	/**
 	 * Upgrade the plugins
@@ -117,7 +120,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 	 * @since	1.1.0
 	 * @throws	Exception
 	 */
-	protected function upgradePlugins()
+	/*protected function upgradePlugins()
 	{
 		// Getting the step
 		$step = RedMigratorStep::getInstance('ext_plugins', true);
@@ -132,45 +135,13 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 		$step->_updateStep(true);
 
 		return true;
-	}
-
-	/**
-	 * Get the raw data for this part of the upgrade.
-	 *
-	 * @return	array	Returns a reference to the source data array.
-	 *
-	 * @since	0.4.5
-	 * @throws	Exception
-	 */	
-	/*protected function upgradeTemplates()
-	{
-		$this->destination = "#__extensions";
-
-		$folders = JFolder::folders(JPATH_ROOT . DS . 'templates');
-		$folders = array_diff($folders, array("system", "beez"));
-		sort($folders);
-		//print_r($folders);
-
-		$rows = array();
-
-		// Do some custom post processing on the list.
-		foreach($folders as $folder)
-		{
-
-			$row = array();
-			$row['name'] = $folder;
-			$row['type'] = 'template';
-			$row['element'] = $folder;
-			$row['params'] = '';
-			$rows[] = $row;
-		}
-
-		$this->_addExtensions($rows, 'tpl');
-
-		return true;
 	}*/
 
-	protected function _addExtensions($rows, $prefix)
+	/**
+	 * @param $rows
+	 * @param $prefix
+	 */
+	/*protected function _addExtensions($rows, $prefix)
 	{
 		// Create new indexed array
 		foreach ($rows as &$row)
@@ -197,7 +168,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 				$this->extensions[$name] = $row;
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Get the raw data for this part of the upgrade.
@@ -212,16 +183,16 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 		JLoader::import('joomla.filesystem.folder');
 
 		$types = array(
-			'/^com_(.+)$/e',		// Com_componentname
-			'/^mod_(.+)$/e',		// Mod_modulename
-			'/^plg_(.+)_(.+)$/e',	// Plg_folder_pluginname
-			'/^tpl_(.+)$/e');		// Tpl_templatename
+			'/^com_(.+)$/e',		/*Com_componentname*/
+			'/^mod_(.+)$/e',		/*Mod_modulename*/
+			'/^plg_(.+)_(.+)$/e',	/*Plg_folder_pluginname*/
+			'/^tpl_(.+)$/e');		/*Tpl_templatename*/
 
 		$classes = array(
-			"'RedMigratorComponent'.ucfirst('\\1')",				// RedMigratorComponentComponentname
-			"'RedMigratorModule'.ucfirst('\\1')",					// RedMigratorModuleModulename
-			"'RedMigratorPlugin'.ucfirst('\\1').ucfirst('\\2')",	// RedMigratorPluginPluginname
-			"'RedMigratorTemplate'.ucfirst('\\1')");				// RedMigratorTemplateTemplatename
+			"'RedMigratorComponent'.ucfirst('\\1')",				/*RedMigratorComponentComponentname*/
+			"'RedMigratorModule'.ucfirst('\\1')",					/*RedMigratorModuleModulename*/
+			"'RedMigratorPlugin'.ucfirst('\\1').ucfirst('\\2')",	/*RedMigratorPluginPluginname*/
+			"'RedMigratorTemplate'.ucfirst('\\1')");				/*RedMigratorTemplateTemplatename*/
 
 		// Getting the plugins list
 		$query = $this->_db->getQuery(true);
@@ -238,7 +209,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 		// Do some custom post processing on the list.
 		foreach ($plugins as $plugin)
 		{
-			// Remove datebase or 3rd extensions if exists
+			// Remove database or 3rd extensions if exists
 			$uninstall_script = JPATH_PLUGINS . "/redmigrator/{$plugin->element}/sql/uninstall.utf8.sql";
 			RedMigratorHelper::populateDatabase($this->_db, $uninstall_script);
 
@@ -289,7 +260,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 						if (!empty($phpfile) || !empty($xmlfile))
 						{
 							// Adding +1 to count
-							$this->count = $this->count + 1;
+							/*$this->count = $this->count + 1;
 
 							// Inserting the collection if exists
 							if (isset($xml->name) && isset($xml->collection))
@@ -299,7 +270,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 										->values("'{$xml->name}', 'collection',  '{$xml->collection}, 1");
 								$this->_db->setQuery($query);
 								$this->_db->execute();
-							}
+							}*/
 
 							// Adding tables to migrate
 							if (!empty($xml->tables[0]))
@@ -324,17 +295,16 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 									}
 								}
 							}
-						} // End if
-					} // End if
-				} // End if
+						} /*End if*/
+					} /*End if*/
+				} /*End if*/
 
 				unset($class);
 				unset($phpfile);
 				unset($xmlfile);
-			} // End foreach
-		} // End foreach
+			} /*End foreach*/
+		} /*End foreach*/
 
-		//return $this->count;
 		return true;
 	}
-} // End class
+} /*End class*/

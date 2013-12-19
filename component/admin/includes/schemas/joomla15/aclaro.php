@@ -18,7 +18,7 @@
  * User id's are maintained in this upgrade process.
  *
  */
-class RedMigratorUsergroupMap extends RedMigrator
+class RedMigratorAclaro extends RedMigrator
 {
 	/**
 	 * Sets the data in the destination database.
@@ -36,48 +36,18 @@ class RedMigratorUsergroupMap extends RedMigrator
 		{
 			$row = (array) $row;
 
-			if (!empty($row['aro_id']))
-			{
-				$oldUserId = $this->_lookupUserId($row['aro_id']);
-				$newUserId = RedMigratorHelper::lookupNewId('arrUsers', $oldUserId);
-				$row['user_id'] = $newUserId;
-			}
-
-			if (!empty($row['group_id']))
-			{
-				$newGroupId = RedMigratorHelper::lookupNewId('arrUsergroups', $row['group_id']);
-				$row['group_id'] = $newGroupId;
-			}
+			$row['aro_id'] = $row['id'];
+			$row['user_id'] = $row['value'];
 
 			// Remove unused fields.
+			unset($row['id']);
 			unset($row['section_value']);
-			unset($row['aro_id']);
+			unset($row['value']);
+			unset($row['order_value']);
+			unset($row['name']);
+			unset($row['hidden']);
 		}
 
 		return $rows;
-	}
-
-	/**
-	 * Lookup user id from aro id
-	 *
-	 * @param   int  $aroId  Aro id
-	 *
-	 * @return int
-	 */
-	protected function _lookupUserId($aroId)
-	{
-		$db = JFactory::getDbo();
-
-		$query = $db->getQuery(true);
-
-		$query->select('user_id')
-				->from('#__redmigrator_core_acl_aro')
-				->where('aro_id = ' . $aroId);
-
-		$db->setQuery($query);
-
-		$user_id = $db->loadResult();
-
-		return (int) $user_id;
 	}
 }

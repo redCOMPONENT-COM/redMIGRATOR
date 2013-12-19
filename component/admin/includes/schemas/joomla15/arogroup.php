@@ -9,8 +9,6 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-JLoader::register("RedMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR . "/includes/redmigrator.users.class.php");
-
 /**
  * Upgrade class for Usergroups
  *
@@ -18,86 +16,199 @@ JLoader::register("RedMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR . "/i
  *
  * @since  0.4.4
  */
-class RedMigratorUsergroups extends RedMigratorUsersDefault
+class RedMigratorUsergroups extends RedMigrator
 {
 	/**
-	 * Setting the conditions hook
+	 * Change structure of table and value of fields
+	 * so data can be inserted into target db
 	 *
-	 * @return	void
+	 * @param   array  $rows  Rows of source db
 	 *
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @return mixed
 	 */
-	public static function getConditionsHook()
+	public function dataHook($rows)
 	{
-		$conditions = array();
+		$session = JFactory::getSession();
 
-		$where = array();
-		$where[] = "id > 30";
-
-		$conditions['where'] = $where;
-
-		return $conditions;
-	}
-
-	/**
-	 * Get the raw data for this part of the upgrade.
-	 *
-	 * @return	array
-	 *
-	 * @since	0.4.4
-	 * @throws	Exception
-	 */
-	public function databaseHook($rows = null)
-	{
-		// Set up the mapping table for the old groups to the new groups.
-		$map = $this->getUsergroupIdMap();
+		$new_id = RedMigratorHelper::getAutoIncrement('usergroups') - 1;
 
 		// Do some custom post processing on the list.
-		// The schema for old groups is: id, parent_id, name, lft, rgt, value
-		// The schema for new groups is: id, parent_id, lft, rgt, title
-		foreach ($rows as &$row)
+		foreach ($rows as $k => &$row)
 		{
-			// Note, if we are here, these are custom groups we didn't know about.
-			if (isset($row['parent_id']))
+			$row = (array) $row;
+
+			// Create a map of old id and new id
+			$old_id = (int) $row['id'];
+
+			if ((int) $row['parent_id'] == 0)
 			{
-				if ($row['parent_id'] <= 30)
-				{
-					$row['parent_id'] = $map[$row['parent_id']];
-				}
+				$new_root_id = $this->getRootId();
+				$arrTemp = array('old_id' => $old_id, 'new_id' => $new_root_id);
+			}
+			else
+			{
+				$new_id ++;
+				$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 			}
 
-			// Use the old groups name for the new title.
-			$row['title'] = $row['name'];
+			$arrUsergroups = $session->get('arrUsergroups', null, 'redmigrator_j25');
 
-			// Remove unused fields.
-			unset($row['name']);
-			unset($row['value']);
-			unset($row['lft']);
-			unset($row['rgt']);
+			$arrUsergroups[] = $arrTemp;
+
+			// Save the map to session
+			$session->set('arrUsergroups', $arrUsergroups, 'redmigrator_j25');
+
+			if ((int) $row['parent_id'] == 0)
+			{
+				$rows[$k] = false;
+			}
+			else
+			{
+				// Parent item was inserted, so lookup new id
+				if ((int) $row['id'] > (int) $row['parent_id'])
+				{
+					$row['parent_id'] = RedMigratorHelper::lookupNewId('arrUsergroups', (int) $row['parent_id']);
+				}
+				else // Parent item haven't been inserted, so will lookup new id and update item apter hook
+				{
+					$arrUsergroupsSwapped = $session->get('arrUsergroupsSwapped', null, 'redmigrator_j25');
+
+					$arrUsergroupsSwapped[] = array('new_id' => $new_id, 'old_parent_id' => (int) $row['parent_id']);
+
+					$session->set('arrUsergroupsSwapped', $arrUsergroupsSwapped, 'redmigrator_j25');
+
+					$row['parent_id'] = $this->getRootId();
+				}
+
+				$row['id'] = null;
+				$row['title'] = $row['name'] . '_old';
+				$row['lft'] = null;
+				$row['rgt'] = null;
+
+				// Remove unused fields.
+				unset($row['name']);
+				unset($row['value']);
+			}
 		}
-
-		// TODO: Don't forget to do a rebuild on the groups table!
 
 		return $rows;
 	}
 
 	/**
-	 * The public entry point for the class.
+	 * Update items have patent item after itself
 	 *
-	 * @return	void
-	 * @since	0.4.4
-	 * @throws	Exception
-	 *
-	public function upgrade()
+	 * @return bool
+	 */
+	public function afterHook()
 	{
-		if (parent::upgrade()) {
-			// Rebuild the usergroup nested set values.
-			$table = JTable::getInstance('Usergroup', 'JTable', array('dbo' => $this->_db));
+		$session = JFactory::getSession();
 
-			if (!$table->rebuild()) {
-				echo JError::raiseError(500, $table->getError());
+		$arrMenuSwapped = $session->get('arrUsergroupsSwapped', null, 'redmigrator_j25');
+
+		foreach ($arrMenuSwapped as $item)
+		{
+			$objTable = JTable::getInstance('usergroup', 'JTable', array('dbo' => $this->_db));
+
+			$objTable->load($item['new_id']);
+
+			$objTable->parent_id = RedMigratorHelper::lookupNewId('arrUsergroups', $item['old_parent_id']);
+
+			if (!$objTable->store())
+			{
+				echo JError::raiseError(500, $objTable->getError());
 			}
 		}
-	}*/
+
+		return parent::afterHook();
+	}
+
+	/**
+	 * Insert data
+	 *
+	 * @param   array  $rows  Rows for target db
+	 *
+	 * @return bool|void
+	 *
+	 * @throws Exception
+	 */
+	protected function insertData($rows)
+	{
+		if (is_array($rows))
+		{
+			foreach ($rows as $row)
+			{
+				if ($row != false)
+				{
+					try
+					{
+						$objTable = JTable::getInstance('usergroup', 'JTable', array('dbo' => $this->_db));
+
+						// Bind data to save category
+						if (!$objTable->bind($row))
+						{
+							echo JError::raiseError(500, $objTable->getError());
+						}
+
+						if (!$objTable->store())
+						{
+							echo JError::raiseError(500, $objTable->getError());
+						}
+					}
+					catch (Exception $e)
+					{
+						throw new Exception($e->getMessage());
+					}
+				}
+
+				$this->_step->_nextCID();
+			}
+		}
+		elseif (is_object($rows))
+		{
+			if ($rows != false)
+			{
+				try
+				{
+					$objTable = JTable::getInstance('usergroup', 'JTable', array('dbo' => $this->_db));
+
+					// Bind data to save category
+					if (!$objTable->bind($rows))
+					{
+						echo JError::raiseError(500, $objTable->getError());
+					}
+
+					if (!$objTable->store())
+					{
+						echo JError::raiseError(500, $objTable->getError());
+					}
+				}
+				catch (Exception $e)
+				{
+					throw new Exception($e->getMessage());
+				}
+			}
+		}
+
+		return !empty($this->_step->error) ? false : true;
+	}
+
+	/**
+	 * Get the id of root usergroup
+	 *
+	 * @return mixed
+	 */
+	protected function getRootId()
+	{
+		$query = $this->_db->getQuery(true);
+
+		$query->select('id')
+			->from('#__usergroups')
+			->where('parent_id = 0');
+
+		$this->_db->setQuery($query);
+
+		$id = $this->_db->loadResult();
+
+		return (int) $id;
+	}
 }

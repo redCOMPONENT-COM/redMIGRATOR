@@ -73,7 +73,7 @@ class RedMigratorCategories extends RedMigrator
 
 					$session->set('arrCategoriesSwapped', $arrCategoriesSwapped, 'redmigrator_j25');
 
-					$row['parent_id'] = $new_root_id;
+					$row['parent_id'] = $this->getRootId();
 				}
 
 				$row['alias'] = $row['alias'] . '_old_' . $row['id'];

@@ -6,7 +6,9 @@
 	<tables>
 		<table name="users" title="Users" tbl_key="id" source="users" destination="users" type="core15" class="RedMigratorUsers" />
 
-		<table name="arogroup" title="Users Groups" tbl_key="id" source="core_acl_aro_group" destination="usergroups" type="core15" class="RedMigratorUsergroups" />
+		<table name="arogroup" title="Users Groups" tbl_key="id" source="core_acl_aro_groups" destination="usergroups" type="core15" class="RedMigratorUsergroups" />
+
+		<table name="aclaro" title="Users Groups" tbl_key="id" source="core_acl_aro" destination="redmigrator_core_acl_aro" type="core15" class="RedMigratorAclaro" />
 
 		<table name="usergroupmap" title="Users Groups" tbl_key="aro_id" source="core_acl_groups_aro_map" destination="user_usergroup_map" type="core15" class="RedMigratorUsergroupMap" />
 
@@ -14,13 +16,13 @@
 
 		<table name="sections" title="Sections" tbl_key="id" source="sections" destination="categories" type="core15" class="RedMigratorSections" />
 
-		<table name="contents" title="Contents" tbl_key="id" source="content" destination="content" type="core15" class="RedMigratorContent" />
+		<table name="content" title="Contents" tbl_key="id" source="content" destination="content" type="core15" class="RedMigratorContent" />
 
-		<table name="contents_frontpage" title="FrontPage Contents" tbl_key="content_id" source="content_frontpage" destination="content_frontpage" type="core15" class="RedMigratorContentFrontpage" />
+		<table name="content_frontpage" title="FrontPage Contents" tbl_key="content_id" source="content_frontpage" destination="content_frontpage" type="core15" class="RedMigratorContentFrontpage" />
 
-		<table name="menus" title="Menus" tbl_key="id" source="menu" destination="menu" type="core15" class="RedMigratorMenu" />
+		<table name="menu" title="Menus" tbl_key="id" source="menu" destination="menu" type="core15" class="RedMigratorMenu" />
 
-		<table name="menus_types" title="Menus Types" tbl_key="id" source="menu_types" destination="menu_types" type="core15" class="RedMigratorMenusTypes" />
+		<table name="menu_types" title="Menus Types" tbl_key="id" source="menu_types" destination="menu_types" type="core15" class="RedMigratorMenusTypes" />
 
 		<table name="modules" title="Core Modules" tbl_key="id" source="modules" destination="modules" type="core15" class="RedMigratorModules" />
 
@@ -28,9 +30,9 @@
 
 		<table name="banners" title="Banners" tbl_key="id" source="banner" destination="banners" type="core15" class="RedMigratorBanners" />
 
-		<table name="banners_clients" title="Banners Clients" tbl_key="cid" source="bannerclient" destination="banner_clients" type="core15" class="RedMigratorBannersClients" />
+		<table name="banner_clients" title="Banners Clients" tbl_key="cid" source="bannerclient" destination="banner_clients" type="core15" class="RedMigratorBannersClients" />
 
-		<table name="banners_tracks" title="Banners Tracks" tbl_key="banner_id" source="bannertrack" destination="banner_tracks" type="core15" class="RedMigratorBannersTracks" />
+		<table name="banner_tracks" title="Banners Tracks" tbl_key="banner_id" source="bannertrack" destination="banner_tracks" type="core15" class="RedMigratorBannersTracks" />
 
 		<table name="contacts" title="Contacts" tbl_key="id" source="contact_details" destination="contact_details" type="core15" class="RedMigratorContacts" />
 

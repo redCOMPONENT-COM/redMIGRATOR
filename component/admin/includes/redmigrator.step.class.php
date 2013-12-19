@@ -108,7 +108,8 @@ class RedMigratorStep
 	/**
 	 * Get step instance
 	 *
-	 * @param   stdClass   $options  Parameters to be passed to the database driver.
+	 * @param   string  $name        Name
+	 * @param   bool    $extensions  True if there 3rd extensions
 	 *
 	 * @return  redmigrator  A redmigrator object.
 	 */
@@ -143,7 +144,7 @@ class RedMigratorStep
 		{
 			foreach ($data as $k => $v)
 			{
-				if (property_exists($this ,$k))
+				if (property_exists($this, $k))
 				{
 					// Perform url decoding so that any use of '+' as the encoding of the space character is correctly handled.
 					$this->$k = urldecode((string) $v);
@@ -156,8 +157,6 @@ class RedMigratorStep
 	 * Method to get the parameters. 
 	 *
 	 * @return  array  $parameters  The parameters of this object.
-	 *
-	 * @since   3.0.0
 	 */
 	public function getParameters()
 	{

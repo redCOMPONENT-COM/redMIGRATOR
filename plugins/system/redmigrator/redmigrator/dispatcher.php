@@ -147,13 +147,52 @@ class RedRESTFULDispatcher
 		$db = JFactory::getDbo();
 
 		$query = 'SELECT *'
-			. ' FROM ' . $db->getPrefix() . $table
-			. ' LIMIT ' . $start . ', ' . $limit;
+			. ' FROM ' . $db->getPrefix() . $table;
+
+		if ($this->_checkIdColumnExist($table))
+		{
+			$query .= ' ORDER BY id';
+		}
+
+		$query .= ' LIMIT ' . $start . ', ' . $limit;
 
 		$db->setQuery($query);
 
 		$row = $db->loadAssocList();
 
 		return $row;
+	}
+
+
+	/**
+	 * Check if "id" field exist in the table or not
+	 *
+	 * @param   string  $table  Table name
+	 *
+	 * @return bool
+	 */
+	protected function _checkIdColumnExist($table)
+	{
+		$db = JFactory::getDbo();
+
+		$query = "SHOW COLUMNS FROM " . $db->getPrefix() . $table;
+
+		$db->setQuery($query);
+
+		$columns = $db->loadAssocList();
+
+		$exist = false;
+
+		foreach ($columns as $column)
+		{
+			if ($column['Field'] == 'id')
+			{
+				$exist = true;
+
+				break;
+			}
+		}
+
+		return $exist;
 	}
 }
