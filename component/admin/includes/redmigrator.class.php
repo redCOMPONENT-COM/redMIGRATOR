@@ -322,7 +322,7 @@ class RedMigrator
 	/**
 	 * Insert data
 	 *
-	 * @param   array or object  $rows  Rows
+	 * @param   array|object  $rows  Rows
 	 *
 	 * @return bool
 	 *

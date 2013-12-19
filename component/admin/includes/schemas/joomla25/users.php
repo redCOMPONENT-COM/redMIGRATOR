@@ -54,7 +54,7 @@ class RedMigratorUsers extends RedMigrator
 				unset($row['usertype']);
 			}
 
-			if ($this->checkUserExist($row['username'], $row['email']))
+			if ($this->_checkUserExist($row['username'], $row['email']))
 			{
 				$row['username'] = $row['username'] . '_old';
 				$row['email'] = $row['email'] . '_old';
@@ -72,7 +72,7 @@ class RedMigratorUsers extends RedMigrator
 	 *
 	 * @return mixed
 	 */
-	protected function checkUserExist($username, $email)
+	protected function _checkUserExist($username, $email)
 	{
 		$query = $this->_db->getQuery(true);
 

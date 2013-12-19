@@ -9,8 +9,6 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-JLoader::register("RedMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR . "/includes/redmigrator.users.class.php");
-
 /**
  * Upgrade class for Users
  *
@@ -18,54 +16,50 @@ JLoader::register("RedMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR . "/i
  *
  * @since  0.4.4
  */
-class RedMigratorUsers extends RedMigratorUsersDefault
+class RedMigratorUsers extends RedMigrator
 {
-	/**
-	 * Get the raw data for this part of the upgrade.
-	 *
-	 * @return	array	Returns a reference to the source data array.
-	 *
-	 * @since	0.4.4
-	 * @throws	Exception
-	 */
-	public function databaseHook($rows)
-	{
-		// Do some custom post processing on the list.
-		foreach ($rows as &$row)
-		{
-			$row = (array) $row;
 
-			$row['params'] = $this->convertParams($row['params']);
-
-			// Chaging admin username and email
-			if ($row['id'] == 62)
-			{
-				$row['username'] = $row['username'] . 'v15';
-				$row['email'] = $row['email'] . 'v15';
-			}
-
-			// Remove unused fields.
-			$gid = 'gid';
-			unset($row[$gid]);
-		}
-
-		return $rows;
-	}
 
 	/**
-	 * Sets the data in the destination database.
+	 * Change structure of table and value of fields
+	 * so data can be inserted into target db
 	 *
-	 * @return	void
+	 * @param   array  $rows  Rows of source db
 	 *
-	 * @since	0.4.
-	 * @throws	Exception
+	 * @return mixed
 	 */
 	public function dataHook($rows)
 	{
+		$session = JFactory::getSession();
+
+		$new_id = RedMigratorHelper::getAutoIncrement('users') - 1;
+
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
+
+			// Create a map of old id and new id
+			$old_id = (int) $row['id'];
+			$new_id ++;
+			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
+
+			$arrUsers = $session->get('arrUsers', null, 'redmigrator_j25');
+
+			$arrUsers[] = $arrTemp;
+
+			// Save the map to session
+			$session->set('arrUsers', $arrUsers, 'redmigrator_j25');
+
+			$row['id'] = null;
+
+			if ($this->_checkUserExist($row['username'], $row['email']))
+			{
+				$row['username'] = $row['username'] . '_old';
+				$row['email'] = $row['email'] . '_old';
+			}
+
+			unset($row['gid']);
 
 			if (version_compare(PHP_VERSION, '3.0', '>='))
 			{
@@ -77,17 +71,25 @@ class RedMigratorUsers extends RedMigratorUsersDefault
 	}
 
 	/**
-	 * A hook to be able to modify params prior as they are converted to JSON.
+	 * Check if username or email exist in target db
 	 *
-	 * @param	object	$object	A reference to the parameters as an object.
+	 * @param   string  $username  Username of source db
+	 * @param   string  $email     Email of source db
 	 *
-	 * @return	void
-	 *
-	 * @since	0.4.
-	 * @throws	Exception
+	 * @return mixed
 	 */
-	protected function convertParamsHook($object)
+	protected function _checkUserExist($username, $email)
 	{
-		$object->timezone = 'UTC';
+		$query = $this->_db->getQuery(true);
+
+		$query->select('count(id)')
+			->from('#__users')
+			->where('username = "' . $username . '" OR email = "' . $email . '"');
+
+		$this->_db->setQuery($query);
+
+		$exist = $this->_db->loadResult();
+
+		return $exist;
 	}
 }

@@ -71,7 +71,7 @@ class RedMigratorUsergroups extends RedMigrator
 
 					$session->set('arrUsergroupsSwapped', $arrUsergroupsSwapped, 'redmigrator_j25');
 
-					$row['parent_id'] = $new_root_id;
+					$row['parent_id'] = $this->getRootId();
 				}
 
 				$row['id'] = null;
@@ -136,7 +136,7 @@ class RedMigratorUsergroups extends RedMigrator
 							echo JError::raiseError(500, $objTable->getError());
 						}
 
-						if (!@$objTable->store())
+						if (!$objTable->store())
 						{
 							echo JError::raiseError(500, $objTable->getError());
 						}
@@ -164,7 +164,7 @@ class RedMigratorUsergroups extends RedMigrator
 						echo JError::raiseError(500, $objTable->getError());
 					}
 
-					if (!@$objTable->store())
+					if (!$objTable->store())
 					{
 						echo JError::raiseError(500, $objTable->getError());
 					}
