@@ -5,11 +5,9 @@
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
-// Require the category class
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.category.class.php';
 
 /**
  * Upgrade class for categories
@@ -18,127 +16,134 @@ require_once JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.category.cla
  *
  * @since  0.4.5
  */
-class RedMigratorCategories extends RedMigratorCategory
+class RedMigratorCategories extends RedMigrator
 {
 	/**
-	 * Setting the conditions hook
+	 * Change structure of table and value of fields
+	 * so data can be inserted into target db
 	 *
-	 * @return	void
+	 * @param   array  $rows  Rows of source db
 	 *
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @return mixed
 	 */
-	public static function getConditionsHook()
+	public function dataHook($rows)
 	{
-		$conditions = array();
-
-		$conditions['select'] = '`id`, `id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
-
-		/*$where_or = array();
-		$where_or[] = "section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$'";
-		$where_or[] = "section IN ('com_banner', 'com_contact', 'com_contact_details', 'com_content', 'com_newsfeeds', 'com_sections', 'com_weblinks' )";*/
-
-		$conditions['order'] = "id DESC, section DESC, ordering DESC";
-		// $conditions['where_or'] = $where_or;
-
-		return $conditions;
-	}
-
-	/**
-	 * Sets the data in the destination database.
-	 *
-	 * @return	void
-	 *
-	 * @since	0.4.
-	 * @throws	Exception
-	 */
-	public function dataHook($rows = null)
-	{
-		// Getting the destination table
-		$table = $this->getDestinationTable();
-
-		// Getting the component parameter with global settings
-		$params = $this->getParams();
-
-		/**
-		 * Inserting the categories
-		 * @since	2.5.1
-		 */
-		// Content categories
-		$this->section = 'com_content';
-
-		// Initialize values
-		$aliases = array();
-		$unique_alias_suffix = 1;
-		$rootidmap = 0;
-
-		// JTable::store() run an update if id exists so we create them first
-		foreach ($rows as $category)
+		// Do some custom post processing on the list.
+		foreach ($rows as &$row)
 		{
-			$object = new stdClass;
+			$row = (array) $row;
 
-			$category = (array) $category;
-
-			if ($category['id'] == 1)
+			if (is_numeric($row['section']))
 			{
-				$query = "SELECT id + 1"
-							. " FROM #__categories"
-							. " ORDER BY id DESC LIMIT 1";
-				$this->_db->setQuery($query);
-				$rootidmap = $this->_db->loadResult();
-
-				$object->id = $rootidmap;
-				$category['old_id'] = $category['id'];
-				$category['id'] = $rootidmap;
+				$row['parent_id'] = RedMigratorHelper::lookupNewId('arrCategories', (int) $row['section']);
+				$row['extension'] = 'com_content';
 			}
 			else
 			{
-				$object->id = $category['id'];
+				$row['parent_id'] = 0;
+
+				if ($row['section'] == 'com_banner')
+				{
+					$row['extension'] = 'com_banners';
+				}
+				elseif ($row['section'] == 'com_contact_details')
+				{
+					$row['extension'] = 'com_contact';
+				}
+				else
+				{
+					$row['extension'] = $row['section'];
+				}
 			}
 
-			// Inserting the categories
-			if (!$this->_db->insertObject($table, $object))
-			{
-				echo $this->_db->getErrorMsg();
-			}
+			$row['alias'] = $row['alias'] . '_old_' . $row['id'];
+			$row['id'] = null;
+			$row['lft'] = null;
+			$row['rgt'] = null;
+
+			unset($row['name']);
+			unset($row['image']);
+			unset($row['section']);
+			unset($row['image_position']);
+			unset($row['editor']);
+			unset($row['ordering']);
+			unset($row['count']);
 		}
 
-		// Update the category
-		foreach ($rows as $category)
+		return $rows;
+	}
+
+	/**
+	 * Insert data
+	 *
+	 * @param   array  $rows  Rows for target db
+	 *
+	 * @return bool|void
+	 *
+	 * @throws Exception
+	 */
+	protected function insertData($rows)
+	{
+		if (is_array($rows))
 		{
-			$category = (array) $category;
-
-			$category['asset_id'] = null;
-			$category['parent_id'] = 1;
-			$category['lft'] = null;
-			$category['rgt'] = null;
-			$category['level'] = null;
-
-			if ($category['id'] == 1)
+			foreach ($rows as $row)
 			{
-				$category['id'] = $rootidmap;
+				if ($row != false)
+				{
+					try
+					{
+						$objTable = JTable::getInstance('category', 'JTable', array('dbo' => $this->_db));
+
+						$objTable->setLocation((int) $row['parent_id'], 'last-child');
+
+						// Bind data to save category
+						if (!$objTable->bind($row))
+						{
+							echo JError::raiseError(500, $objTable->getError());
+						}
+
+						if (!$objTable->store())
+						{
+							echo JError::raiseError(500, $objTable->getError());
+						}
+					}
+					catch (Exception $e)
+					{
+						throw new Exception($e->getMessage());
+					}
+				}
+
+				$this->_step->_nextCID();
 			}
-
-			// Check if has duplicated aliases
-			$query = "SELECT alias"
-						. " FROM #__categories"
-						. " WHERE alias = " . $this->_db->quote($category['alias']);
-			$this->_db->setQuery($query);
-			$aliases = $this->_db->loadAssoc();
-
-			$count = count($aliases);
-
-			if ($count > 0)
+		}
+		elseif (is_object($rows))
+		{
+			if ($rows != false)
 			{
-				$category['alias'] .= "-" . rand(0, 99999);
+				try
+				{
+					$objTable = JTable::getInstance('category', 'JTable', array('dbo' => $this->_db));
+
+					$objTable->setLocation($rows->parent_id, 'last-child');
+
+					// Bind data to save category
+					if (!$objTable->bind($rows))
+					{
+						echo JError::raiseError(500, $objTable->getError());
+					}
+
+					if (!$objTable->store())
+					{
+						echo JError::raiseError(500, $objTable->getError());
+					}
+				}
+				catch (Exception $e)
+				{
+					throw new Exception($e->getMessage());
+				}
 			}
-
-			$this->insertCategory($category);
-
-			// Updating the steps table
-			$this->_step->_nextCID();
 		}
 
-		return false;
+		return !empty($this->_step->error) ? false : true;
 	}
 }

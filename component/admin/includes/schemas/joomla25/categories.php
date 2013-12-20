@@ -22,7 +22,7 @@ class RedMigratorCategories extends RedMigrator
 	 * Change structure of table and value of fields
 	 * so data can be inserted into target db
 	 *
-	 * @param $rows Rows of source db
+	 * @param   array  $rows  Rows of source db
 	 *
 	 * @return mixed
 	 */
@@ -117,9 +117,12 @@ class RedMigratorCategories extends RedMigrator
 	}
 
 	/**
-	 * @param $rows Rows for target db
+	 * Insert data
+	 *
+	 * @param   array  $rows  Rows for target db
 	 *
 	 * @return bool|void
+	 *
 	 * @throws Exception
 	 */
 	protected function insertData($rows)
@@ -142,7 +145,7 @@ class RedMigratorCategories extends RedMigrator
 							echo JError::raiseError(500, $objTable->getError());
 						}
 
-						if (!@$objTable->store())
+						if (!$objTable->store())
 						{
 							echo JError::raiseError(500, $objTable->getError());
 						}
@@ -172,7 +175,7 @@ class RedMigratorCategories extends RedMigrator
 						echo JError::raiseError(500, $objTable->getError());
 					}
 
-					if (!@$objTable->store())
+					if (!$objTable->store())
 					{
 						echo JError::raiseError(500, $objTable->getError());
 					}
