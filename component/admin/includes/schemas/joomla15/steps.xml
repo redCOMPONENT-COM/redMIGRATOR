@@ -12,9 +12,9 @@
 
 		<table name="usergroupmap" title="Users Groups" tbl_key="aro_id" source="core_acl_groups_aro_map" destination="user_usergroup_map" type="core15" class="RedMigratorUsergroupMap" />
 
-		<table name="categories" title="Categories" tbl_key="id" source="categories" destination="categories" type="core15" class="RedMigratorCategories" />
-
 		<table name="sections" title="Sections" tbl_key="id" source="sections" destination="categories" type="core15" class="RedMigratorSections" />
+
+		<table name="categories" title="Categories" tbl_key="id" source="categories" destination="categories" type="core15" class="RedMigratorCategories" />
 
 		<table name="content" title="Contents" tbl_key="id" source="content" destination="content" type="core15" class="RedMigratorContent" />
 
