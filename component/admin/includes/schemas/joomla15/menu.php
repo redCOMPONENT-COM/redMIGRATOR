@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 /**
@@ -18,25 +18,7 @@
 
 class RedMigratorMenu extends RedMigrator
 {
-	private $arrSystemComponents = array('com_banners',
-											'com_banners_categories',
-											'com_banners_clients',
-											'com_banners_tracks',
-											'com_contact',
-											'com_contact_categories',
-											'com_messages',
-											'com_messages_add',
-											'com_messages_read',
-											'com_newsfeeds',
-											'com_newsfeeds_feeds',
-											'com_newsfeeds_categories',
-											'com_redirect',
-											'com_search',
-											'com_weblinks',
-											'com_weblinks_links',
-											'com_weblinks_categories',
-											'com_finder',
-											'com_joomlaupdate');
+	private $arrSystemComponents = array('Home');
 
 	/**
 	 * Sets the data in the destination database.
@@ -55,6 +37,8 @@ class RedMigratorMenu extends RedMigrator
 		{
 			$row = (array) $row;
 
+			$row['title'] = $row['name'];
+
 			// Not migrate system menus
 			if (in_array($row['title'], $this->arrSystemComponents))
 			{
@@ -64,17 +48,8 @@ class RedMigratorMenu extends RedMigrator
 			{
 				// Create a map of old id and new id
 				$old_id = (int) $row['id'];
-
-				if ((int) $row['parent_id'] == 0)
-				{
-					$new_root_id = $this->getRootId();
-					$arrTemp = array('old_id' => $old_id, 'new_id' => $new_root_id);
-				}
-				else
-				{
-					$new_id ++;
-					$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
-				}
+				$new_id ++;
+				$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
 				$arrMenu = $session->get('arrMenu', null, 'redmigrator_j25');
 
@@ -83,19 +58,18 @@ class RedMigratorMenu extends RedMigrator
 				// Save the map to session
 				$session->set('arrMenu', $arrMenu, 'redmigrator_j25');
 
-				// Not migrate root menu
-				if ((int) $row['parent_id'] == 0)
+				if ((int) $row['parent'] == 0)
 				{
-					$rows[$k] = false;
+					$row['parent_id'] = $this->getRootId();
 				}
 				else
 				{
 					// Parent item was inserted, so lookup new id
-					if ((int) $row['id'] > (int) $row['parent_id'])
+					if ((int) $row['id'] > (int) $row['parent'])
 					{
-						$row['parent_id'] = RedMigratorHelper::lookupNewId('arrMenu', (int) $row['parent_id']);
+						$row['parent_id'] = RedMigratorHelper::lookupNewId('arrMenu', (int) $row['parent']);
 					}
-					else // Parent item haven't been inserted, so will lookup new id and update item apter hook
+					else // Parent item haven't been inserted, so will lookup new id and update item after hook
 					{
 						$arrMenuSwapped = $session->get('arrMenuSwapped', null, 'redmigrator_j25');
 
@@ -105,19 +79,26 @@ class RedMigratorMenu extends RedMigrator
 
 						$row['parent_id'] = $this->getRootId();
 					}
+				}
 
-					$row['alias'] = $row['alias'] . '_old_' . $row['id'];
-					$row['id'] = null;
-					$row['lft'] = null;
-					$row['rgt'] = null;
+				$row['alias'] = $row['alias'] . '_old_' . $row['id'];
+				$row['id'] = null;
+				$row['lft'] = null;
+				$row['rgt'] = null;
 
-					$row['published'] = 0;
+				$row['published'] = 0;
 
-					// In J3x, column ordering has been removed
-					if (version_compare(PHP_VERSION, '3.0', '>='))
-					{
-						unset($row['ordering']);
-					}
+				unset($row['name']);
+				unset($row['parent']);
+				unset($row['componentid']);
+				unset($row['sublevel']);
+				unset($row['pollid']);
+				unset($row['utaccess']);
+
+				// In J3x, column ordering has been removed
+				if (version_compare(PHP_VERSION, '3.0', '>='))
+				{
+					unset($row['ordering']);
 				}
 			}
 		}
@@ -156,9 +137,12 @@ class RedMigratorMenu extends RedMigrator
 	}
 
 	/**
-	 * @param $rows Rows for target db
+	 * Insert data
+	 *
+	 * @param   array  $rows  Rows for target db
 	 *
 	 * @return bool|void
+	 *
 	 * @throws Exception
 	 */
 	protected function insertData($rows)
