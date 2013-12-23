@@ -22,7 +22,7 @@
 
 		<table name="menu" title="Menus" tbl_key="id" source="menu" destination="menu" type="core15" class="RedMigratorMenu" />
 
-		<table name="menu_types" title="Menus Types" tbl_key="id" source="menu_types" destination="menu_types" type="core15" class="RedMigratorMenusTypes" />
+		<table name="menu_types" title="Menus Types" tbl_key="id" source="menu_types" destination="menu_types" type="core15" class="RedMigratorMenuTypes" />
 
 		<table name="modules" title="Core Modules" tbl_key="id" source="modules" destination="modules" type="core15" class="RedMigratorModules" />
 
