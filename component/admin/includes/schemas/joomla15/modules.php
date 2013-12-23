@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 /**
@@ -17,44 +17,63 @@
  */
 class RedMigratorModules extends RedMigrator
 {
+	private $map = array(
+							// Old	                => // New
+							'search'				=> 'position-0',
+							'top'					=> 'position-1',
+							'breadcrumbs'			=> 'position-2',
+							'left'					=> 'position-7',
+							'right'					=> 'position-6',
+							'search'				=> 'position-8',
+							'footer'				=> 'position-9',
+							'header'				=> 'position-15');
+
 	/**
-	 * Setting the conditions hook
+	 * Sets the data in the destination database.
+	 *
+	 * @param   array  $rows  Rows
 	 *
 	 * @return	void
-	 *
-	 * @since	3.0.0
-	 * @throws	Exception
 	 */
-	public static function getConditionsHook()
+	public function dataHook($rows = null)
 	{
-		$conditions = array();
+		$session = JFactory::getSession();
 
-		$conditions['select'] = "`id`, `title`, `content`, `ordering`, `position`,"
-									. " `checked_out`, `checked_out_time`, `published`, `module`,"
-									. " `access`, `showtitle`, `params`, `client_id`";
+		$new_id = RedMigratorHelper::getAutoIncrement('modules') - 1;
 
-		$conditions['where'][] = "client_id = 0";
-		$conditions['where'][] = "module IN ('mod_breadcrumbs', 'mod_footer', 'mod_mainmenu', 'mod_menu', 'mod_related_items', 'mod_stats', 'mod_wrapper', 'mod_archive', 'mod_custom', 'mod_latestnews', 'mod_mostread', 'mod_search', 'mod_syndicate', 'mod_banners', 'mod_feed', 'mod_login', 'mod_newsflash', 'mod_random_image', 'mod_whosonline' )";
+		// Get the component parameter with global settings
+		$params = $this->getParams();
 
-		return $conditions;
-	}
+		// Set up the mapping table for the old positions to the new positions.
+		$map_keys = array_keys($this->map);
 
-	/**
-	 * Get the raw data for this part of the upgrade.
-	 *
-	 * @return	array	Returns a reference to the source data array.
-	 *
-	 * @since	0.4.5
-	 * @throws	Exception
-	 */
-	public function databaseHook($rows = null)
-	{
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
 
-			$row['params'] = $this->convertParams($row['params']);
+			// Create a map of old id and new id
+			$old_id = (int) $row['id'];
+			$new_id ++;
+			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
+
+			$arrModules = $session->get('arrModules', null, 'redmigrator_j25');
+
+			$arrModules[] = $arrTemp;
+
+			// Save the map to session
+			$session->set('arrModules', $arrModules, 'redmigrator_j25');
+
+			$row['id'] = null;
+
+			// Change positions
+			if ($params->positions == 0)
+			{
+				if (in_array($row['position'], $map_keys))
+				{
+					$row['position'] = $this->map[$row['position']];
+				}
+			}
 
 			// Fix access
 			$row['access'] = $row['access'] + 1;
@@ -83,70 +102,15 @@ class RedMigratorModules extends RedMigrator
 			{
 				$row['module'] = "mod_articles_news";
 			}
+
+			$row['published'] = 0;
+
+			unset($row['numnews']);
+			unset($row['iscore']);
+			unset($row['control']);
 		}
 
 		return $rows;
-	}
-
-	/**
-	 * Sets the data in the destination database.
-	 *
-	 * @return	void
-	 *
-	 * @since	0.4.
-	 * @throws	Exception
-	 */
-	public function dataHook($rows = null)
-	{
-		// Getting the source table
-		$table = $this->getSourceTable();
-
-		// Getting the component parameter with global settings
-		$params = $this->getParams();
-
-		// Set up the mapping table for the old positions to the new positions.
-		$map = self::getPositionsMap();
-		$map_keys = array_keys($map);
-
-		foreach ($rows as $row)
-		{
-			// Convert the array into an object.
-			$row = (object) $row;
-
-			// Change positions
-			if ($params->positions == 0)
-			{
-				if (in_array($row->position, $map_keys))
-				{
-						$row->position = $map[$row->position];
-				}
-			}
-
-			// Get old id
-			$oldlist = new stdClass;
-			$oldlist->old = $row->id;
-			unset($row->id);
-
-			// Insert module
-			if (!$this->_db->insertObject($table, $row))
-			{
-				throw new Exception($this->_db->getErrorMsg());
-			}
-
-			// Get new id
-			$oldlist->new = $this->_db->insertid();
-
-			// Save old and new id
-			if (!$this->_db->insertObject('#__redmigrator_modules', $oldlist))
-			{
-				throw new Exception($this->_db->getErrorMsg());
-			}
-
-			// Updating the steps table
-			$this->_step->_nextCID();
-		}
-
-		return false;
 	}
 
 	/**
@@ -156,10 +120,10 @@ class RedMigratorModules extends RedMigrator
 	 *
 	 * @since	0.5.7
 	 */
-	public static function getPositionsMap()
+	protected function _getPositionsMap()
 	{
 		$map = array(
-			// Old	=> // New
+			// Old	                => // New
 			'search'				=> 'position-0',
 			'top'					=> 'position-1',
 			'breadcrumbs'			=> 'position-2',
@@ -171,23 +135,5 @@ class RedMigratorModules extends RedMigrator
 		);
 
 		return $map;
-	}
-
-	/**
-	 * A hook to be able to modify params prior as they are converted to JSON.
-	 *
-	 * @param	object	$object	A reference to the parameters as an object.
-	 *
-	 * @return	void
-	 *
-	 * @since	1.0.3
-	 * @throws	Exception
-	 */
-	protected function convertParamsHook($object)
-	{
-		if (isset($object->startLevel))
-		{
-			$object->startLevel++;
-		}
 	}
 }
