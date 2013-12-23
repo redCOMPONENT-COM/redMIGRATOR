@@ -112,28 +112,4 @@ class RedMigratorModules extends RedMigrator
 
 		return $rows;
 	}
-
-	/**
-	 * Get the mapping of the old positions to the new positions in the template.
-	 *
-	 * @return	array	An array with keys of the old names and values being the new names.
-	 *
-	 * @since	0.5.7
-	 */
-	protected function _getPositionsMap()
-	{
-		$map = array(
-			// Old	                => // New
-			'search'				=> 'position-0',
-			'top'					=> 'position-1',
-			'breadcrumbs'			=> 'position-2',
-			'left'					=> 'position-7',
-			'right'					=> 'position-6',
-			'search'				=> 'position-8',
-			'footer'				=> 'position-9',
-			'header'				=> 'position-15'
-		);
-
-		return $map;
-	}
 }
