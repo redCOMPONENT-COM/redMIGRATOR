@@ -50,6 +50,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 		// Init session values
 		$session = JFactory::getSession();
 
+		$session->set('stepTotal', 0, 'redmigrator');
+		$session->set('laststep', '', 'redmigrator');
+
 		if ($core_version == 0) // J15 core
 		{
 			$xml_file = $schemasPath . "/joomla15/steps.xml";
@@ -60,34 +63,34 @@ class RedMigratorModelCleanup extends RModelAdmin
 		}
 
 		// Map category old id to new id
-		$session->set('arrCategories', array(), 'redmigrator_j25');
+		$session->set('arrCategories', array(), 'redmigrator');
 
 		// Category items have parent item after itself in db
-		$session->set('arrCategoriesSwapped', array(), 'redmigrator_j25');
+		$session->set('arrCategoriesSwapped', array(), 'redmigrator');
 
 		// Map content old id to new id
-		$session->set('arrContent', array(), 'redmigrator_j25');
+		$session->set('arrContent', array(), 'redmigrator');
 
 		// Map user old id to new id
-		$session->set('arrUsers', array(), 'redmigrator_j25');
+		$session->set('arrUsers', array(), 'redmigrator');
 
 		// Map usergroup old id to new id
-		$session->set('arrUsergroups', array(), 'redmigrator_j25');
+		$session->set('arrUsergroups', array(), 'redmigrator');
 
 		// Usergroup items have parent item after itself in db
-		$session->set('arrUsergroupsSwapped', array(), 'redmigrator_j25');
+		$session->set('arrUsergroupsSwapped', array(), 'redmigrator');
 
 		// Map menu old id to new id
-		$session->set('arrMenu', array(), 'redmigrator_j25');
+		$session->set('arrMenu', array(), 'redmigrator');
 
 		// Menu items have parent item after itself in db
-		$session->set('arrMenuSwapped', array(), 'redmigrator_j25');
+		$session->set('arrMenuSwapped', array(), 'redmigrator');
 
 		// Map module old id to new id
-		$session->set('arrModules', array(), 'redmigrator_j25');
+		$session->set('arrModules', array(), 'redmigrator');
 
 		// Map banner old id to new id
-		$session->set('arrBanners', array(), 'redmigrator_j25');
+		$session->set('arrBanners', array(), 'redmigrator');
 
 		// Save the steps in xml file into db
 		RedMigratorHelper::populateSteps($xml_file);
@@ -190,10 +193,6 @@ class RedMigratorModelCleanup extends RModelAdmin
 
 		// Truncate the selected tables
 		$tables = array('#__redmigrator_core_acl_aro');
-		/*$tables[] = '#__redmigrator_categories';
-		$tables[] = '#__redmigrator_menus';
-		$tables[] = '#__redmigrator_modules';
-		$tables[] = '#__redmigrator_default_categories';*/
 
 		for ($i = 0; $i < count($tables); $i++)
 		{

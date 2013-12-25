@@ -18,6 +18,8 @@ class RedMigratorContentFrontpage extends RedMigrator
 	/**
 	 * Sets the data in the destination database.
 	 *
+	 * @param   array  $rows  Rows
+	 *
 	 * @return	void
 	 */
 	public function dataHook($rows)

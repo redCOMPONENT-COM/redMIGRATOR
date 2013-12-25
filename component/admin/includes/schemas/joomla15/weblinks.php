@@ -26,7 +26,7 @@ class RedMigratorWeblinks extends RedMigrator
 	 *
 	 * @throws	Exception
 	 */
-	public function dataHook($rows = null)
+	public function dataHook($rows)
 	{
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)

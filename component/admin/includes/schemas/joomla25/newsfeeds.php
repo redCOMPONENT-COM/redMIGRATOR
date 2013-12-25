@@ -20,6 +20,8 @@ class RedMigratorNewsfeeds extends RedMigrator
 	/**
 	 * Sets the data in the destination database.
 	 *
+	 * @param   array  $rows  Rows
+	 *
 	 * @return	void
 	 *
 	 * @since	3.0.

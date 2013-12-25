@@ -36,16 +36,6 @@ class RedMigratorNewsfeeds extends RedMigrator
 
 			$row['id'] = null;
 
-			if ($row['created_by'] != '')
-			{
-				$row['created_by'] = RedMigratorHelper::lookupNewId('arrUsers', (int) $row['created_by']);
-			}
-
-			if ($row['modified_by'] != '')
-			{
-				$row['modified_by'] = RedMigratorHelper::lookupNewId('arrUsers', (int) $row['modified_by']);
-			}
-
 			if (version_compare(PHP_VERSION, '3.0', '>='))
 			{
 				unset($row['filename']);

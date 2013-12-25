@@ -35,12 +35,12 @@ class RedMigratorContent extends RedMigrator
 			$new_id ++;
 			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
-			$arrContent = $session->get('arrContent', null, 'redmigrator_j25');
+			$arrContent = $session->get('arrContent', null, 'redmigrator');
 
 			$arrContent[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrContent', $arrContent, 'redmigrator_j25');
+			$session->set('arrContent', $arrContent, 'redmigrator');
 
 			$row['id'] = null;
 

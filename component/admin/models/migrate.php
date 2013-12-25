@@ -50,7 +50,7 @@ class RedMigratorModelMigrate extends RModelAdmin
 		// Get the database structure
 		if ($step->first == true && $extensions == 'tables')
 		{
-			$structure = $redmigrator->getTableStructure();
+			$redmigrator->getTableStructure();
 		}
 
 		// Run the upgrade

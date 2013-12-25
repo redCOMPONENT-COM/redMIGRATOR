@@ -334,8 +334,6 @@ class RedMigrator
 
 		if (is_array($rows))
 		{
-			$total = count($rows);
-
 			foreach ($rows as $row)
 			{
 				if ($row != false)
@@ -389,7 +387,7 @@ class RedMigrator
 	/**
 	 * Fake method of dataHook if it not exists
 	 *
-	 * @param $rows
+	 * @param   array  $rows  Rows
 	 *
 	 * @return mixed
 	 */

@@ -18,14 +18,15 @@ class RedMigratorBannerClients extends RedMigrator
 	/**
 	 * Sets the data in the destination database.
 	 *
+	 * @param   array  $rows  Rows
+	 *
 	 * @return      void
 	 *
-	 * @since       0.4.
 	 * @throws      Exception
 	 */
 	public function dataHook($rows = null)
 	{
-		foreach($rows as &$row)
+		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
 

@@ -76,12 +76,12 @@ class RedMigratorMenu extends RedMigrator
 					$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 				}
 
-				$arrMenu = $session->get('arrMenu', null, 'redmigrator_j25');
+				$arrMenu = $session->get('arrMenu', null, 'redmigrator');
 
 				$arrMenu[] = $arrTemp;
 
 				// Save the map to session
-				$session->set('arrMenu', $arrMenu, 'redmigrator_j25');
+				$session->set('arrMenu', $arrMenu, 'redmigrator');
 
 				// Not migrate root menu
 				if ((int) $row['parent_id'] == 0)
@@ -97,11 +97,11 @@ class RedMigratorMenu extends RedMigrator
 					}
 					else // Parent item haven't been inserted, so will lookup new id and update item apter hook
 					{
-						$arrMenuSwapped = $session->get('arrMenuSwapped', null, 'redmigrator_j25');
+						$arrMenuSwapped = $session->get('arrMenuSwapped', null, 'redmigrator');
 
 						$arrMenuSwapped[] = array('new_id' => $new_id, 'old_parent_id' => (int) $row['parent_id']);
 
-						$session->set('arrMenuSwapped', $arrMenuSwapped, 'redmigrator_j25');
+						$session->set('arrMenuSwapped', $arrMenuSwapped, 'redmigrator');
 
 						$row['parent_id'] = $this->getRootId();
 					}
@@ -134,7 +134,7 @@ class RedMigratorMenu extends RedMigrator
 	{
 		$session = JFactory::getSession();
 
-		$arrMenuSwapped = $session->get('arrMenuSwapped', null, 'redmigrator_j25');
+		$arrMenuSwapped = $session->get('arrMenuSwapped', null, 'redmigrator');
 
 		foreach ($arrMenuSwapped as $item)
 		{
@@ -156,9 +156,12 @@ class RedMigratorMenu extends RedMigrator
 	}
 
 	/**
-	 * @param $rows Rows for target db
+	 * Insert data
+	 *
+	 * @param   array  $rows  Rows for target db
 	 *
 	 * @return bool|void
+	 *
 	 * @throws Exception
 	 */
 	protected function insertData($rows)
