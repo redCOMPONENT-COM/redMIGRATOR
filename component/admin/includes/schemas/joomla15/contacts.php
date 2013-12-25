@@ -9,48 +9,19 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
-// Require the category class
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.category.class.php';
-
 /**
  * Upgrade class for Contacts
  *
  * This class takes the contacts from the existing site and inserts them into the new site.
- *
- * @since  0.4.5
  */
 class RedMigratorContacts extends RedMigrator
 {
 	/**
-	 * Get the raw data for this part of the upgrade.
-	 *
-	 * @return	array	Returns a reference to the source data array.
-	 *
-	 * @since	0.4.5
-	 * @throws	Exception
-	 */
-	public function databaseHook($rows)
-	{
-		// Do some custom post processing on the list.
-		foreach ($rows as &$row)
-		{
-			$row = (array) $row;
-
-			$row['language'] = '*';
-			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
-			$row['params'] = $this->convertParams($row['params']);
-		}
-
-		return $rows;
-	}
-
-	/**
 	 * Sets the data in the destination database.
 	 *
-	 * @return	void
+	 * @param   array  $rows  $rows
 	 *
-	 * @since	3.0.
-	 * @throws	Exception
+	 * @return null
 	 */
 	public function dataHook($rows = null)
 	{
@@ -58,6 +29,29 @@ class RedMigratorContacts extends RedMigrator
 		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
+
+			$row['id'] = null;
+			$row['alias'] = $row['alias'] . '_old';
+
+			if ($row['user_id'] != '')
+			{
+				$row['user_id'] = RedMigratorHelper::lookupNewId('arrUsers', (int) $row['user_id']);
+			}
+
+			if ($row['catid'] != '')
+			{
+				$row['catid'] = RedMigratorHelper::lookupNewId('arrCategories', (int) $row['catid']);
+			}
+
+			if ($row['created_by'] != '')
+			{
+				$row['created_by'] = RedMigratorHelper::lookupNewId('arrUsers', (int) $row['created_by']);
+			}
+
+			if ($row['modified_by'] != '')
+			{
+				$row['modified_by'] = RedMigratorHelper::lookupNewId('arrUsers', (int) $row['modified_by']);
+			}
 
 			if (version_compare(PHP_VERSION, '3.0', '>='))
 			{
