@@ -15,24 +15,29 @@
  *
  * @since  0.4.5
  */
-class RedMigratorBannersTracks extends RedMigrator
+class RedMigratorBannerTracks extends RedMigrator
 {
 	/**
-	 * Setting the conditions hook
+	 * Sets the data in the destination database.
 	 *
-	 * @return	array
+	 * @param   array  $rows  Rows
 	 *
-	 * @since	3.1.0
-	 * @throws	Exception
+	 * @return      void
 	 */
-	public static function getConditionsHook()
+	public function dataHook($rows = null)
 	{
-		$conditions = array();
+		foreach ($rows as &$row)
+		{
+			$row = (array) $row;
 
-		$conditions['where'] = array();
+			$row['id'] = null;
 
-		$conditions['group_by'] = "banner_id";
+			if ($row['banner_id'] != '')
+			{
+				$row['banner_id'] = RedMigratorHelper::lookupNewId('arrBanners', (int) $row['banner_id']);
+			}
+		}
 
-		return $conditions;
+		return $rows;
 	}
 } // End class
