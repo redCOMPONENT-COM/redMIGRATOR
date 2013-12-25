@@ -40,12 +40,12 @@ class RedMigratorUsers extends RedMigrator
 			$new_id ++;
 			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
-			$arrUsers = $session->get('arrUsers', null, 'redmigrator_j25');
+			$arrUsers = $session->get('arrUsers', null, 'redmigrator');
 
 			$arrUsers[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrUsers', $arrUsers, 'redmigrator_j25');
+			$session->set('arrUsers', $arrUsers, 'redmigrator');
 
 			$row['id'] = null;
 

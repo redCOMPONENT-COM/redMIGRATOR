@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
- * 
+ *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 /**
@@ -18,55 +18,34 @@
 class RedMigratorModulesMenu extends RedMigrator
 {
 	/**
-	 * Setting the conditions hook
-	 *
-	 * @return	void
-	 *
-	 * @since	3.0.0
-	 * @throws	Exception
-	 */
-	public static function getConditionsHook()
-	{
-		$conditions = array();
-
-		$conditions['as'] = "m";
-
-		$conditions['select'] = "DISTINCT moduleid, menuid";
-
-		$conditions['join'][] = "#__modules AS modules ON modules.id = m.moduleid";
-
-		$conditions['where'][] = "m.moduleid NOT IN (2,3,4,8,13,14,15)";
-		$conditions['where'][] = "modules.module IN ('mod_breadcrumbs', 'mod_footer', 'mod_mainmenu', 'mod_menu', 'mod_related_items', 'mod_stats', 'mod_wrapper', 'mod_archive', 'mod_custom', 'mod_latestnews', 'mod_mostread', 'mod_search', 'mod_syndicate', 'mod_banners', 'mod_feed', 'mod_login', 'mod_newsflash', 'mod_random_image', 'mod_whosonline' )";
-
-		return $conditions;
-	}
-
-	/**
 	 * Sets the data in the destination database.
 	 *
-	 * @return	object
+	 * @param   array  $rows  Rows
 	 *
-	 * @since	0.4.
-	 * @throws	Exception
+	 * @return	object
 	 */
 	public function dataHook($rows = null)
 	{
-		foreach ($rows as &$row)
+		foreach ($rows as $k => &$row)
 		{
 			// Convert the array into an object.
-			$row = (object) $row;
+			$row = (array) $row;
 
-			// Set the correct moduleid
-			$custom = "old = {$row->moduleid}";
-			$mapped = $this->getMapListValue("modules", false, $custom);
+			if ($row['moduleid'] != '')
+			{
+				$row['moduleid'] = RedMigratorHelper::lookupNewId('arrModules', (int) $row['moduleid']);
+			}
 
-			$row->moduleid = isset($mapped) ? $mapped : $row->moduleid + 99999;
+			if ($row['menuid'] != '' && (int) $row['menuid'] > 0)
+			{
+				$row['menuid'] = RedMigratorHelper::lookupNewId('arrMenu', (int) $row['menuid']);
+			}
 
-			// Set the correct menuid
-			$custom = "old = {$row->menuid}";
-			$mapped = $this->getMapListValue("menus", false, $custom);
-
-			$row->menuid = isset($mapped) ? $mapped : $row->menuid + 99999;
+			// Module or menu item doesn't exist
+			if ((int) $row['moduleid'] == -1 || (int) $row['menuid'] == -1)
+			{
+				$rows[$k] = false;
+			}
 		}
 
 		return $rows;

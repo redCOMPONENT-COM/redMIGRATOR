@@ -131,7 +131,7 @@ class RedMigratorStep
 	/**
 	 * Method to set the parameters. 
 	 *
-	 * @param   array  $parameters  The parameters to set.
+	 * @param   array  $data  The parameters to set.
 	 *
 	 * @return  void
 	 *
@@ -179,7 +179,7 @@ class RedMigratorStep
 
 		// Get the last step and save to session
 		$session = JFactory::getSession();
-		$laststep = $session->get('laststep', '', 'redmigrator_virtuemart');
+		$laststep = $session->get('laststep', '', 'redmigrator');
 
 		if ($laststep == '')
 		{
@@ -197,7 +197,7 @@ class RedMigratorStep
 
 			$laststep = $this->_db->loadResult();
 
-			$session->set('laststep', $laststep, 'redmigrator_virtuemart');
+			$session->set('laststep', $laststep, 'redmigrator');
 		}
 		else
 		{
@@ -205,7 +205,7 @@ class RedMigratorStep
 		}
 
 		// Get total of steps and save to session
-		$stepTotal = $session->get('stepTotal', 0, 'redmigrator_virtuemart');
+		$stepTotal = $session->get('stepTotal', 0, 'redmigrator');
 
 		if ($stepTotal == 0)
 		{
@@ -220,7 +220,7 @@ class RedMigratorStep
 
 			$stepTotal = $this->_db->loadResult();
 
-			$session->set('stepTotal', $stepTotal, 'redmigrator_virtuemart');
+			$session->set('stepTotal', $stepTotal, 'redmigrator');
 		}
 		else
 		{

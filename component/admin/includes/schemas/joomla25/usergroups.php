@@ -49,12 +49,12 @@ class RedMigratorUsergroups extends RedMigrator
 				$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 			}
 
-			$arrUsergroups = $session->get('arrUsergroups', null, 'redmigrator_j25');
+			$arrUsergroups = $session->get('arrUsergroups', null, 'redmigrator');
 
 			$arrUsergroups[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrUsergroups', $arrUsergroups, 'redmigrator_j25');
+			$session->set('arrUsergroups', $arrUsergroups, 'redmigrator');
 
 			if ((int) $row['parent_id'] != 0)
 			{
@@ -65,11 +65,11 @@ class RedMigratorUsergroups extends RedMigrator
 				}
 				else // Parent item haven't been inserted, so will lookup new id and update item apter hook
 				{
-					$arrUsergroupsSwapped = $session->get('arrUsergroupsSwapped', null, 'redmigrator_j25');
+					$arrUsergroupsSwapped = $session->get('arrUsergroupsSwapped', null, 'redmigrator');
 
 					$arrUsergroupsSwapped[] = array('new_id' => $new_id, 'old_parent_id' => (int) $row['parent_id']);
 
-					$session->set('arrUsergroupsSwapped', $arrUsergroupsSwapped, 'redmigrator_j25');
+					$session->set('arrUsergroupsSwapped', $arrUsergroupsSwapped, 'redmigrator');
 
 					$row['parent_id'] = $this->getRootId();
 				}
@@ -93,7 +93,7 @@ class RedMigratorUsergroups extends RedMigrator
 	{
 		$session = JFactory::getSession();
 
-		$arrMenuSwapped = $session->get('arrUsergroupsSwapped', null, 'redmigrator_j25');
+		$arrMenuSwapped = $session->get('arrUsergroupsSwapped', null, 'redmigrator');
 
 		foreach ($arrMenuSwapped as $item)
 		{

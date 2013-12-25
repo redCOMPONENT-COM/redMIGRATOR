@@ -42,12 +42,12 @@ class RedMigratorSections extends RedMigrator
 			$new_id ++;
 			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
-			$arrCategories = $session->get('arrCategories', null, 'redmigrator_j25');
+			$arrCategories = $session->get('arrCategories', null, 'redmigrator');
 
 			$arrCategories[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrCategories', $arrCategories, 'redmigrator_j25');
+			$session->set('arrCategories', $arrCategories, 'redmigrator');
 
 			$row['id'] = null;
 			$row['alias'] = $row['alias'] . '_old';
@@ -96,7 +96,7 @@ class RedMigratorSections extends RedMigrator
 							echo JError::raiseError(500, $objTable->getError());
 						}
 
-						if (!@$objTable->store())
+						if (!$objTable->store())
 						{
 							echo JError::raiseError(500, $objTable->getError());
 						}
@@ -126,7 +126,7 @@ class RedMigratorSections extends RedMigrator
 						echo JError::raiseError(500, $objTable->getError());
 					}
 
-					if (!@$objTable->store())
+					if (!$objTable->store())
 					{
 						echo JError::raiseError(500, $objTable->getError());
 					}

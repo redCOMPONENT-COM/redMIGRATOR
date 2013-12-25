@@ -20,6 +20,8 @@ class RedMigratorModules extends RedMigrator
 	/**
 	 * Sets the data in the destination database.
 	 *
+	 * @param   array  $rows  Rows
+	 *
 	 * @return	void
 	 */
 	public function dataHook($rows = null)
@@ -38,12 +40,12 @@ class RedMigratorModules extends RedMigrator
 			$new_id ++;
 			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
-			$arrModules = $session->get('arrModules', null, 'redmigrator_j25');
+			$arrModules = $session->get('arrModules', null, 'redmigrator');
 
 			$arrModules[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrModules', $arrModules, 'redmigrator_j25');
+			$session->set('arrModules', $arrModules, 'redmigrator');
 
 			$row['id'] = null;
 

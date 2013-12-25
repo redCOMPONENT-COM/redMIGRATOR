@@ -219,7 +219,7 @@ class RedMigratorHelper
 	{
 		$session = JFactory::getSession();
 
-		$arrUsergroups = $session->get($sessionEntry, null, 'redmigrator_j25');
+		$arrUsergroups = $session->get($sessionEntry, null, 'redmigrator');
 
 		$first = 0;
 		$last = count($arrUsergroups) - 1;

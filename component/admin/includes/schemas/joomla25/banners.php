@@ -32,7 +32,7 @@ class RedMigratorBanners extends RedMigrator
 
 		$new_id = RedMigratorHelper::getAutoIncrement('banners') - 1;
 
-		foreach($rows as &$row)
+		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
 
@@ -41,12 +41,12 @@ class RedMigratorBanners extends RedMigrator
 			$new_id ++;
 			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
-			$arrBanners = $session->get('arrBanners', null, 'redmigrator_j25');
+			$arrBanners = $session->get('arrBanners', null, 'redmigrator');
 
 			$arrBanners[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrBanners', $arrBanners, 'redmigrator_j25');
+			$session->set('arrBanners', $arrBanners, 'redmigrator');
 
 			$row['id'] = null;
 			$row['alias'] = $row['alias'] . '_old';

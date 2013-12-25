@@ -51,12 +51,12 @@ class RedMigratorCategories extends RedMigrator
 				$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 			}
 
-			$arrCategories = $session->get('arrCategories', null, 'redmigrator_j25');
+			$arrCategories = $session->get('arrCategories', null, 'redmigrator');
 
 			$arrCategories[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrCategories', $arrCategories, 'redmigrator_j25');
+			$session->set('arrCategories', $arrCategories, 'redmigrator');
 
 			if ((int) $row['parent_id'] != 0)
 			{
@@ -67,11 +67,11 @@ class RedMigratorCategories extends RedMigrator
 				}
 				else // Parent item haven't been inserted, so will lookup new id and update item apter hook
 				{
-					$arrCategoriesSwapped = $session->get('arrCategoriesSwapped', null, 'redmigrator_j25');
+					$arrCategoriesSwapped = $session->get('arrCategoriesSwapped', null, 'redmigrator');
 
 					$arrCategoriesSwapped[] = array('new_id' => $new_id, 'old_parent_id' => (int) $row['parent_id']);
 
-					$session->set('arrCategoriesSwapped', $arrCategoriesSwapped, 'redmigrator_j25');
+					$session->set('arrCategoriesSwapped', $arrCategoriesSwapped, 'redmigrator');
 
 					$row['parent_id'] = $this->getRootId();
 				}
@@ -95,7 +95,7 @@ class RedMigratorCategories extends RedMigrator
 	{
 		$session = JFactory::getSession();
 
-		$arrMenuSwapped = $session->get('arrCategoriesSwapped', null, 'redmigrator_j25');
+		$arrMenuSwapped = $session->get('arrCategoriesSwapped', null, 'redmigrator');
 
 		foreach ($arrMenuSwapped as $item)
 		{

@@ -38,16 +38,16 @@ class RedMigratorBanners extends RedMigrator
 			$row = (array) $row;
 
 			// Create a map of old id and new id
-			$old_id = (int) $row['id'];
+			$old_id = (int) $row['bid'];
 			$new_id ++;
 			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
-			$arrBanners = $session->get('arrBanners', null, 'redmigrator_j25');
+			$arrBanners = $session->get('arrBanners', null, 'redmigrator');
 
 			$arrBanners[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrBanners', $arrBanners, 'redmigrator_j25');
+			$session->set('arrBanners', $arrBanners, 'redmigrator');
 
 			$row['id'] = null;
 			$row['alias'] = $row['alias'] . '_old';
@@ -65,8 +65,8 @@ class RedMigratorBanners extends RedMigrator
 
 			unset($row['bid']);
 			unset($row['imageurl']);
-			unset($row['showBanner']);
 			unset($row['date']);
+			unset($row['showBanner']);
 			unset($row['editor']);
 			unset($row['tags']);
 		}

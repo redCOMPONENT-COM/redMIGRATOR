@@ -20,11 +20,13 @@ class RedMigratorBannerTracks extends RedMigrator
 	/**
 	 * Sets the data in the destination database.
 	 *
+	 * @param   array  $rows  Rows
+	 *
 	 * @return      void
 	 */
 	public function dataHook($rows = null)
 	{
-		foreach($rows as &$row)
+		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
 
