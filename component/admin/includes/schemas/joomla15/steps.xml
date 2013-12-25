@@ -30,9 +30,9 @@
 
 		<table name="banners" title="Banners" tbl_key="id" source="banner" destination="banners" type="core15" class="RedMigratorBanners" />
 
-		<table name="banner_clients" title="Banners Clients" tbl_key="cid" source="bannerclient" destination="banner_clients" type="core15" class="RedMigratorBannersClients" />
+		<table name="banner_clients" title="Banners Clients" tbl_key="cid" source="bannerclient" destination="banner_clients" type="core15" class="RedMigratorBannerClients" />
 
-		<table name="banner_tracks" title="Banners Tracks" tbl_key="banner_id" source="bannertrack" destination="banner_tracks" type="core15" class="RedMigratorBannersTracks" />
+		<table name="banner_tracks" title="Banners Tracks" tbl_key="banner_id" source="bannertrack" destination="banner_tracks" type="core15" class="RedMigratorBannerTracks" />
 
 		<table name="contacts" title="Contacts" tbl_key="id" source="contact_details" destination="contact_details" type="core15" class="RedMigratorContacts" />
 
