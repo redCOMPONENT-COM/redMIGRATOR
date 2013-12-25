@@ -13,24 +13,29 @@
  *
  * @since  2.5.2
  */
-class RedMigratorBannersClients extends RedMigrator
+class RedMigratorBannerClients extends RedMigrator
 {
 	/**
-	 * Setting the conditions hook
+	 * Sets the data in the destination database.
 	 *
-	 * @return	void
+	 * @param   array  $rows  Rows
 	 *
-	 * @since	3.0.0
-	 * @throws	Exception
+	 * @return      void
+	 *
+	 * @throws      Exception
 	 */
-	public static function getConditionsHook()
+	public function dataHook($rows = null)
 	{
-		$conditions = array();
+		foreach ($rows as &$row)
+		{
+			$row = (array) $row;
 
-		$conditions['select'] = '`cid` AS id, `name`, 1 AS `state`, `contact`, `email`, `extrainfo`, `checked_out`, `checked_out_time`';
+			$row['id'] = null;
 
-		$conditions['where'] = array();
+			unset($row['cid']);
+			unset($row['editor']);
+		}
 
-		return $conditions;
+		return $rows;
 	}
 }
