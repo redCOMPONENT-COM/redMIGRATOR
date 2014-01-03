@@ -28,10 +28,26 @@ class RedMigratorCategories extends RedMigrator
 	 */
 	public function dataHook($rows)
 	{
+		$session = JFactory::getSession();
+
+		$new_id = RedMigratorHelper::getAutoIncrement('categories') - 1;
+
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
+
+			// Create a map of old id and new id
+			$old_id = (int) $row['id'];
+			$new_id ++;
+			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
+
+			$arrCategories = $session->get('arrCategories', null, 'redmigrator');
+
+			$arrCategories[] = $arrTemp;
+
+			// Save the map to session
+			$session->set('arrCategories', $arrCategories, 'redmigrator');
 
 			if (is_numeric($row['section']))
 			{
