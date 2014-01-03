@@ -81,6 +81,8 @@ class RedMigratorModules extends RedMigrator
 			// Language
 			$row['language'] = "*";
 
+			$row['params'] = $this->convertParams($row['params']);
+
 			// Module field changes
 			if ($row['module'] == "mod_mainmenu")
 			{
@@ -111,5 +113,18 @@ class RedMigratorModules extends RedMigrator
 		}
 
 		return $rows;
+	}
+
+	/**
+	 * A hook to be able to modify params prior as they are converted to JSON.
+	 *
+	 * @param   object  $object  Object
+	 */
+	protected function convertParamsHook($object)
+	{
+		if (isset($object->startLevel))
+		{
+			$object->startLevel++;
+		}
 	}
 }
