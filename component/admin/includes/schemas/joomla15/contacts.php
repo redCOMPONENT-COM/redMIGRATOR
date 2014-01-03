@@ -43,6 +43,10 @@ class RedMigratorContacts extends RedMigrator
 				$row['catid'] = RedMigratorHelper::lookupNewId('arrCategories', (int) $row['catid']);
 			}
 
+			$row['language'] = '*';
+			$row['access'] = $row['access'] + 1;
+			$row['params'] = $this->convertParams($row['params']);
+
 			if (version_compare(PHP_VERSION, '3.0', '>='))
 			{
 				unset($row['imagepos']);
