@@ -36,6 +36,13 @@ class RedMigratorWeblinks extends RedMigrator
 
 			$row['language'] = '*';
 
+			$row['params'] = $this->convertParams($row['params']);
+
+			if ($row['catid'] != '')
+			{
+				$row['catid'] = RedMigratorHelper::lookupNewId('arrCategories', (int) $row['catid']);
+			}
+
 			unset($row['published']);
 
 			if (version_compare(PHP_VERSION, '3.0', '>='))
