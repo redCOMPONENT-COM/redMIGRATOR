@@ -56,6 +56,9 @@ class RedMigratorModelCleanup extends RModelAdmin
 		if ($core_version == 0) // J15 core
 		{
 			$xml_file = $schemasPath . "/joomla15/steps.xml";
+
+			// Map section old id to new id
+			$session->set('arrSections', array(), 'redmigrator');
 		}
 		else // J25 core
 		{

@@ -19,6 +19,23 @@
 class RedMigratorCategories extends RedMigrator
 {
 	/**
+	 * Setting the conditions hook
+	 *
+	 * @return        void
+	 *
+	 * @since        3.0.0
+	 * @throws        Exception
+	 */
+	/*public static function getConditionsHook()
+	{
+		$conditions = array();
+
+		$conditions['order'] = "id DESC";
+
+		return $conditions;
+	}*/
+
+	/**
 	 * Change structure of table and value of fields
 	 * so data can be inserted into target db
 	 *
@@ -51,7 +68,8 @@ class RedMigratorCategories extends RedMigrator
 
 			if (is_numeric($row['section']))
 			{
-				$row['parent_id'] = RedMigratorHelper::lookupNewId('arrCategories', (int) $row['section']);
+				// $row['parent_id'] = RedMigratorHelper::lookupNewId('arrCategories', (int) $row['section']);
+				$row['parent_id'] = RedMigratorHelper::lookupNewId('arrSections', (int) $row['section']);
 				$row['extension'] = 'com_content';
 			}
 			else
