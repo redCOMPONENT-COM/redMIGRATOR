@@ -39,6 +39,57 @@ class RedMigratorMenu extends RedMigrator
 
 			$row['title'] = $row['name'];
 
+			// Fixing access
+			$row['access'] = $row['access'] + 1;
+
+			// Fixing level
+			$row['level'] = $row['sublevel'] + 1;
+
+			// Fixing language
+			$row['language'] = '*';
+
+			// Converting params to JSON
+			$row['params'] = $this->convertParams($row['params']);
+
+			// Fixing menus URLs
+			if (strpos($row['link'], 'option=com_content') !== false)
+			{
+				if (strpos($row['link'], 'view=frontpage') !== false)
+				{
+					$row['link'] = 'index.php?option=com_content&view=featured';
+				}
+			}
+
+			if ((strpos($row['link'], 'Itemid=') !== false) AND $row['type'] == 'menulink')
+			{
+				// Extract the Itemid from the URL
+				if (preg_match('|Itemid=([0-9]+)|', $row['link'], $tmp))
+				{
+					$item_id = $tmp[1];
+
+					$row['params'] = $row['params'] . "\naliasoptions=" . $item_id;
+					$row['type'] = 'alias';
+					$row['link'] = 'index.php?Itemid=';
+				}
+			}
+
+			if (strpos($row['link'], 'option=com_user&') !== false)
+			{
+				$row['link'] = preg_replace('/com_user/', 'com_users', $row['link']);
+				$row['component_id'] = 25;
+				$row['option'] = 'com_users';
+
+				// Change the register view to registration
+				if (strpos($row['link'], 'view=register') !== false)
+				{
+					$row['link'] = 'index.php?option=com_users&view=registration';
+				}
+				elseif (strpos($row['link'], 'view=user') !== false)
+				{
+					$row['link'] = 'index.php?option=com_users&view=profile';
+				}
+			} // End fixing menus URL's
+
 			// Not migrate system menus
 			if (in_array($row['title'], $this->arrSystemComponents))
 			{
@@ -228,5 +279,23 @@ class RedMigratorMenu extends RedMigrator
 		$id = $this->_db->loadResult();
 
 		return (int) $id;
+	}
+
+	/**
+	 * A hook to be able to modify params prior as they are converted to JSON.
+	 *
+	 * @param   object  $object  Object
+	 */
+	protected function convertParamsHook($object)
+	{
+		if (isset($object->menu_image))
+		{
+			if ((string) $object->menu_image == '-1')
+			{
+				$object->menu_image = '';
+			}
+		}
+
+		$object->show_page_heading = (isset($object->show_page_title) && !empty($object->page_title)) ? $object->show_page_title : 0;
 	}
 }
