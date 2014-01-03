@@ -42,12 +42,15 @@ class RedMigratorSections extends RedMigrator
 			$new_id ++;
 			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
 
-			$arrCategories = $session->get('arrCategories', null, 'redmigrator');
+			// $arrCategories = $session->get('arrCategories', null, 'redmigrator');
+			$arrSections = $session->get('arrSections', null, 'redmigrator');
 
-			$arrCategories[] = $arrTemp;
+			// $arrCategories[] = $arrTemp;
+			$arrSections[] = $arrTemp;
 
 			// Save the map to session
-			$session->set('arrCategories', $arrCategories, 'redmigrator');
+			// $session->set('arrCategories', $arrCategories, 'redmigrator');
+			$session->set('arrSections', $arrSections, 'redmigrator');
 
 			$row['id'] = null;
 			$row['alias'] = $row['alias'] . '_old';
