@@ -63,6 +63,8 @@ class RedMigratorBanners extends RedMigrator
 
 			$row['language'] = '*';
 
+			$row['state'] = $row['showBanner'];
+
 			unset($row['bid']);
 			unset($row['imageurl']);
 			unset($row['date']);
