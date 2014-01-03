@@ -61,6 +61,12 @@ class RedMigratorCategories extends RedMigrator
 			$row['lft'] = null;
 			$row['rgt'] = null;
 
+			$row['params'] = $this->convertParams($row['params']);
+			$row['title'] = str_replace("'", "&#39;", $row['title']);
+			$row['description'] = str_replace("'", "&#39;", $row['description']);
+			$row['language'] = '*';
+			$row['access'] = $row['access'] + 1;
+
 			unset($row['name']);
 			unset($row['image']);
 			unset($row['section']);
