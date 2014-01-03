@@ -36,6 +36,14 @@ class RedMigratorNewsfeeds extends RedMigrator
 
 			$row['id'] = null;
 
+			$row['access'] = 1;
+			$row['language'] = '*';
+
+			if ($row['catid'] != '')
+			{
+				$row['catid'] = RedMigratorHelper::lookupNewId('arrCategories', (int) $row['catid']);
+			}
+
 			if (version_compare(PHP_VERSION, '3.0', '>='))
 			{
 				unset($row['filename']);
