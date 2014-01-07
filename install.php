@@ -38,6 +38,25 @@ if (!class_exists('Com_RedcoreInstallerScript'))
  */
 class Com_RedmigratorInstallerScript extends Com_RedcoreInstallerScript
 {
+	public function installOrUpdate($parent)
+	{
+		// Get component id
+		$component = JComponentHelper::getComponent('com_redmigrator');
+		$componentId = $component->id;
+
+		// Change version from JUpgradePro (3.1.0) to redMigrator (1.0.0)
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->update('#__schemas')
+				->set('version_id = "1.0.0"')
+				->where('extension_id = ' . $componentId)
+				->where('version_id = "3.1.0"');
+		$db->setQuery($query);
+		$db->execute();
+
+		parent::installOrUpdate($parent);
+	}
+
 	public function postflight($type, $parent)
 	{
 		if (parent::postflight($type, $parent))
