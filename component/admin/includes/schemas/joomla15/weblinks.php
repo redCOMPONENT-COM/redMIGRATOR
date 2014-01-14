@@ -34,6 +34,9 @@ class RedMigratorWeblinks extends RedMigrator
 			// Convert the array into an object.
 			$row = (array) $row;
 
+			$row['id'] = null;
+			$row['alias'] = $row['alias'] . '_old';
+
 			$row['language'] = '*';
 
 			$row['params'] = $this->convertParams($row['params']);
