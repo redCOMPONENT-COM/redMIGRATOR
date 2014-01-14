@@ -33,6 +33,9 @@ class RedMigratorWeblinks extends RedMigrator
 			// Convert the array into an object.
 			$row = (array) $row;
 
+			$row['id'] = null;
+			$row['alias'] = $row['alias'] . '_old';
+
 			if (version_compare(PHP_VERSION, '3.0', '>='))
 			{
 				$row['created'] = $row['date'];
