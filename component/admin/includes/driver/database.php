@@ -94,10 +94,13 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 		$conditions = $this->getConditionsHook();
 
 		// Process the conditions
-		$query = $this->_processQuery($conditions, true);
+		$query = $this->_processQuery($conditions);
+
+		$start = (int) $this->_getStepID();
+		$limit = (int) $this->params->chunk_limit;
 
 		// Setting the query
-		$this->_db_old->setQuery($query);
+		$this->_db_old->setQuery($query, $start, $limit);
 
 		try
 		{
@@ -148,7 +151,7 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 	 *
 	 * @since  3.1.0
 	 */
-	public function _processQuery( $conditions, $pagination = false )
+	public function _processQuery( $conditions)
 	{
 		// Create a new query object.
 		$query = $this->_db->getQuery(true);
@@ -213,13 +216,13 @@ class RedMigratorDriverDatabase extends RedMigratorDriver
 		}
 
 		// Pagination
-		if ($pagination === true)
+		/*if ($pagination === true)
 		{
 			$chunk_limit = (int) $this->params->chunk_limit;
 			$oid = (int) $this->_getStepID();
 
 			$query->setLimit($chunk_limit, $oid);
-		}
+		}*/
 
 		return $query;
 	}
