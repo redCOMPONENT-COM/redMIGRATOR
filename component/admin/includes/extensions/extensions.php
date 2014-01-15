@@ -226,8 +226,8 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 				{
 					$element = JFile::stripExt(basename($xmlfile));
 
-					if (array_key_exists($element, $this->extensions))
-					{
+					//if (array_key_exists($element, $this->extensions))
+					//{
 						$extension = $this->extensions[$element];
 
 						// Read xml definition file
@@ -296,7 +296,7 @@ class RedMigratorCheckExtensions extends RedMigratorExtensions
 								}
 							}
 						} /*End if*/
-					} /*End if*/
+					//} /*End if*/
 				} /*End if*/
 
 				unset($class);
