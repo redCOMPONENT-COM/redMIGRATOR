@@ -32,7 +32,7 @@ class RedMigratorUsergroupMap extends RedMigrator
 	public function dataHook($rows)
 	{
 		// Do some custom post processing on the list.
-		foreach ($rows as &$row)
+		foreach ($rows as $k => &$row)
 		{
 			$row = (array) $row;
 
@@ -41,12 +41,22 @@ class RedMigratorUsergroupMap extends RedMigrator
 				$oldUserId = $this->_lookupUserId($row['aro_id']);
 				$newUserId = RedMigratorHelper::lookupNewId('arrUsers', $oldUserId);
 				$row['user_id'] = $newUserId;
+
+				if ($row['user_id'] == -1)
+				{
+					$rows[$k] = false;
+				}
 			}
 
 			if (!empty($row['group_id']))
 			{
 				$newGroupId = RedMigratorHelper::lookupNewId('arrUsergroups', $row['group_id']);
 				$row['group_id'] = $newGroupId;
+
+				if ($row['group_id'] == -1)
+				{
+					$rows[$k] = false;
+				}
 			}
 
 			// Remove unused fields.
