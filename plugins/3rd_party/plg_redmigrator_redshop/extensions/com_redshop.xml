@@ -55,8 +55,6 @@
 
 		<table title="redSHOP Field value" tbl_key="" destination="redshop_fields_value" type="redshop" class="RedMigratorRedshopFieldValue">redshop_fields_value</table>
 
-		<table title="redSHOP Cron" tbl_key="" destination="redshop_cron" type="redshop" class="RedMigratorRedshopCron">redshop_cron</table>
-
 		<table title="redSHOP Giftcard" tbl_key="" destination="redshop_giftcard" type="redshop" class="RedMigratorRedshopGiftcard">redshop_giftcard</table>
 
 		<table title="redSHOP Mail" tbl_key="" destination="redshop_mail" type="redshop" class="RedMigratorRedshopMail">redshop_mail</table>
