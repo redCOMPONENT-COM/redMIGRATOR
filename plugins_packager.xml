@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ==================================================================  -->
+<!-- redMIGRATOR 1.5 packager                                                -->
+<!-- This PHING build file generates the redMIGRATOR 1.5 Plugins package     -->
+<!-- To use in your environment do the following steps:                  -->
+<!--    Change the following variables in build.properties file          -->
+<!--            (copy variables from build.properties.dist )             -->
+<!--    - change the version in variable comp.version                    -->
+<!--    - change the source folder path in variable repo.dir             -->
+<!--    - change the package folder path in variable package.dir         -->
+<!--    - execute this PHING build file                                  -->
+<!-- ==================================================================  -->
+
+<project name="modules packager" basedir="." default="main">
+
+	<!-- Do initialization stuff -->
+	<property file="build.properties" override="true"/>
+
+	<!-- Folder where the redMIGRATOR 1.5 repository PLUGINS are located  -->
+	<property name="extpath" value="${repo.dir}/plugins" override="true" />
+
+	<!-- Target dir where module packages will be created  -->
+	<property name="targetdir" value="${package.dir}/redMIGRATOR-Plugins" override="true" />
+
+	<!-- MAIN -->
+	<target name="main" description="Loops through folders of plugin groups">
+
+		<!-- Cleanup build area -->
+		<delete dir="${targetdir}" />
+		<mkdir dir="${targetdir}" />
+
+		<!-- Loop through plugins groups -->
+		<foreach param="group_name" target="plugin_loop">
+			<fileset dir="${extpath}">
+				<type type="dir" />
+				<depth max="0" min="0" />
+			</fileset>
+		</foreach>
+	</target>
+
+	<target name="plugin_loop" description="Loops through plugins folders inside groups">
+
+		<!-- Loop through plugins -->
+		<foreach param="plugin_name" target="plugin_packager">
+			<fileset dir="${extpath}/${group_name}">
+				<type type="dir" />
+				<depth max="0" min="0" />
+			</fileset>
+		</foreach>
+
+	</target>
+
+	<target name="plugin_packager" description="Packages the extension for delivery">
+
+		<!-- Create package folder -->
+		<mkdir dir="${targetdir}/${group_name}/${plugin_name}" />
+
+		<!-- Copy module files & folder -->
+		<copy todir="${targetdir}/${group_name}/${plugin_name}">
+			<fileset dir="${extpath}/${group_name}/${plugin_name}">
+				<include name="**"/>
+				<exclude name=".*"/>
+			</fileset>
+		</copy>
+
+		<!-- Load extension property in XML file -->
+		<xmlproperty file="${targetdir}/${group_name}/${plugin_name}/${plugin_name}.xml" prefix="extensionDetails" keepRoot="false" />
+
+		<zip destfile="${targetdir}/${group_name}/plg_${group_name}_${plugin_name}-v${extensionDetails.version}.zip"
+			basedir="${extpath}/${group_name}/${plugin_name}">
+			<fileset dir="${extpath}/${group_name}/${plugin_name}">
+				<include name="**" />
+				<exclude name=".*" />
+			</fileset>
+		</zip>
+
+		<!-- clean up temporary folder -->
+		<delete dir="${targetdir}/${group_name}/${plugin_name}" />
+	</target>
+
+</project>
