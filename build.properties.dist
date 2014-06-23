@@ -1,6 +1,7 @@
 comp.name=redmigrator
-comp.version=1.0.0
+comp.version=1.5.0
 comp.joomla.version=j2.5_j3
 plg.joomla.version=j1.5_j2.5
-www.dir=/mnt/data/redMIGRATOR_Project/redMIGRATOR
-package.dir=/mnt/data/redMIGRATOR_Project/redMIGRATOR/releases
+www.dir=/var/www/dev.redmigrator
+repo.dir=/home/albert/github/redMIGRATOR
+package.dir=/home/albert/git.package/redmigrator

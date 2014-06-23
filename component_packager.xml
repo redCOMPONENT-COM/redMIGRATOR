@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ==================================================================  -->
+<!-- redMIGRATOR packager                                                -->
+<!-- This PHING build file generates the redMIGRATOR extension package   -->
+<!-- To use in your environment do the following steps:                  -->
+<!--    Change the following variables in build.properties file          -->
+<!--            (copy variables from build.properties.dist )             -->
+<!--    - change the version in variable comp.version                    -->
+<!--    - change the source folder path in variable repo.dir             -->
+<!--    - change the package folder path in variable package.dir         -->
+<!--    - execute this PHING build file                                  -->
+<!-- ==================================================================  -->
+<project name="com_redmigrator" default="dist">
+	<!-- Do initialization stuff -->
+	<property file="build.properties" override="true" />
+
+	<!-- Name of extension -->
+	<property name="extension" value="${comp.name}" override="true"/>
+
+	<!-- Folder where the redMIGRATOR repository is located  -->
+	<property name="extpath" value="${repo.dir}" override="true"/>
+
+	<!-- Load extension property in XML file -->
+    <xmlproperty file="${extpath}/${extension}.xml" prefix="extensionDetails" keepRoot="false" />
+
+    <!-- Get extension version from XML -->
+	<property
+			name="version"
+			value="${extensionDetails.version}"
+			override="true"/>
+
+	<!-- Target dir where packages will be created  -->
+	<property name="targetdir" value="${package.dir}/package-${extension}-${version}" override="true"/>
+
+	<!-- Target dir where packages will be created  -->
+	<property name="targetdir" value="${package.dir}/com_${extension}-${version}" override="true" />
+
+	<!-- ============================================  -->
+	<!-- Create packages folder                        -->
+	<!-- ============================================  -->
+	<target name="prepare">
+		<!-- Check if the target folder exists. If not, create it -->
+		<if>
+			<available file="${targetdir}" type="dir" property="dir.Exist" />
+			<then>
+				<echo msg="Removing old ${targetdir}" />
+				<delete dir="${targetdir}" />
+			</then>
+		</if>
+
+		<!-- remove old packaged file -->
+		<echo msg="Removing old package ${package.dir}/${extension}-${version}.zip" />
+		<delete file="${package.dir}/${extension}-${version}.zip" />
+
+		<echo msg="Making directory to store the packages at ${targetdir}" />
+		<mkdir dir="${targetdir}" />
+
+	</target>
+
+	<!-- ============================================  -->
+	<!-- Target: build                                 -->
+	<!-- ============================================  -->
+	<!-- Copy the source files to the target folder -->
+
+	<target name="build" depends="prepare">
+
+		<echo msg="Copying INSTALLER files to build directory..."/>
+		<copy todir="${targetdir}">
+			<fileset dir="${extpath}/">
+				<include name="LICENSE.txt"/>
+				<include name="redmigrator.xml"/>
+				<include name="install.php"/>
+			</fileset>
+		</copy>
+
+		<echo msg="Copying COMPONENT folder to build directory..."/>
+		<copy todir="${targetdir}/component">
+			<fileset dir="${extpath}/component">
+				<include name="**"/>
+				<exclude name=".*"/>
+			</fileset>
+		</copy>
+
+		<echo msg="Copying MEDIA folder to build directory..."/>
+		<copy todir="${targetdir}/media/com_redmigrator">
+			<fileset dir="${extpath}/media/com_redmigrator">
+				<include name="**"/>
+				<exclude name=".*"/>
+			</fileset>
+		</copy>
+
+		<echo msg="Copying redCORE LIBRARIES folder to build directory..."/>
+		<copy todir="${targetdir}/redCORE">
+			<fileset dir="${extpath}/redCORE">
+				<include name="**"/>
+				<exclude name=".*"/>
+				<exclude name="build.*"/>
+				<exclude name="*.md"/>
+				<!-- reduce redCORE package -->
+				<exclude name="media/redcore/js/lib/jquery-ui/jquery-ui.js"/>
+				<exclude name="media/redcore/css/lib/bootstrap/css/bootstrap.css"/>
+			</fileset>
+		</copy>
+
+		<echo message="Copying libraries..."/>
+		<copy todir="${targetdir}/libraries/redmigrator" overwrite="true">
+			<fileset dir="${extpath}/libraries/redmigrator">
+				<include name="**"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- ============================================  -->
+	<!-- (DEFAULT)  Target: dist                       -->
+	<!-- ============================================  -->
+	<target name="dist" depends="build">
+		<echo msg="Creating ZIP archive..."/>
+
+		<zip destfile="${targetdir}/../${extension}-${version}.zip">
+			<fileset dir="${targetdir}">
+				<include name="**"/>
+				<exclude name=".*"/>
+			</fileset>
+		</zip>
+
+		<echo msg="Files copied and compressed in build directory OK!"/>
+
+		<delete dir="${targetdir}" />
+	</target>
+</project>
