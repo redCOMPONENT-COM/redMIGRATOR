@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     RedMIGRATOR.Backend
+ * @package     redMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,145 +8,184 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+// Require the category class
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.category.class.php';
 
 /**
  * Upgrade class for sections
  *
  * This class takes the sections from the existing site and inserts them into the new site.
  *
- * @since  0.4.5
+ * @since	0.4.5
  */
-class RedMigratorSections extends RedMigrator
+class redMigratorSections extends redMigratorCategory
 {
 	/**
-	 * Change structure of table and value of fields
-	 * so data can be inserted into target db
+	 * Setting the conditions hook
 	 *
-	 * @param   array  $rows  Rows of source db
-	 *
-	 * @return mixed
+	 * @return	void
+	 * @since	3.0.0
+	 * @throws	Exception
 	 */
-	public function dataHook($rows)
+	public static function getConditionsHook()
 	{
-		$session = JFactory::getSession();
+		$conditions = array();
 
-		$new_id = RedMigratorHelper::getAutoIncrement('categories') - 1;
+		$conditions['select'] = '`id` AS old_id, `title`, `alias`, \'com_section\' AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
 
+		$where = array();
+		$where[] = "scope = 'content'";
+		
+		$conditions['where'] = $where;
+		
+		return $conditions;
+	}
+
+	/**
+	 * Get the raw data for this part of the upgrade.
+	 *
+	 * @return	array	Returns a reference to the source data array.
+	 * @since	3.0.0
+	 * @throws	Exception
+	 */
+	public function databaseHook($rows = null)
+	{	
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
 
-			// Create a map of old id and new id
-			$old_id = (int) $row['id'];
-			$new_id ++;
-			$arrTemp = array('old_id' => $old_id, 'new_id' => $new_id);
-
-			// $arrCategories = $session->get('arrCategories', null, 'redmigrator');
-			$arrSections = $session->get('arrSections', null, 'redmigrator');
-
-			// $arrCategories[] = $arrTemp;
-			$arrSections[] = $arrTemp;
-
-			// Save the map to session
-			// $session->set('arrCategories', $arrCategories, 'redmigrator');
-			$session->set('arrSections', $arrSections, 'redmigrator');
-
-			$row['id'] = null;
-			$row['alias'] = $row['alias'] . '_old';
-			$row['extension'] = 'com_content';
-			$row['parent_id'] = 0;
-			$row['lft'] = null;
-			$row['rgt'] = null;
-
 			$row['params'] = $this->convertParams($row['params']);
 			$row['title'] = str_replace("'", "&#39;", $row['title']);
 			$row['description'] = str_replace("'", "&#39;", $row['description']);
-			$row['language'] = '*';
-			$row['access'] = $row['access'] + 1;
 
-			unset($row['name']);
-			unset($row['image']);
-			unset($row['scope']);
-			unset($row['image_position']);
-			unset($row['ordering']);
-			unset($row['count']);
+			$row['extension'] = 'com_section';
+
+			// Correct alias
+			if ($row['alias'] == "") {
+				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
+			}
 		}
 
 		return $rows;
 	}
 
 	/**
-	 * Insert data
+	 * Sets the data in the destination database.
 	 *
-	 * @param   array  $rows  Rows for target db
-	 *
-	 * @return bool|void
-	 *
-	 * @throws Exception
+	 * @return	void
+	 * @since	0.4.
+	 * @throws	Exception
 	 */
-	protected function insertData($rows)
+	public function dataHook($rows = null)
 	{
-		if (is_array($rows))
+		$total = count($rows);
+
+		// Insert the sections
+		foreach ($rows as $section)
 		{
-			foreach ($rows as $row)
-			{
-				if ($row != false)
-				{
-					try
-					{
-						$objTable = JTable::getInstance('category', 'JTable', array('dbo' => $this->_db));
+			$section = (array) $section;
 
-						$objTable->setLocation((int) $row['parent_id'], 'last-child');
+			// Inserting the category
+			$this->insertCategory($section);
 
-						// Bind data to save category
-						if (!$objTable->bind($row))
-						{
-							echo JError::raiseError(500, $objTable->getError());
-						}
-
-						if (!$objTable->store())
-						{
-							echo JError::raiseError(500, $objTable->getError());
-						}
-					}
-					catch (Exception $e)
-					{
-						throw new Exception($e->getMessage());
-					}
-				}
-
-				$this->_step->_nextCID();
-			}
-		}
-		elseif (is_object($rows))
-		{
-			if ($rows != false)
-			{
-				try
-				{
-					$objTable = JTable::getInstance('category', 'JTable', array('dbo' => $this->_db));
-
-					$objTable->setLocation($rows->parent_id, 'last-child');
-
-					// Bind data to save category
-					if (!$objTable->bind($rows))
-					{
-						echo JError::raiseError(500, $objTable->getError());
-					}
-
-					if (!$objTable->store())
-					{
-						echo JError::raiseError(500, $objTable->getError());
-					}
-				}
-				catch (Exception $e)
-				{
-					throw new Exception($e->getMessage());
-				}
-			}
+			// Updating the steps table
+			$this->_step->_nextID($total);
 		}
 
-		return !empty($this->_step->error) ? false : true;
+		return false;
 	}
-} // End class
+
+	/**
+	 * Run custom code after hooks
+	 *
+	 * @return	void
+	 * @since	3.0
+	 */
+	public function afterHook()
+	{
+		// Fixing the parents
+		$this->fixParents();
+		// Insert existing categories
+		$this->insertExisting();
+	}
+
+	/**
+	 * Update the categories parent's
+	 *
+	 * @return	void
+	 * @since	3.0
+	 */
+	protected function fixParents()
+	{
+		$change_parent = $this->getMapList('categories', false, "section != 0");
+
+		// Insert the sections
+		foreach ($change_parent as $category)
+		{
+			// Getting the category table
+			$table = JTable::getInstance('Category', 'JTable');
+			$table->load($category->new);
+
+			$custom = "old = {$category->section}";
+			$parent = $this->getMapListValue('categories', 'com_section', $custom);
+
+			// Setting the location of the new category
+			$table->setLocation($parent, 'last-child');
+
+			// Insert the category
+			if (!@$table->store()) {
+				throw new Exception($table->getError());
+			}
+		}
+	}
+
+	/**
+	 * Insert existing categories saved in cleanup step
+	 *
+	 * @return	void
+	 * @since	3.0
+	 */
+	protected function insertExisting()
+	{
+		// Getting the database instance
+		$db = JFactory::getDbo();
+
+		// Getting the data
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from('#__redmigrator_default_categories');
+		$query->order('id ASC');
+		$db->setQuery($query);
+		$categories = $db->loadAssocList();
+
+		foreach ($categories as $category) {
+
+			// Unset id
+			$category['id'] = 0;
+
+			// Looking for parent
+			$parent = 1;
+			$explode = explode("/", $category['path']);
+
+			if (count($explode) > 1) {
+
+				// Getting the data
+				$query = $db->getQuery(true);
+				$query->select('id');
+				$query->from('#__categories');
+				$query->where("path = '{$explode[0]}'");
+				$query->order('id ASC');
+				$query->limit(1);
+
+				$db->setQuery($query);
+				$parent = $db->loadResult();
+
+			}
+
+			// Inserting the category
+			$this->insertCategory($category, $parent);
+		}
+
+	} // end method
+} // end class

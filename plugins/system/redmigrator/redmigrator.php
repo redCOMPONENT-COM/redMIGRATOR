@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     RedMIGRATOR.Backend
+ * @package     redMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,17 +8,18 @@
  *
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
+// no direct access
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.plugin.plugin');
+jimport( 'joomla.plugin.plugin' );
 
 /**
- * Joomla! System RedMigrator Plugin
+ * Joomla! System redMigrator Plugin
  *
+ * @package		Joomla
+ * @subpackage	System
  */
-class PlgSystemRedMigrator extends JPlugin
+class plgSystemredMigrator extends JPlugin
 {
 	/**
 	 * Folder where the helpers are stored
@@ -41,7 +42,7 @@ class PlgSystemRedMigrator extends JPlugin
 	 */
 	public function __construct(&$subject, $config)
 	{
-		parent::__construct($subject, $config);
+	parent::__construct($subject, $config);
 
 		// Load plugin language
 		$this->loadLanguage();
@@ -58,9 +59,13 @@ class PlgSystemRedMigrator extends JPlugin
 	{
 		jimport('joomla.user.helper');
 
-		require_once $this->helpersFolder . '/restful.php';
+		require_once $this->helpersFolder . '/rest.php';
 		require_once $this->helpersFolder . '/authorizer.php';
 		require_once $this->helpersFolder . '/dispatcher.php';
+		require_once $this->helpersFolder . '/table.php';
+
+		// Check if redMigrator_steps exists
+		$this->checkStepTable();
 
 		// Getting the database instance
 		$db = JFactory::getDbo();
@@ -68,20 +73,20 @@ class PlgSystemRedMigrator extends JPlugin
 		$request = false;
 
 		// Get the REST message from the current request.
-		$restful = new RedRESTFULMessage;
+		$rest = new JRESTMessage;
 
-		if ($restful->loadFromRequest())
+		if ($rest->loadFromRequest())
 		{
 			$request = true;
 		}
 
 		// Request was found
-		if ($request == true)
-		{
-			// Check the username and pass
-			$auth = new RedRESTFULAuthorizer;
+		if ($request == true) {
 
-			if (!$auth->authorize($db, $restful->_parameters))
+			// Check the username and pass
+			$auth = new JRESTAuthorizer;
+
+			if (!$auth->authorize($db, $rest->_parameters))
 			{
 				JResponse::setHeader('status', 400);
 				JResponse::setBody('Invalid password.');
@@ -90,23 +95,77 @@ class PlgSystemRedMigrator extends JPlugin
 			}
 
 			// Check the username and pass
-			$dispatcher = new RedRESTFULDispatcher;
+			$dispatcher = new JRESTDispatcher;
 
-			$return = $dispatcher->execute($restful->_parameters);
+			$return = $dispatcher->execute($rest->_parameters);
 
-			if ($return !== false)
-			{
+			if ($return !== false) {
 				echo $return;
-			}
-			else
-			{
+			}else{
 				JResponse::setHeader('status', 401);
 				JResponse::setBody('Dispatch error.');
 				JResponse::sendHeaders();
 				exit;
 			}
 
-			exit;
+			exit; // Exit
 		}
-	} // End method
-}
+
+		//exit; // Exit test
+
+	} // end method
+
+
+	function checkStepTable()
+	{
+		// Getting the database instance
+		$db = JFactory::getDbo();
+
+		$sqlfile = $this->helpersFolder . '/sql/install.sql';
+
+		// Checking tables
+		$query = "SHOW TABLES";
+		$db->setQuery($query);
+
+		if (version_compare(JVERSION, '1.6.0', '<'))
+		{
+			$tables = $db->loadResultArray();
+		}
+		else
+		{
+			$tables = $db->loadColumn();
+		}
+
+		if (!in_array('redmigrator_plugin_steps', $tables))
+		{
+			$this->populateDatabase($db, $sqlfile);
+		}
+
+	} // end method
+
+	/**
+	 * populateDatabase
+	 */
+	function populateDatabase(& $db, $sqlfile)
+	{
+		if( !($buffer = file_get_contents($sqlfile)) )
+		{
+			return -1;
+		}
+
+		$queries = $db->splitSql($buffer);
+
+		foreach ($queries as $query)
+		{
+			$query = trim($query);
+			if ($query != '' && $query {0} != '#')
+			{
+				$db->setQuery($query);
+				$db->query() or die($db->getErrorMsg());
+			}
+		}
+
+		return true;
+	}
+
+} // end class

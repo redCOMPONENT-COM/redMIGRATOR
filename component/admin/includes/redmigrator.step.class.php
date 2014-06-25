@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     RedMIGRATOR.Backend
+ * @package     redMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -13,55 +13,34 @@ defined('_JEXEC') or die;
 
 /**
  * redmigrator step class
+ *
+ * @package		redmigrator
  */
-class RedMigratorStep
-{
+class redMigratorStep
+{	
 	public $id = null;
-
 	public $name = null;
-
 	public $title = null;
-
-	public $type = null;
-
 	public $class = null;
-
 	public $replace = '';
-
 	public $xmlpath = '';
-
 	public $element = null;
-
 	public $conditions = null;
 
 	public $tbl_key = '';
-
 	public $source = '';
-
 	public $destination = '';
-
 	public $cid = 0;
-
 	public $cache = 0;
-
 	public $status = 0;
-
 	public $total = 0;
-
 	public $start = 0;
-
 	public $stop = 0;
-
 	public $laststep = '';
 
-	public $stepTotal = 0;
-
 	public $first = false;
-
 	public $next = false;
-
 	public $middle = false;
-
 	public $end = false;
 
 	public $extensions = false;
@@ -69,35 +48,28 @@ class RedMigratorStep
 	public $_table = false;
 
 	public $debug = '';
-
 	public $error = '';
-
+	
 	/**
 	 * @var      
 	 * @since  3.0
 	 */
 	protected $_db = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param null $name
-	 * @param bool $extensions
-	 */
 	function __construct($name = null, $extensions = false)
 	{
-		JLoader::import('legacy.component.helper');
+		jimport('legacy.component.helper');
+		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 
 		// Creating dabatase instance for this installation
 		$this->_db = JFactory::getDBO();
 
 		// Set step table
-		if ($extensions == false)
-		{
+		if ($extensions == false) {
 			$this->_table = '#__redmigrator_steps';
-		}
-		elseif ($extensions == true)
-		{
+		}else if($extensions === 'tables') {
+			$this->_table = '#__redmigrator_extensions_tables';
+		}else if($extensions == true) {
 			$this->_table = '#__redmigrator_extensions';
 		}
 
@@ -106,23 +78,23 @@ class RedMigratorStep
 	}
 
 	/**
-	 * Get step instance
 	 *
-	 * @param   string  $name        Name
-	 * @param   bool    $extensions  True if there 3rd extensions
+	 * @param   stdClass   $options  Parameters to be passed to the database driver.
 	 *
 	 * @return  redmigrator  A redmigrator object.
+	 *
+	 * @since  3.0.0
 	 */
-	public static function getInstance($name = null, $extensions = false)
+	static function getInstance($name = null, $extensions = false)
 	{
 		// Create our new redmigrator connector based on the options given.
 		try
 		{
-			$instance = new RedMigratorStep($name, $extensions);
+			$instance = new redMigratorStep($name, $extensions);
 		}
 		catch (RuntimeException $e)
 		{
-			throw new RuntimeException(sprintf('Unable to load RedMigratorStep object: %s', $e->getMessage()));
+			throw new RuntimeException(sprintf('Unable to load redMigratorStep object: %s', $e->getMessage()));
 		}
 
 		return $instance;
@@ -131,7 +103,7 @@ class RedMigratorStep
 	/**
 	 * Method to set the parameters. 
 	 *
-	 * @param   array  $data  The parameters to set.
+	 * @param   array  $parameters  The parameters to set.
 	 *
 	 * @return  void
 	 *
@@ -144,7 +116,7 @@ class RedMigratorStep
 		{
 			foreach ($data as $k => $v)
 			{
-				if (property_exists($this, $k))
+				if (property_exists ( $this , $k ))
 				{
 					// Perform url decoding so that any use of '+' as the encoding of the space character is correctly handled.
 					$this->$k = urldecode((string) $v);
@@ -157,6 +129,8 @@ class RedMigratorStep
 	 * Method to get the parameters. 
 	 *
 	 * @return  array  $parameters  The parameters of this object.
+	 *
+	 * @since   3.0.0
 	 */
 	public function getParameters()
 	{
@@ -164,67 +138,15 @@ class RedMigratorStep
 
 		foreach ($this as $k => $v)
 		{
-			if (property_exists($this, $k))
+			if (property_exists ( $this , $k ))
 			{
-				if (!is_object($v))
-				{
-					if ($v != "" || $k == 'total' || $k == 'start' || $k == 'stop')
-					{
+				if (!is_object($v)) {
+					if ($v != "" || $k == 'total' || $k == 'start' || $k == 'stop') {
 						// Perform url decoding so that any use of '+' as the encoding of the space character is correctly handled.
 						$return[$k] = urldecode((string) $v);
 					}
 				}
 			}
-		}
-
-		// Get the last step and save to session
-		$session = JFactory::getSession();
-		$laststep = $session->get('laststep', '', 'redmigrator');
-
-		if ($laststep == '')
-		{
-			// Reset the $query object
-			$query = $this->_db->getQuery(true);
-
-			// Select last step
-			$query->select('name')
-					->from($this->_table)
-					->where('status = 0')
-					->order('id DESC')
-					->limit(1);
-
-			$this->_db->setQuery($query);
-
-			$laststep = $this->_db->loadResult();
-
-			$session->set('laststep', $laststep, 'redmigrator');
-		}
-		else
-		{
-			$return['laststep'] = $laststep;
-		}
-
-		// Get total of steps and save to session
-		$stepTotal = $session->get('stepTotal', 0, 'redmigrator');
-
-		if ($stepTotal == 0)
-		{
-			// Reset the $query object
-			$query = $this->_db->getQuery(true);
-
-			$query->select('count(*)')
-					->from('#__redmigrator_steps')
-					->where('status = 0');
-
-			$this->_db->setQuery($query);
-
-			$stepTotal = $this->_db->loadResult();
-
-			$session->set('stepTotal', $stepTotal, 'redmigrator');
-		}
-		else
-		{
-			$return['stepTotal'] = $stepTotal;
 		}
 
 		return json_encode($return);
@@ -233,74 +155,60 @@ class RedMigratorStep
 	/**
 	 * Get the next step
 	 *
-	 * @param   bool  $name  Name
-	 * @param   bool  $json  Json
-	 *
-	 * @return array|bool
+	 * @return   step object
 	 */
-	public function getStep($name = false, $json = true)
-	{
+	public function getStep($name = false, $json = true) {
+
 		// Check if step is loaded
-		if (empty($name))
-		{
+		if (empty($name)) {
 			return false;
 		}
 
-		$params = RedMigratorHelper::getParams();
+		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
+		$params = redMigratorHelper::getParams();
 
 		$limit = $params->chunk_limit;
 
 		// Getting the total
-		if (isset($this->source))
-		{
-			$this->total = RedMigratorHelper::getTotal($this);
+		if (isset($this->source)) {
+			$this->total = redMigratorHelper::getTotal($this);
 		}
 
 		// We must to fragment the steps
-		if ($this->total > $limit)
-		{
-			if ($this->cache == 0 && $this->status == 0)
-			{
-				if (version_compare(PHP_VERSION, '5.3.0') >= 0)
-				{
-					$this->cache = round(($this->total - 1) / $limit, 0, PHP_ROUND_HALF_DOWN);
-				}
-				else
-				{
-					$this->cache = round(($this->total - 1) / $limit);
-				}
+		if ($this->total > $limit) {
 
+			if ($this->cache == 0 && $this->status == 0) {
+
+				if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+					$this->cache = round( ($this->total-1) / $limit, 0, PHP_ROUND_HALF_DOWN);
+				}else{
+					$this->cache = round( ($this->total-1) / $limit);
+				}
 				$this->start = 0;
 				$this->stop = $limit - 1;
 				$this->first = true;
 				$this->debug = "{{{1}}}";
 
-			}
-			elseif ($this->cache == 1 && $this->status == 1)
-			{
+			} else if ($this->cache == 1 && $this->status == 1) {
+
 				$this->start = $this->cid;
 				$this->cache = 0;
 				$this->stop = $this->total - 1;
 				$this->debug = "{{{2}}}";
 				$this->first = false;
 
-			}
-			elseif ($this->cache > 0)
-			{
+			} else if ($this->cache > 0) { 
+
 				$this->start = $this->cid;
 				$this->stop = ($this->start - 1) + $limit;
 				$this->cache = $this->cache - 1;
 				$this->debug = "{{{3}}}";
 				$this->first = false;
 
-				if ($this->stop > $this->total)
-				{
+				if ($this->stop > $this->total) {
 					$this->stop = $this->total - 1;
 					$this->next = true;
-					$this->end = true;
-				}
-				else
-				{
+				}else{
 					$this->middle = true;
 				}
 			}
@@ -308,20 +216,21 @@ class RedMigratorStep
 			// Status == 1
 			$this->status = 1;
 
-		}
-		elseif ($this->total == 0)
-		{
+		}else if ($this->total == 0) {
+
 			$this->stop = -1;
 			$this->next = 1;
 			$this->first = true;
-
+			if ($this->name == $this->laststep) {
+				$this->end = true;
+			}
 			$this->cache = 0;
 			$this->status = 2;
 			$this->debug = "{{{4}}}";
 
-		}
-		else
-		{
+		}else{
+
+			//$this->next = true;
 			$this->start = 0;
 			$this->first = 1;
 			$this->cache = 0;
@@ -329,7 +238,12 @@ class RedMigratorStep
 			$this->debug = "{{{5}}}";
 		}
 
-		// Updating the status flag to database
+		// Mark if is the end of the step
+		if ($this->name == $this->laststep && $this->cache == 1) {
+			$this->end = true;
+		}
+
+		// updating the status flag
 		$this->_updateStep();
 
 		return $this->getParameters();
@@ -338,27 +252,27 @@ class RedMigratorStep
 	/**
 	 * Getting the current step from database and put it into object properties
 	 *
-	 * @param   null  $name  Name
-	 *
-	 * @return bool
+	 * @return   step object
 	 */
-	public function _load($name = null)
-	{
+	public function _load($name = null) {
+
 		// Getting the data
 		$query = $this->_db->getQuery(true);
-		$query->select('*');
-		$query->from($this->_table);
+		$query->select('e.*');
+		$query->from($this->_table.' AS e');
 
-		if (!empty($name))
-		{
-			$query->where("name = '{$name}'");
-		}
-		else
-		{
-			$query->where("status != 2");
+		if ($this->_table == '#__redmigrator_extensions_tables') {
+			$query->leftJoin('`#__redmigrator_extensions` AS ext ON ext.name = e.element');
+			$query->select('ext.xmlpath');
 		}
 
-		$query->order('id ASC');
+		if (!empty($name)) {
+			$query->where("e.name = '{$name}'");
+		}else{
+			$query->where("e.status != 2");
+		}
+
+		$query->order('e.id ASC');
 		$query->limit(1);
 
 		$this->_db->setQuery($query);
@@ -366,17 +280,30 @@ class RedMigratorStep
 
 		// Check for query error.
 		$error = $this->_db->getErrorMsg();
-
-		if ($error)
-		{
+		if ($error) {
 			return false;
 		}
 
 		// Check if step is an array
-		if (!is_array($step))
-		{
+		if (!is_array($step)) {
 			return false;
 		}
+
+		// Reset the $query object
+		$query->clear();
+
+		// Select last step
+		$query->select('name');
+		$query->from($this->_table);
+		$query->where("status = 0");
+		if ($this->_table == '#__redmigrator_extensions_tables') {
+			$query->where("element = '{$step['element']}'");
+		}
+		$query->order('id DESC');
+		$query->limit(1);
+
+		$this->_db->setQuery($query);
+		$step['laststep'] = $this->_db->loadResult();
 
 		// Set the parameters
 		$this->setParameters($step);
@@ -385,39 +312,32 @@ class RedMigratorStep
 	}
 
 	/**
-	 * Update Step
+	 * updateStep
 	 *
 	 * @return	none
+	 * @since	2.5.2
 	 */
-	public function _updateStep()
-	{
-		$query = $this->_db->getQuery(true);
+	public function _updateStep() {
 
+		$query = $this->_db->getQuery(true);
 		$query->update($this->_table);
 
 		$columns = array('status', 'cache', 'cid', 'total', 'start', 'stop', 'first');
 
-		foreach ($columns as $column)
-		{
-			if (!empty($this->$column))
-			{
-				// $query->set("{$column} = {$this->$column}");
-				$query->set($column . " = " . $this->$column);
+		foreach ($columns as $column) {
+			if (!empty($this->$column)) {
+				$query->set("{$column} = {$this->$column}");
 			}
 		}
 
-		// $query->where("name = {$this->_db->quote($this->name)}");
-		$query->where("name = " . $this->_db->quote($this->name));
-
-		$this->_db->setQuery($query);
-
-		$this->_db->execute();
+		$query->where("name = {$this->_db->quote($this->name)}");
+		// Execute the query
+		$this->_db->setQuery($query)->execute();
 
 		// Check for query error.
 		$error = $this->_db->getErrorMsg();
 
-		if ($error)
-		{
+		if ($error) {
 			throw new Exception($error);
 		}
 
@@ -425,62 +345,57 @@ class RedMigratorStep
 	}
 
 	/**
-	 * Update cid
+	 * 
 	 *
-	 * @param   int  $cid  Current id
+	 * @return  boolean  True if the user and pass are authorized
 	 *
-	 * @return boolean True if the user and pass are authorized
-	 *
+	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 */
-	public function _updateCID($cid)
+	public function _updateID($id)
 	{
 		$name = $this->_getStepName();
 
 		$query = $this->_db->getQuery(true);
 		$query->update($this->_table);
-		$query->set("`cid` = '{$cid}'");
+		$query->set("`cid` = '{$id}'");
 		$query->where("name = {$this->_db->quote($name)}");
-
 		// Execute the query
 		return $this->_db->setQuery($query)->execute();
 	}
 
 	/**
-	 * Get next cid
+	 * Updating the steps table
 	 *
 	 * @return  boolean  True if the user and pass are authorized
 	 *
+	 * @since   1.0
 	 * @throws  InvalidArgumentException
 	 */
-	public function _nextCID()
+	public function _nextID($total = false)
 	{
-		$update_cid = $this->_getStepCID() + 1;
-
-		$this->_updateCID($update_cid);
-
-		if (RedMigratorHelper::isCli())
-		{
-			echo "•";
-		}
+		$update_cid = $this->_getStepID() + 1;
+		$this->_updateID($update_cid);
+		echo redmigratorHelper::isCli() ? "•" : "";
 	}
 
 	/**
 	 * Update the step id
 	 *
 	 * @return  int  The next id
+	 *
+	 * @since   3.0.0
 	 */
-	public function _getStepCID()
+	public function _getStepID()
 	{
 		$this->_load();
-
 		return $this->cid;
 	}
 
 	/**
-	 * Get step name
+	 * @return  string	The step name  
 	 *
-	 * @return string The step name
+	 * @since   3.0
 	 */
 	public function _getStepName()
 	{

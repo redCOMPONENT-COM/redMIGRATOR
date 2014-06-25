@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     RedMIGRATOR.Backend
+ * @package     redMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -14,9 +14,9 @@
  *
  * This class search for extensions to be migrated
  *
- * @since  3.0.0
+ * @since	3.0.0
  */
-class RedMigratorUsersDefault extends RedMigrator
+class redMigratorUsersDefault extends redMigrator
 {
 	/**
 	 * @var      
@@ -53,19 +53,16 @@ class RedMigratorUsersDefault extends RedMigrator
 	 * Map old user group from Joomla 1.5 to new installation.
 	 *
 	 * @return	int	New user group
-	 *
 	 * @since	1.2.2
 	 */
-	protected function mapUserGroup($id)
-	{
+	protected function mapUserGroup($id) {
 		return isset($this->usergroup_map[$id]) ? $this->usergroup_map[$id] : $id;
 	}
 
 	/**
 	 * Method to get a map of the User id to ARO id.
 	 *
-	 * @return	array	An array of the user id's keyed by ARO id.
-	 *
+	 * @returns	array	An array of the user id's keyed by ARO id.
 	 * @since	0.4.4
 	 * @throws	Exception on database error.
 	 */
@@ -74,15 +71,14 @@ class RedMigratorUsersDefault extends RedMigrator
 		$this->_driver->_db_old->setQuery(
 			'SELECT value' .
 			' FROM #__core_acl_aro' .
-			' WHERE id = ' . $aro_id
+			' WHERE id = '.$aro_id
 		);
 
 		$return	= $this->_driver->_db_old->loadResult();
 		$error	= $this->_driver->_db_old->getErrorMsg();
 
 		// Check for query error.
-		if ($error)
-		{
+		if ($error) {
 			throw new Exception($error);
 		}
 

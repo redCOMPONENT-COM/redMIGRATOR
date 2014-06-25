@@ -12,49 +12,55 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('RedMigrator', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.class.php');
-JLoader::register('RedMigratorStep', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.step.class.php');
+JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
+JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
 
 /**
- * Class RedMigratorModelStep
+ * redMigrator Model
+ *
+ * @package		redMigrator
  */
-class RedMigratorModelStep extends RModelAdmin
+class redMigratorModelStep extends RModelAdmin
 {
 	/**
-	 * Initial checks in RedMigrator
+	 * Initial checks in redMigrator
 	 *
-	 * @param   bool  $name        Name of step
-	 * @param   bool  $extensions  True if migrate 3rd extension
-	 *
-	 * @return mixed
+	 * @return	none
+	 * @since	1.2.0
 	 */
-	public function step($name = false, $extensions = false)
-	{
-		// Check if extensions exists if not get it from URI request
-		if ($extensions === false)
-		{
-			$extensions = JRequest::getCmd('extensions', '');
-		}
+	public function step($name = false, $json = true, $extensions = false) {
 
-		// Getting the RedMigratorStep instance
-		$step = RedMigratorStep::getInstance(null, $extensions);
+		// Check if extensions exists if not get it from URI request
+		$extensions = (bool) ($extensions != false) ? $extensions : JRequest::getCmd('extensions', '');
+
+		// Getting the redMigratorStep instance
+		$step = redMigratorStep::getInstance(null, $extensions);
 
 		// Check if name exists
-		if ($name === false)
-		{
-			$name = $step->name;
-		}
+		$name = !empty($name) ? $name : $step->name;
 
 		// Get the next step
 		$step->getStep($name);
 
-		if (!RedMigratorHelper::isCli())
-		{
+		if (!redMigratorHelper::isCli()) {
 			echo $step->getParameters();
-		}
-		else
-		{
+		}else{
 			return $step->getParameters();
 		}
 	}
-} // End class
+
+	/**
+	 * returnError
+	 *
+	 * @return	none
+	 * @since	2.5.0
+	 */
+	public function returnError ($number, $text)
+	{
+		$message['number'] = $number;
+		$message['text'] = JText::_($text);
+		echo json_encode($message);
+		exit;
+	}
+
+} // end class

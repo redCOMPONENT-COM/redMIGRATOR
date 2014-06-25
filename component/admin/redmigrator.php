@@ -17,26 +17,20 @@ require_once JPATH_LIBRARIES . '/redcore/bootstrap.php';
 
 // Turn off all error reporting
 error_reporting(0);
-// Error reporting(E_ALL);
-// Ini_set('display_errors','1');
-
-// Set unlimit timeout
-ini_set('max_execution_time', 0);
+//error_reporting(E_ALL);
+//ini_set( 'display_errors','1'); 
 
 // Access check.
-if (!JFactory::getUser()->authorise('core.manage', 'com_redmigrator'))
+if (!JFactory::getUser()->authorise('core.manage', 'com_redmigrator')) 
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-// Import joomla controller library
-Jloader::import('joomla.application.component.controller');
-
-// Loading the helper
-JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
-
+// import joomla controller library
+jimport('joomla.application.component.controller');
+ 
 // Getting the controller
-$controller	= JControllerLegacy::getInstance('RedMigrator');
+$controller	= JControllerLegacy::getInstance('redMigrator');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 
 // Redirect if set by the controller

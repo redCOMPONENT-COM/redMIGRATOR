@@ -12,45 +12,36 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JLoader::register('RedMigrator', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.class.php');
-JLoader::register('RedMigratorStep', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.step.class.php');
-JLoader::register('RedMigratorExtensions', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.extensions.class.php');
+JLoader::register('redMigrator', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.class.php');
+JLoader::register('redMigratorStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.step.class.php');
+JLoader::register('redMigratorExtensions', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.extensions.class.php');
 
 /**
- * RedMigrator Model
+ * redMigrator Model
  *
+ * @package		redMigrator
  */
-class RedMigratorModelExtensions extends RModelAdmin
+class redMigratorModelExtensions extends RModelAdmin
 {
 	/**
 	 * Migrate the extensions
 	 *
 	 * @return	none
-	 *
 	 * @since	2.5.0
 	 */
-	function extensions()
-	{
+	function extensions() {
+
 		// Get the step
-		$step = RedMigratorStep::getInstance('extensions', true);
+		$step = redMigratorStep::getInstance('extensions', true);
 
-		// Get RedMigratorExtensions instance
-		$extensions = RedMigrator::getInstance($step);
-
-		// Initialize 3rd extensions
+		// Get redMigratorExtensions instance
+		$extensions = redMigrator::getInstance($step);
 		$success = $extensions->upgrade();
 
-		if ($success === true)
-		{
+		if ($success === true) {
 			$step->status = 2;
 			$step->_updateStep();
-
-			if (!RedMigratorHelper::isCli())
-			{
-				echo "success";
-			}
-
 			return true;
 		}
 	}
-} // End class
+} // end class

@@ -8,15 +8,14 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
-
 /**
  * Upgrade class for Weblinks
  *
  * This class takes the weblinks from the existing site and inserts them into the new site.
  *
- * @since  3.0.0
+ * @since	3.0.0
  */
-class RedMigratorExtensionsComponents extends RedMigrator
+class redMigratorExtensionsComponents extends redMigrator
 {
 	/**
 	 * @var		string	The name of the source database table.
@@ -40,24 +39,23 @@ class RedMigratorExtensionsComponents extends RedMigrator
 	 * Setting the conditions hook
 	 *
 	 * @return	void
-	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
 	public static function getConditionsHook()
 	{
 		$conditions = array();
-
+		
 		$conditions['as'] = "c";
-
+		
 		$conditions['select'] = 'name, `option` AS element, params';
 
 		$where = array();
 		$where[] = "c.parent = 0";
 		$where[] = "c.option NOT IN ('com_admin', 'com_banners', 'com_cache', 'com_categories', 'com_checkin', 'com_config', 'com_contact', 'com_content', 'com_cpanel', 'com_frontpage', 'com_installer', 'com_redmigrator', 'com_languages', 'com_login', 'com_mailto', 'com_massmail', 'com_media', 'com_menus', 'com_messages', 'com_modules', 'com_newsfeeds', 'com_plugins', 'com_poll', 'com_search', 'com_sections', 'com_templates', 'com_user', 'com_users', 'com_weblinks', 'com_wrapper' )";
-
+		
 		$conditions['where'] = $where;
-
+		
 		return $conditions;
 	}
 
@@ -65,7 +63,6 @@ class RedMigratorExtensionsComponents extends RedMigrator
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.
-	 *
 	 * @since	3.0.0
 	 * @throws	Exception
 	 */
@@ -75,10 +72,8 @@ class RedMigratorExtensionsComponents extends RedMigrator
 		foreach ($rows as &$row)
 		{
 			$row = (array) $row;
-
 			// Converting params to JSON
 			$row['params'] = $this->convertParams($row['params']);
-
 			// Defaults
 			$row['type'] = 'component';
 			$row['client_id'] = 1;

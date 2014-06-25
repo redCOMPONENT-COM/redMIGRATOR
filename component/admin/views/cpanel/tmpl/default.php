@@ -16,12 +16,10 @@ RHelperAsset::load('lib/font-awesome/css/font-awesome.min.css', 'redcore');
 
 // Get the version
 $version = "v{$this->version}";
-
-// Get params
+// get params
 $params	= $this->params;
-
-// Get document to add scripts
-$document = JFactory::getDocument();
+// get document to add scripts
+$document	= JFactory::getDocument();
 $document->addScript('components/com_redmigrator/js/dwProgressBar.js');
 $document->addScript("components/com_redmigrator/js/migrate.js");
 $document->addScript('components/com_redmigrator/js/requestmultiple.js');
@@ -32,7 +30,7 @@ $document->addStyleSheet("components/com_redmigrator/css/redmigrator.css");
 window.addEvent('domready', function() {
 
 	/* Init redmigrator */
-	var RedMigrator = new redmigrator({
+	var redMigrator = new redmigrator({
 		method: '<?php echo $params->method ? $params->method : 0; ?>',
 		positions: <?php echo $params->positions ? $params->positions : 0; ?>,
 		skip_checks: <?php echo $params->skip_checks ? $params->skip_checks : 0; ?>,
@@ -58,23 +56,17 @@ window.addEvent('domready', function() {
 
 				<div id="update">
 					<br /><img src="components/com_redmigrator/images/update.png" align="middle" border="0"/><br />
-					<h2><?php echo JText::_('START MIGRATE'); ?></h2><br />
+					<h2><?php echo JText::_('START UPGRADE'); ?></h2><br />
 				</div>
 
-				<div id="core_checks">
-					<p class="text"><?php echo JText::_('Core checking and cleaning...'); ?></p>
+				<div id="checks">
+					<p class="text"><?php echo JText::_('Checking and cleaning...'); ?></p>
 					<div id="pb0"></div>
 					<div><small><i><span id="checkstatus"><?php echo JText::_('Initialize...'); ?></span></i></small></div>
 				</div>
 
-				<div id="ext_init">
-					<p class="text"><?php echo JText::_('Initialize extensions...'); ?></p>
-					<div id="pb7"></div>
-					<div><small><i><span id="ext_status"><?php echo JText::_('Initialize extensions...'); ?></span></i></small></div>					
-				</div>
-
 				<div id="migration">
-					<p class="text"><?php echo JText::_('Migrating progress...'); ?></p>
+					<p class="text"><?php echo JText::_('Upgrading progress...'); ?></p>
 					<div id="pb4"></div>
 					<div><small><i><span id="migrate_status"><?php echo JText::_('Initialize...'); ?></span></i></small></div>
 					<div id="counter">
@@ -96,19 +88,24 @@ window.addEvent('domready', function() {
 				<div id="templates">
 					<p class="text"><?php echo JText::_('Copying templates...'); ?></p>
 					<div id="pb6"></div>
-				</div>				
+				</div>
+
+				<div id="extensions">
+					<p class="text"><?php echo JText::_('Upgrading 3rd extensions...'); ?></p>
+					<div id="pb7"></div>
+					<div><small><i><span id="ext_status"><?php echo JText::_('Initialize...'); ?></span></i></small></div>
+					<div id="ext_counter">
+						<i><small><b><span id="ext_currItem">0</span></b> items /
+						<b><span id="ext_totalItems">0</span></b> items</small></i>
+					</div>
+				</div>
 
 				<div id="done">
 					<h2 class="done"><?php echo JText::_('Migration Successful!'); ?></h2>
 				</div>
 
 				<div id="info">
-					<div id="info_version">
-						<i>
-							<?php echo JText::_('redmigrator'); ?>
-						</i>
-						<?php echo JText::_('Version') . ' <b>' . $this->version . '</b>'; ?>
-					</div>
+					<div id="info_version"><i><?php echo JText::_('redmigrator'); ?></i> <?php echo JText::_('Version').' <b>'.$this->version.'</b>'; ?></div>
 					<div id="info_thanks">
 						<p>
 							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.redcomponent.com/">redCOMPONENT &#169;</a></i>  Copyright 2005-2013<br />

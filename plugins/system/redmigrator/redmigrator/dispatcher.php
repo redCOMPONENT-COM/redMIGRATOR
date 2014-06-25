@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     RedMIGRATOR.Backend
+ * @package     redMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -8,7 +8,6 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
-
 defined('_JEXEC') or die;
 
 /**
@@ -18,7 +17,7 @@ defined('_JEXEC') or die;
  * @subpackage  REST
  * @since       3.0
  */
-class RedRESTFULDispatcher
+class JRESTDispatcher
 {
 	/**
 	 * @var    array  Associative array of parameters for the REST message.
@@ -27,172 +26,64 @@ class RedRESTFULDispatcher
 	private $_parameters = array();
 
 	/**
-	 * @param $parameters
+	 * @var    redMigratorTable  redMigratorTable object
+	 * @since  3.0
+	 */
+	private $_table = array();
+	
+	/**
+	 * 
 	 *
-	 * @return bool
+	 * @return  boolean
+	 *
+	 * @since   3.0
 	 */
 	public function execute($parameters)
 	{
+		// Getting the database instance
+		$db = JFactory::getDbo();	
+	
 		// Loading params
 		$this->_parameters = $parameters;
 
-		$table = '';
+		$task = isset($this->_parameters['HTTP_TASK']) ? $this->_parameters['HTTP_TASK'] : '';
+		$name = $table = isset($this->_parameters['HTTP_TABLE']) ? $this->_parameters['HTTP_TABLE'] : '';
+		$files = isset($this->_parameters['HTTP_FILES']) ? $this->_parameters['HTTP_FILES'] : '';
 
-		if (isset($this->_parameters['HTTP_TABLE']))
-		{
-			$table = $this->_parameters['HTTP_TABLE'];
-		}
+		// Fixing table if is extension
+		$table = (substr($table, 0, 4) == 'ext_') ? substr($table, 4) : $table;
 
-		$task = '';
-
-		if (isset($this->_parameters['HTTP_TASK']))
-		{
-			$task = $this->_parameters['HTTP_TASK'];
-		}
-
-		$result = null;
-
-		if ($task == 'total')
-		{
-			if ($this->_checkTableExist($table))
-			{
-				$result = $this->_getTotal($table);
-			}
-			else
-			{
-				$result = 0;
-			}
-		}
-		elseif ($task == 'row')
-		{
-			$start = $this->_parameters['HTTP_START'];
-			$limit = $this->_parameters['HTTP_LIMIT'];
-
-			$result = $this->_getRow($table, $start, $limit);
-		}
-
-		if ($result !== null)
-		{
-			return json_encode($result);
-		}
-		else
-		{
-			JResponse::setHeader('status', 407);
-			JResponse::setBody('Can not get result');
-			JResponse::sendHeaders();
-			exit;
-		}
-	}
-
-	/**
-	 * Check if table exist in database
-	 *
-	 * @param $table
-	 *
-	 * @return bool
-	 */
-	protected function _checkTableExist($table)
-	{
-		// Getting the database instance
-		$db = JFactory::getDbo();
-
-		$table = $db->getPrefix() . $table;
-
-		// Set the query to get the tables statement.
-		$db->setQuery('SHOW TABLES');
-
-		$tables = $db->loadResultArray();
-
-		if (in_array($table, $tables))
-		{
+		// Check task is only to test the connection
+		if ($task == 'check') {
 			return true;
 		}
+
+		// Loading table
+		if (isset($table)) {
+			JTable::addIncludePath(JPATH_ROOT .DS.'plugins' .DS.'system'.DS.'redmigrator'.DS.'table');
+			$class = @redMigratorTable::getInstance($name, 'redMigratorTable');
+
+			if (!is_object($class)) {
+				$class = redMigratorTable::getInstance('generic', 'redMigratorTable');
+				$class->changeTable($table);
+			}
+		}else if (isset($files)) {
+			require_once JPATH_ROOT .DS.'plugins' .DS.'system'.DS.'redmigrator'.DS.'files.php';
+			$class = new redMigratorFiles();
+		}
+
+		// Get the method name
+		$method = 'get'.ucfirst($task);
+
+		// Does the method exist?
+		if (method_exists($class, $method))
+		{
+			return $class->$method();
+		}
 		else
 		{
-			return false;
-		}
-	}
-
-	/**
-	 * Get total of rows
-	 *
-	 * @param $table
-	 *
-	 * @return int
-	 */
-	protected function _getTotal($table)
-	{
-		$db = JFactory::getDbo();
-
-		$query = 'SELECT count(*) FROM ' . $db->getPrefix() . $table;
-
-		$db->setQuery($query);
-
-		$total = $db->loadResult();
-
-		return (int) $total;
-	}
-
-	/**
-	 * Get a row
-	 *
-	 * @param $table
-	 * @param $start
-	 * @param $limit
-	 *
-	 * @return mixed|string
-	 */
-	protected function _getRow($table, $start, $limit)
-	{
-		$db = JFactory::getDbo();
-
-		$query = 'SELECT *'
-			. ' FROM ' . $db->getPrefix() . $table;
-
-		if ($this->_checkIdColumnExist($table))
-		{
-			$query .= ' ORDER BY id';
+			return false;	
 		}
 
-		$query .= ' LIMIT ' . $start . ', ' . $limit;
-
-		$db->setQuery($query);
-
-		$row = $db->loadAssocList();
-
-		return $row;
-	}
-
-
-	/**
-	 * Check if "id" field exist in the table or not
-	 *
-	 * @param   string  $table  Table name
-	 *
-	 * @return bool
-	 */
-	protected function _checkIdColumnExist($table)
-	{
-		$db = JFactory::getDbo();
-
-		$query = "SHOW COLUMNS FROM " . $db->getPrefix() . $table;
-
-		$db->setQuery($query);
-
-		$columns = $db->loadAssocList();
-
-		$exist = false;
-
-		foreach ($columns as $column)
-		{
-			if ($column['Field'] == 'id')
-			{
-				$exist = true;
-
-				break;
-			}
-		}
-
-		return $exist;
 	}
 }
