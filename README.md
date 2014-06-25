@@ -1,7 +1,6 @@
 redMIGRATOR
 ===========
 
-Status in master branch: [![Build Status](https://magnum.travis-ci.com/redCOMPONENT-COM/redMIGRATOR.png?branch=master&token=vxVVpxnq2ZPuMp3yebRz)](https://magnum.travis-ci.com/redCOMPONENT-COM/redMIGRATOR/)
+This version of redMIGRATOR was an evolution of 1.5 that was created by Khai and was unfinished. It has several important bugs. So instead, of continue developing it we rolled back to 1.0 and started from there building again 1.5.
 
-Status in develop branch: [![Build Status](https://magnum.travis-ci.com/redCOMPONENT-COM/redMIGRATOR.png?branch=develop&token=vxVVpxnq2ZPuMp3yebRz)](https://magnum.travis-ci.com/redCOMPONENT-COM/redMIGRATOR/)
-
+We keep this branch for archive purposes
