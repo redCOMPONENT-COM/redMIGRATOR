@@ -16,9 +16,9 @@ defined('_JEXEC') or die;
  *
  * This class takes the categories banners from the existing site and inserts them into the new site.
  *
- * @since  1.2.2
+ * @since	1.2.2
  */
-class RedMigratorCategory extends RedMigrator
+class redMigratorCategory extends redMigrator
 {
 	/**
 	 * @var		string	The name of the section of the categories.
@@ -42,7 +42,6 @@ class RedMigratorCategory extends RedMigrator
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.
-	 *
 	 * @since	0.5.6
 	 * @throws	Exception
 	 */
@@ -61,28 +60,22 @@ class RedMigratorCategory extends RedMigrator
 			$row['title'] = str_replace("'", "&#39;", $row['title']);
 			$row['description'] = str_replace("'", "&#39;", $row['description']);
 
-			if ($row['extension'] == 'com_banner')
-			{
+			if ($row['extension'] == 'com_banner') {
 				$row['extension'] = "com_banners";
-			}
-			elseif ($row['extension'] == 'com_contact_details')
-			{
+			}else if ($row['extension'] == 'com_contact_details') {
 				$row['extension'] = "com_contact";
 			}
 
 			// Correct alias
-			if ($row['alias'] == "")
-			{
+			if ($row['alias'] == "") {
 				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
 			}
 
 			// The Joomla 2.5/3.0+ database structure does not allow duplicate aliases
-			if (in_array($row['alias'], $aliases, true))
-			{
-				$row['alias'] = $row['alias'] . $unique_alias_suffix;
+			if (in_array($row['alias'], $aliases, true)) {
+				$row['alias'] = $row['alias'].$unique_alias_suffix;
 				$unique_alias_suffix++;
 			}
-
 			$aliases[] = $row['alias'];
 		}
 
@@ -94,7 +87,6 @@ class RedMigratorCategory extends RedMigrator
 	 * Sets the data in the destination database.
 	 *
 	 * @return	void
-	 *
 	 * @since	0.5.6
 	 * @throws	Exception
 	 */
@@ -119,19 +111,16 @@ class RedMigratorCategory extends RedMigrator
 	 * The public entry point for the class.
 	 *
 	 * @return	void
-	 *
 	 * @since	0.5.6
 	 * @throws	Exception
 	 */
 	public function upgrade()
 	{
-		if (parent::upgrade())
-		{
+		if (parent::upgrade()) {
 			// Rebuild the categories table
 			$table = JTable::getInstance('Category', 'JTable', array('dbo' => $this->_db));
 
-			if (!$table->rebuild())
-			{
+			if (!$table->rebuild()) {
 				echo JError::raiseError(500, $table->getError());
 			}
 		}
@@ -150,7 +139,7 @@ class RedMigratorCategory extends RedMigrator
 		$category = JTable::getInstance('Category', 'JTable', array('dbo' => $this->_db));
 
 		// Get section and old id
-		$oldlist = new stdClass;
+		$oldlist = new stdClass();
 		$oldlist->section = !empty($row['extension']) ? $row['extension'] : 0;
 		$oldlist->old = isset($row['old_id']) ? $row['old_id'] : $row['id'];
 		unset($row['old_id']);
@@ -165,16 +154,13 @@ class RedMigratorCategory extends RedMigrator
 		$row['rules'] = $rules;
 
 		// Correct extension
-		if (isset($row['extension']))
-		{
-			if (is_numeric($row['extension']) || $row['extension'] == "" || $row['extension'] == "category")
-			{
+		if (isset($row['extension'])) {
+			if (is_numeric($row['extension']) || $row['extension'] == "" || $row['extension'] == "category") {
 				$row['extension'] = "com_content";
 			}
 
 			// Fixing extension name if it's section
-			if ($row['extension'] == 'com_section')
-			{
+			if ($row['extension'] == 'com_section') {
 				$row['extension'] = "com_content";
 
 				$category->setLocation(1, 'last-child');
@@ -183,21 +169,18 @@ class RedMigratorCategory extends RedMigrator
 
 		// @@ TODO: maybe $parent flag is unused
 		// If has parent made $path and get parent id
-		if ($parent !== false)
-		{
+		if ($parent !== false) {
 			// Setting the location of the new category
 			$category->setLocation($parent, 'last-child');
 		}
 
 		// Bind data to save category
-		if (!$category->bind($row))
-		{
+		if (!$category->bind($row)) {
 			echo JError::raiseError(500, $category->getError());
 		}
 
 		// Insert the category
-		if (!@$category->store())
-		{
+		if (!@$category->store()) {
 			echo JError::raiseError(500, $category->getError());
 		}
 
@@ -205,11 +188,10 @@ class RedMigratorCategory extends RedMigrator
 		$oldlist->new = $category->id;
 
 		// Save old and new id
-		if (!$this->_db->insertObject('#__redmigrator_categories', $oldlist))
-		{
+		if (!$this->_db->insertObject('#__redmigrator_categories', $oldlist)) {
 			throw new Exception($this->_db->getErrorMsg());
 		}
 
-		return true;
+	 	return true;
 	}
 }

@@ -9,6 +9,8 @@
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
 
+JLoader::register("redMigratorUsersDefault", JPATH_COMPONENT_ADMINISTRATOR."/includes/redmigrator.users.class.php");
+
 /**
  * Upgrade class for the Usergroup Map
  *
@@ -17,77 +19,89 @@
  * Group id's over 30 can be used as is.
  * User id's are maintained in this upgrade process.
  *
+ * @package		MatWare
+ * @subpackage	com_redMigrator
+ * @since		0.4.4
  */
-class RedMigratorUsergroupMap extends RedMigrator
+class redMigratorUsergroupMap extends redMigratorUsersDefault
 {
 	/**
-	 * Sets the data in the destination database.
+	 * Setting the conditions hook
 	 *
-	 * @param   array  $rows  Rows
-	 *
-	 * @return	void
-	 *
+	 * @return	array
+	 * @since	3.1.0
 	 * @throws	Exception
 	 */
-	public function dataHook($rows)
+	public static function getConditionsHook()
 	{
+		$conditions = array();
+		
+		$conditions['where'] = array();
+		$conditions['order'] = "aro_id ASC";
+		
+		return $conditions;
+	}
+
+	/**
+	 * Get the raw data for this part of the upgrade.
+	 *
+	 * @return	array
+	 * @since	0.4.4
+	 * @throws	Exception
+	 */
+	public function &databaseHook($rows)
+	{
+		$remove = array();
+
+		// Set up the mapping table for the old groups to the new groups.
+		$groupMap = $this->getUsergroupIdMap();
+
 		// Do some custom post processing on the list.
-		foreach ($rows as $k => &$row)
+		// The schema for old group map is: group_id, section_value, aro_id
+		// The schema for new groups is: user_id, group_id
+	
+		$count = count($rows);
+
+		for ($i=0;$i<$count;$i++)
 		{
-			$row = (array) $row;
+			$row = (array) $rows[$i];
 
-			if (!empty($row['aro_id']))
-			{
-				$oldUserId = $this->_lookupUserId($row['aro_id']);
-				$newUserId = RedMigratorHelper::lookupNewId('arrUsers', $oldUserId);
-				$row['user_id'] = $newUserId;
+			$row['user_id'] = $this->getUserIdAroMap($row['aro_id']);
 
-				if ($row['user_id'] == -1)
-				{
-					$rows[$k] = false;
-				}
-			}
-
-			if (!empty($row['group_id']))
-			{
-				$newGroupId = RedMigratorHelper::lookupNewId('arrUsergroups', $row['group_id']);
-				$row['group_id'] = $newGroupId;
-
-				if ($row['group_id'] == -1)
-				{
-					$rows[$k] = false;
-				}
+			// Note, if we are here, these are custom groups we didn't know about.
+			if ($row['group_id'] <= 30) {
+				$row['group_id'] = $groupMap[$row['group_id']];
 			}
 
 			// Remove unused fields.
 			unset($row['section_value']);
 			unset($row['aro_id']);
+
+			$rows[$i] = $row;
 		}
 
 		return $rows;
 	}
 
 	/**
-	 * Lookup user id from aro id
+	 * Sets the data in the destination database.
 	 *
-	 * @param   int  $aroId  Aro id
-	 *
-	 * @return int
+	 * @return	void
+	 * @since	0.4.
+	 * @throws	Exception
 	 */
-	protected function _lookupUserId($aroId)
+	public function dataHook($rows)
 	{
-		$db = JFactory::getDbo();
+		// Do some custom post processing on the list.
+		foreach ($rows as &$row)
+		{
+			$row = (array) $row;
 
-		$query = $db->getQuery(true);
+			if (empty($row['user_id'])) {
+				$row = false;
+			}
+		}
 
-		$query->select('user_id')
-				->from('#__redmigrator_core_acl_aro')
-				->where('aro_id = ' . $aroId);
-
-		$db->setQuery($query);
-
-		$user_id = $db->loadResult();
-
-		return (int) $user_id;
+		return $rows;
 	}
 }

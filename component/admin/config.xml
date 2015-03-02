@@ -14,7 +14,7 @@
             <option value="database">
                 COM_REDMIGRATOR_CONFIG_DATABASE_TITLE
             </option>
-            <option value="restful">
+            <option value="rest">
                 COM_REDMIGRATOR_CONFIG_REST_TITLE
             </option>
         </field>
@@ -26,24 +26,13 @@
                 description="COM_REDMIGRATOR_CONFIG_LIMIT_DESC"
                 default="100"
                 />
-	     <field
-                name="core_version"
-                type="radio"
-                default="0"
-                label="COM_REDMIGRATOR_CONFIG_CORE_VERSION"
-                description=""
-                class="btn-group"
-                >
-            <option value="0">COM_REDMIGRATOR_CONFIG_J15</option>
-            <option value="1">COM_REDMIGRATOR_CONFIG_J25</option>
-        </field>
     </fieldset>
     <fieldset
-            name="restful"
+            name="rest"
             label="COM_REDMIGRATOR_CONFIG_REST_TITLE"
             description="COM_REDMIGRATOR_CONFIG_REST_TITLE_DESC">
         <field
-                name="restful_hostname"
+                name="rest_hostname"
                 type="text"
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_HOSTNAME"
@@ -51,7 +40,7 @@
                 default="http://www.example.org/"
                 />
         <field
-                name="restful_username"
+                name="rest_username"
                 type="text"
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_USERNAME"
@@ -59,7 +48,7 @@
                 default=""
                 />
         <field
-                name="restful_password"
+                name="rest_password"
                 type="password"
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_PASSWORD"
@@ -67,7 +56,7 @@
                 default=""
                 />
         <field
-                name="restful_key"
+                name="rest_key"
                 type="password"
                 size="60"
                 label="COM_REDMIGRATOR_CONFIG_KEY"
@@ -136,6 +125,17 @@
                 label="&lt;b&gt;Core skips&lt;/b&gt;"
                 />
         <field
+                name="skip_checks"
+                type="radio"
+                default="0"
+                label="Skip checks"
+                description=""
+                class="btn-group"
+                >
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+        <field
                 name="skip_core_users"
                 type="radio"
                 default="0"
@@ -158,10 +158,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_content"
+                name="skip_core_contents"
                 type="radio"
                 default="0"
-                label="Skip content"
+                label="Skip contents"
                 description=""
                 class="btn-group"
                 >
@@ -169,10 +169,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_content_frontpage"
+                name="skip_core_contents_frontpage"
                 type="radio"
                 default="0"
-                label="Skip content frontpage"
+                label="Skip contents frontpage"
                 description=""
                 class="btn-group"
                 >
@@ -180,10 +180,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_menu"
+                name="skip_core_menus"
                 type="radio"
                 default="0"
-                label="Skip menu"
+                label="Skip menus"
                 description=""
                 class="btn-group"
                 >
@@ -191,10 +191,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_menu_types"
+                name="skip_core_menus_types"
                 type="radio"
                 default="0"
-                label="Skip menu types"
+                label="Skip menus types"
                 description=""
                 class="btn-group"
                 >
@@ -216,7 +216,7 @@
                 name="skip_core_modules_menu"
                 type="radio"
                 default="0"
-                label="Skip modules menu"
+                label="Skip modules menus"
                 description=""
                 class="btn-group"
                 >
@@ -235,10 +235,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_banner_clients"
+                name="skip_core_banners_clients"
                 type="radio"
                 default="0"
-                label="Skip banner clients"
+                label="Skip banners clients"
                 description=""
                 class="btn-group"
                 >
@@ -246,10 +246,10 @@
             <option value="0">JNO</option>
         </field>
         <field
-                name="skip_core_banner_tracks"
+                name="skip_core_banners_tracks"
                 type="radio"
                 default="0"
-                label="Skip banner tracks"
+                label="Skip banners tracks"
                 description=""
                 class="btn-group"
                 >
@@ -289,6 +289,7 @@
             <option value="1">JYES</option>
             <option value="0">JNO</option>
         </field>
+
     </fieldset>
 
     <fieldset
@@ -316,7 +317,7 @@
 
         <field
                 name="rules"
-                type="rrules"
+                type="rules"
                 label="JCONFIG_PERMISSIONS_LABEL"
                 class="inputbox"
                 filter="rules"
@@ -328,6 +329,22 @@
             name="debug"
             label="COM_REDMIGRATOR_CONFIG_DEBUG_TITLE"
             description="COM_REDMIGRATOR_CONFIG_DEBUG_TITLE_DESC">
+
+        <field
+                name="error_reporting"
+                type="radio"
+                label="COM_REDMIGRATOR_CONFIG_ERROR_REPORTING"
+                description="COM_REDMIGRATOR_CONFIG_ERROR_REPORTING_DESC"
+                default="0"
+                class="btn-group"
+                >
+            <option value="0">
+                JNO
+            </option>
+            <option value="1">
+                JYES
+            </option>
+        </field>
 
         <field
                 name="debug_check"

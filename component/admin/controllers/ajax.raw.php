@@ -8,38 +8,40 @@
  * 
  *  redMIGRATOR is based on JUpgradePRO made by Matias Aguirre
  */
-
 defined('_JEXEC') or die;
 
 /**
- * The RedMigrator ajax controller 
+ * The redMigrator ajax controller 
  *
- * @package     RedMigrator
- * @subpackage  com_RedMigrator
+ * @package     redMigrator
+ * @subpackage  com_redMigrator
  * @since       3.0.3
  */
-class RedMigratorControllerAjax extends RControllerAdmin
+class redMigratorControllerAjax extends RControllerAdmin
 {
+	/**
+	 * @var		string	The context for persistent state.
+	 * @since   3.0.3
+	 */
+	protected $context = 'com_redmigrator.ajax';
+
 	/**
 	 * Proxy for getModel.
 	 *
-	 * @param   string	$name    The name of the model.
-	 * @param   string	$prefix  The prefix for the model class name.
-	 * @param   array   $config  Config
+	 * @param   string	$name	The name of the model.
+	 * @param   string	$prefix	The prefix for the model class name.
 	 *
-	 * @return RedMigratorModel
+	 * @return  redMigratorModel
+	 * @since   3.0.3
 	 */
-	public function getModel($name = '', $prefix = 'RedMigratorModel', $config = array())
+	public function getModel($name = '', $prefix = 'redMigratorModel', $config = array())
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
 		return $model;
 	}
 
 	/**
-	 * Run the RedMigrator checks
-	 *
-	 * @return none
+	 * Run the redMigrator checks
 	 */
 	public function checks()
 	{
@@ -47,21 +49,16 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		$model = $this->getModel('Checks');
 
 		// Running the checks
-		try
-		{
+		try {
 			$model->checks();
-		}
-		catch (Exception $e)
-		{
-			RedMigratorHelper::returnError(500, $e->getMessage());
+		} catch (Exception $e) {
+			$model->returnError (500, $e->getMessage());
 		}
 
 	}
 
 	/**
-	 * Run the RedMigrator cleanup
-	 *
-	 * @return none
+	 * Run the redMigrator cleanup
 	 */
 	public function cleanup()
 	{
@@ -69,20 +66,15 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		$model = $this->getModel('Cleanup');
 
 		// Running the cleanup
-		try
-		{
+		try {
 			$model->cleanup();
-		}
-		catch (Exception $e)
-		{
-			RedMigratorHelper::returnError(500, $e->getMessage());
+		} catch (Exception $e) {
+			$model->returnError (500, $e->getMessage());
 		}
 	}
 
 	/**
-	 * Run RedMigrator step
-	 *
-	 * @return none
+	 * Run redMigrator step
 	 */
 	public function step()
 	{
@@ -90,20 +82,15 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		$model = $this->getModel('Step');
 
 		// Running the step
-		try
-		{
-			$model->step();
-		}
-		catch (Exception $e)
-		{
-			RedMigratorHelper::returnError(500, $e->getMessage());
+		try {
+			$model->step(false, true);
+		} catch (Exception $e) {
+			$model->returnError (500, $e->getMessage());
 		}
 	}
 
 	/**
-	 * Run RedMigrator migrate
-	 *
-	 * @return none
+	 * Run redMigrator migrate
 	 */
 	public function migrate()
 	{
@@ -111,20 +98,15 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		$model = $this->getModel('Migrate');
 
 		// Running the migrate
-		try
-		{
+		try {
 			$model->migrate();
-		}
-		catch (Exception $e)
-		{
-			RedMigratorHelper::returnError(500, $e->getMessage());
+		} catch (Exception $e) {
+			$model->returnError (500, $e->getMessage());
 		}
 	}
 
 	/**
-	 * Run RedMigrator extensions
-	 *
-	 * @return none
+	 * Run redMigrator extensions
 	 */
 	public function extensions()
 	{
@@ -132,13 +114,10 @@ class RedMigratorControllerAjax extends RControllerAdmin
 		$model = $this->getModel('Extensions');
 
 		// Running the extensions
-		try
-		{
+		try {
 			$model->extensions();
-		}
-		catch (Exception $e)
-		{
-			RedMigratorHelper::returnError(500, $e->getMessage());
+		} catch (Exception $e) {
+			$model->returnError (500, $e->getMessage());
 		}
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * @package     RedMIGRATOR.Backend
+ * @package     redMIGRATOR.Backend
  * @subpackage  Controller
  *
  * @copyright   Copyright (C) 2005 - 2013 redCOMPONENT.com. All rights reserved.
@@ -14,6 +14,7 @@
 
 div#error {
 	width: 400px;
+	height: 15px;
 	padding: 5px;
 	margin: 5px 0px 5px 0px;
 	text-align: center;
@@ -84,7 +85,7 @@ div#info {
 	font-size: 9pt;
 }
 
-#core_checks, #download, #decompress, #install, #migration, #templates, #files, #ext_init, #done {
+#checks, #download, #decompress, #install, #migration, #templates, #files, #extensions, #done {
 	color: #777;
 	text-shadow: 0 1px 0 #FFF;
 	background: #F8F8F8; /* Old browsers */

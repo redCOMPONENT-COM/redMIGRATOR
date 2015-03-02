@@ -12,11 +12,13 @@
 defined('_JEXEC') or die;
 
 /**
- * RedMigrator utility class for migrations
+ * redMigrator utility class for migrations
  *
+ * @package		MatWare
+ * @subpackage	com_redMigrator
  */
-class RedMigrator
-{
+class redMigrator
+{	
 	/**
 	 * @var      
 	 * @since  3.0
@@ -28,7 +30,7 @@ class RedMigrator
 	 * @since  3.0
 	 */
 	public $ready = true;
-
+	
 	/**
 	 * @var      
 	 * @since  3.0
@@ -71,20 +73,16 @@ class RedMigrator
 	 */
 	public $canDrop = false;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   RedMigratorStep  $step  Step
-	 */
-	function __construct(RedMigratorStep $step = null)
+	function __construct(redMigratorStep $step = null)
 	{
 		// Set the current step
 		$this->_step = $step;
 
-		JLoader::import('legacy.component.helper');
-		JLoader::import('cms.version.version');
+		jimport('legacy.component.helper');
+		jimport('cms.version.version');
+		JLoader::import('helpers.redmigrator', JPATH_COMPONENT_ADMINISTRATOR);
 
-		$this->params = RedMigratorHelper::getParams();
+		$this->params = redMigratorHelper::getParams();
 
 		// Getting the J! version
 		$version = new JVersion;
@@ -94,98 +92,88 @@ class RedMigrator
 		$this->_db = JFactory::getDBO();
 
 		// Getting the driver
-		JLoader::register('RedMigratorDriver', JPATH_COMPONENT_ADMINISTRATOR . '/includes/redmigrator.driver.class.php');
+		JLoader::register('redMigratorDriver', JPATH_COMPONENT_ADMINISTRATOR.'/includes/redmigrator.driver.class.php');
 
-		if ($this->_step instanceof RedMigratorStep)
-		{
+		if ($this->_step instanceof redMigratorStep) {
 			$this->_step->table = $this->getSourceTable();
 
 			// Initialize the driver
-			$this->_driver = RedMigratorDriver::getInstance($step);
+			$this->_driver = redMigratorDriver::getInstance($step);
 		}
 
 		// Getting the total
-		if (!empty($step->source))
-		{
-			$this->_total = RedMigratorHelper::getTotal($step);
+		if (!empty($step->source)) {
+			$this->_total = redMigratorHelper::getTotal($step);
 		}
 
-		// Set time limit to 0
-		if (!@ini_get('safe_mode'))
-		{
-			if (!empty($this->params->timelimit))
-			{
+		// Set timelimit to 0
+		if(!@ini_get('safe_mode')) {
+			if (!empty($this->params->timelimit)) {
 				set_time_limit(0);
 			}
 		}
 
 		// Make sure we can see all errors.
-		if (!empty($this->params->error_reporting))
-		{
+		if (!empty($this->params->error_reporting)) {
 			error_reporting(E_ALL);
 			@ini_set('display_errors', 1);
 		}
 
 		// MySQL grants check
 		$query = "SHOW GRANTS FOR CURRENT_USER";
-		$this->_db->setQuery($query);
+		$this->_db->setQuery( $query );
 		$list = $this->_db->loadRowList();
 		$grant = isset($list[1][0]) ? $list[1][0] : $list[0][0];
 		$grant = empty($list[1][0]) ? $list[0][0] : $list[1][0];
 
-		if (strpos($grant, 'DROP') == true || strpos($grant, 'ALL') == true)
-		{
+		if (strpos($grant, 'DROP') == true || strpos($grant, 'ALL') == true) {
 			$this->canDrop = true;
 		}
 	}
 
 	/**
-	 * Get instance of RedMigrator
 	 *
-	 * @param   RedMigratorStep  $step  Step
+	 * @param   stdClass   $options  Parameters to be passed to the database driver.
 	 *
-	 * @return bool
+	 * @return  redMigrator  A redMigrator object.
 	 *
-	 * @throws RuntimeException
+	 * @since  3.0.0
 	 */
-	static function getInstance(RedMigratorStep $step = null)
+	static function getInstance(redMigratorStep $step = null)
 	{
 		$class = '';
 
-		if ($step == null)
-		{
+		if ($step == null) {
 			return false;
 		}
 
 		// Correct the 3rd party extensions class name
-		if (isset($step->element))
-		{
-			$step->class = empty($step->class) ? 'RedMigratorExtensions' : $step->class;
+		if (isset($step->element)) {
+			$step->class = empty($step->class) ? 'redMigratorExtensions' : $step->class;
 		}
 
 		// Getting the class name
-		if (isset($step->class))
-		{
+		if (isset($step->class)) {
 			$class = $step->class;
 		}
 
 		// Require the correct file
-		RedMigratorHelper::requireClass($step->name, $step->type, $step->class);
+		redMigratorHelper::requireClass($step->name, $step->xmlpath, $step->class);
 
 		// If the class still doesn't exist we have nothing left to do but throw an exception.  We did our best.
 		if (!class_exists($class))
 		{
-			$class = 'RedMigrator';
+			$class = 'redMigrator';
 		}
 
-		// Create our new RedMigrator connector based on the options given.
+		// Create our new redMigrator connector based on the options given.
 		try
 		{
 			$instance = new $class($step);
 		}
 		catch (RuntimeException $e)
 		{
-			throw new RuntimeException(sprintf('Unable to load RedMigrator object: %s', $e->getMessage()));
+			throw new RuntimeException(sprintf('Unable to load redMigrator object: %s', $e->getMessage()));
 		}
 
 		return $instance;
@@ -195,12 +183,13 @@ class RedMigrator
 	 * The public entry point for the class.
 	 *
 	 * @return	boolean
+	 * @since	0.4.
 	 */
 	public function upgrade()
 	{
+
 		try
 		{
-			// Get data of the table from source db and save to destination db
 			$this->setDestinationData();
 		}
 		catch (Exception $e)
@@ -214,43 +203,31 @@ class RedMigrator
 	/**
 	 * Sets the data in the destination database.
 	 *
-	 * @param   bool  $rows  Rows
-	 *
-	 * @return bool|void
-	 *
-	 * @throws Exception
+	 * @return	void
+	 * @since	0.4.
+	 * @throws	Exception
 	 */
 	protected function setDestinationData($rows = false)
 	{
 		$name = $this->_step->_getStepName();
-
-		// Get the source data.
-		if ($rows === false)
-		{
-			$rows = $this->_driver->getSourceData();
-		}
-		else
-		{
-			return false;
-		}
-
 		$method = $this->params->method;
 
-		if ($method == 'database' || $this->_step->type != 'core')
-		{
-			if (method_exists($this, 'databaseHook'))
-			{
+		// Get the source data.
+		if ($rows === false) {
+			$rows = $this->dataSwitch();
+		}
+
+		if ( $method == 'database' OR $method == 'database_all') {
+			if (method_exists($this, 'databaseHook')) { 
 				$rows = $this->databaseHook($rows);
 			}
 		}
 
-		if ($this->_step->first == true && $this->_step->cid == 0)
-		{
+		if ($this->_step->first == true && $this->_step->cid == 0) {
 			// Calling the structure modificator hook
-			$structureHook = 'structureHook_' . $name;
+			$structureHook = 'structureHook_'.$name;
 
-			if (method_exists($this, $structureHook))
-			{
+			if (method_exists($this, $structureHook)) { 
 				try
 				{
 					$this->$structureHook();
@@ -263,11 +240,10 @@ class RedMigrator
 		}
 
 		// Calling the data modificator hook
-		$dataHookFunc = 'dataHook_' . $name;
+		$dataHookFunc = 'dataHook_'.$name;
 
 		// If method exists call the custom dataHook
-		if (method_exists($this, $dataHookFunc))
-		{
+		if (method_exists($this, $dataHookFunc)) {
 			try
 			{
 				$rows = $this->$dataHookFunc($rows);
@@ -276,9 +252,8 @@ class RedMigrator
 			{
 				throw new Exception($e->getMessage());
 			}
-		}
-		else // If method not exists call the default dataHook
-		{
+		// If method not exists call the default dataHook
+		}else{
 			try
 			{
 				$rows = $this->dataHook($rows);
@@ -289,8 +264,8 @@ class RedMigrator
 			}
 		}
 
-		if ($rows !== false)
-		{
+		if ($rows !== false) {
+
 			try
 			{
 				$this->ready = $this->insertData($rows);
@@ -304,15 +279,11 @@ class RedMigrator
 		// Load the step object
 		$this->_step->_load();
 
-		if ($this->getTotal() == $this->_step->cid)
-		{
-			$this->ready = $this->afterHook();
+		if ($this->getTotal() == $this->_step->cid) {
+			$this->ready = $this->afterHook($rows);
 		}
 
-		if ($this->_step->name == $this->_step->laststep
-			&& $this->_step->cache == 0
-			&& $this->getTotal() == $this->_step->cid)
-		{
+		if ($this->_step->name == $this->_step->laststep && $this->_step->cache == 0 && $this->getTotal() == $this->_step->cid) {
 			$this->ready = $this->afterAllStepsHook();
 		}
 
@@ -320,44 +291,71 @@ class RedMigrator
 	}
 
 	/**
-	 * Insert data
+	 * dataSwitch
 	 *
-	 * @param   array|object  $rows  Rows
+	 * @return	array	The requested data
+	 * @since	3.0.0
+	 * @throws	Exception
+	 */
+	protected function dataSwitch($name = null)
+	{
+		$method = $this->params->method;
+
+		$rows = array();
+
+		switch ($method) {
+			case 'rest':
+				$name = ($name == null) ? $this->_step->_getStepName() : $name;
+				if ( in_array($name, $this->extensions_steps) ) {
+					$rows = $this->_driver->getSourceDataRest($name);
+				}else{
+					$rows = $this->_driver->getSourceDataRestIndividual($name);
+				}
+		    break;
+			case 'database':
+		    $rows = $this->_driver->getSourceDatabase();
+		    break;
+		}
+
+		return $rows;
+	}
+
+	/**
+	 * insertData
 	 *
-	 * @return bool
-	 *
-	 * @throws Exception
+	 * @return	void
+	 * @since	3.0.0
+	 * @throws	Exception
 	 */
 	protected function insertData($rows)
-	{
+	{	
 		$table = $this->getDestinationTable();
 
-		if (is_array($rows))
-		{
+		// Replacing the table name if xml exists
+		$table = $this->replaceTable($table);
+
+		if (is_array($rows)) {
+
+			$total = count($rows);
+
 			foreach ($rows as $row)
 			{
-				if ($row != false)
-				{
+				if ($row != false) {
 					// Convert the array into an object.
 					$row = (object) $row;
 
-					try
-					{
+					try	{
 						$this->_db->insertObject($table, $row);
-					}
-					catch (Exception $e)
-					{
+					}	catch (Exception $e) {
 						throw new Exception($e->getMessage());
 					}
 				}
 
-				$this->_step->_nextCID();
+				$this->_step->_nextID($total);
 			}
-		}
-		elseif (is_object($rows))
-		{
-			if ($rows != false)
-			{
+		}else if (is_object($rows)) {
+
+			if ($row != false) {
 				try
 				{
 					$this->_db->insertObject($table, $rows);
@@ -367,40 +365,45 @@ class RedMigrator
 					throw new Exception($e->getMessage());
 				}
 			}
-		}
 
+		}
+	
 		return !empty($this->_step->error) ? false : true;
 	}
 
-	/**
-	 * @return array
+	/*
+	 *
+	 * @return	void
+	 * @since	3.0.0
+	 * @throws	Exception
 	 */
 	public static function getConditionsHook()
 	{
-		$conditions = array();
+		$conditions = array();		
 		$conditions['where'] = array();
-
 		// Do customisation of the params field here for specific data.
-		return $conditions;
+		return $conditions;	
 	}
 
-	/**
+	/*
 	 * Fake method of dataHook if it not exists
 	 *
-	 * @param   array  $rows  Rows
-	 *
-	 * @return mixed
+	 * @return	void
+	 * @since	3.0.0
+	 * @throws	Exception
 	 */
 	public function dataHook($rows)
 	{
 		// Do customisation of the params field here for specific data.
-		return $rows;
+		return $rows;	
 	}
 
-	/**
+	/*
 	 * Fake method after hooks
 	 *
-	 * @return bool
+	 * @return	void
+	 * @since	3.0.0
+	 * @throws	Exception
 	 */
 	public function afterHook()
 	{
@@ -411,7 +414,6 @@ class RedMigrator
 	 * Hook to do custom migration after all steps
 	 *
 	 * @return	boolean Ready
-	 *
 	 * @since	1.1.0
 	 */
 	protected function afterAllStepsHook()
@@ -420,23 +422,18 @@ class RedMigrator
 	}
 
 	/**
-	 * Get the table structure
-	 *
-	 * @return bool
-	 */
-	public function getTableStructure()
-	{
+ 	* Get the table structure
+	*/
+	public function getTableStructure() {
+
 		// Getting the source table
 		$table = $this->getSourceTable();
 
 		// Getting the structure
-		if ($this->params->method == 'database')
-		{
+		if ($this->params->method == 'database') {
 			$result = $this->_driver->_db_old->getTableCreate($table);
 			$structure = str_replace($this->_driver->_db_old->getPrefix(), "#__", "{$result[$table]} ;\n\n");
-		}
-		elseif ($this->params->method == 'rest')
-		{
+		}else if ($this->params->method == 'rest') {
 			$structure = $this->_driver->requestRest("tablestructure", str_replace('#__', '', $table));
 		}
 
@@ -446,8 +443,7 @@ class RedMigrator
 		// Replacing the table name from xml
 		$replaced_table = $this->replaceTable($table);
 
-		if ($replaced_table != $table)
-		{
+		if ($replaced_table != $table) {
 			$structure = str_replace($table, $replaced_table, $structure);
 		}
 
@@ -461,20 +457,18 @@ class RedMigrator
 	/**
 	 * Replace table name
 	 *
-	 * @param         $table      Table
-	 * @param   null  $structure  Structure
-	 *
-	 * @return mixed
+	 * @return	string The replaced table
+	 * @since 3.0.3
+	 * @throws	Exception
 	 */
-	protected function replaceTable($table, $structure = null)
-	{
+	protected function replaceTable($table, $structure = null) {
+
 		$replaced_table = $table;
 
 		// Replace table name from xml
 		$replace = explode("|", $this->_step->replace);
 
-		if (count($replace) > 1)
-		{
+		if (count($replace) > 1) {
 			$replaced_table = str_replace($replace[0], $replace[1], $table);
 		}
 
@@ -482,7 +476,7 @@ class RedMigrator
 	}
 
 	/**
-	 * @return  string	The destination table key name
+	 * @return  string	The destination table key name  
 	 *
 	 * @since   3.0
 	 */
@@ -491,7 +485,7 @@ class RedMigrator
 		$table = $this->getDestinationTable();
 
 		$query = "SHOW KEYS FROM {$table} WHERE Key_name = 'PRIMARY'";
-		$this->_db->setQuery($query);
+		$this->_db->setQuery( $query );
 		$keys = $this->_db->loadObjectList();
 
 		return !empty($keys) ? $keys[0]->Column_name : '';
@@ -505,20 +499,18 @@ class RedMigrator
 	public function valueExists($row, $fields)
 	{
 		$table = $this->getSourceTable();
-		$key = $this->getDestKeyName();
+		$key = $this->getDestKeyName();	
 		$value = $row->$key;
 
 		$conditions = array();
-
-		foreach ($fields as $field)
-		{
+		foreach ($fields as $field) {
 			$conditions[] = "{$field} = {$row->$field}";
 		}
 
-		$where = count($conditions) ? 'WHERE ' . implode(' AND ', $conditions) : '';
+		$where = count( $conditions ) ? 'WHERE ' . implode( ' AND ', $conditions ) : '';
 
 		$query = "SELECT `{$key}` FROM {$table} {$where} LIMIT 1";
-		$this->_db->setQuery($query);
+		$this->_db->setQuery( $query );
 		$exists = $this->_db->loadResult();
 
 		return empty($exists) ? false : true;
@@ -529,7 +521,6 @@ class RedMigrator
 	 * Internal function to get original database prefix
 	 *
 	 * @return	an original database prefix
-	 *
 	 * @since	0.5.3
 	 * @throws	Exception
 	 */
@@ -537,15 +528,13 @@ class RedMigrator
 	{
 		// Getting the categories id's
 		$query = "SELECT *"
-					. " FROM #__redmigrator_{$table}";
+		." FROM #__redmigrator_{$table}";
 
-		if ($section !== false)
-		{
+		if ($section !== false) {
 			$query .= " WHERE section = '{$section}'";
 		}
 
-		if ($custom !== false)
-		{
+		if ($custom !== false) {
 			$query .= " WHERE {$custom}";
 		}
 
@@ -555,10 +544,8 @@ class RedMigrator
 		// Check for query error.
 		$error = $this->_db->getErrorMsg();
 
-		if ($error)
-		{
+		if ($error) {
 			throw new Exception($error);
-
 			return false;
 		}
 
@@ -569,7 +556,6 @@ class RedMigrator
 	 * Internal function to get original database prefix
 	 *
 	 * @return	an original database prefix
-	 *
 	 * @since	0.5.3
 	 * @throws	Exception
 	 */
@@ -577,7 +563,7 @@ class RedMigrator
 	{
 		// Getting the categories id's
 		$query = "SELECT new"
-					. " FROM #__redmigrator_{$table}";
+		." FROM #__redmigrator_{$table}";
 
 		if ($section !== false)
 		{
@@ -591,14 +577,10 @@ class RedMigrator
 			}
 		}
 
-		if ($custom !== false)
-		{
-			if ($section !== false)
-			{
+		if ($custom !== false) {
+			if ($section !== false) {
 				$query .= " AND {$custom}";
-			}
-			else
-			{
+			}else{
 				$query .= " WHERE {$custom}";
 			}
 		}
@@ -609,10 +591,8 @@ class RedMigrator
 		// Check for query error.
 		$error = $this->_db->getErrorMsg();
 
-		if ($error)
-		{
+		if ($error) {
 			throw new Exception($error);
-
 			return false;
 		}
 
@@ -625,7 +605,6 @@ class RedMigrator
 	 * @param	string	$params	The source text definition for the parameter field.
 	 *
 	 * @return	string	A JSON encoded string representation of the parameters.
-	 *
 	 * @since	0.4.
 	 * @throws	Exception from the convertParamsHook.
 	 */
@@ -635,8 +614,7 @@ class RedMigrator
 		$object	= $temp->toObject();
 
 		// Fire the hook in case this parameter field needs modification.
-		if ($hook === true)
-		{
+		if ($hook === true) {
 			$this->convertParamsHook($object);
 		}
 
@@ -649,11 +627,10 @@ class RedMigrator
 	 * @param	object	$object	A reference to the parameters as an object.
 	 *
 	 * @return	void
-	 *
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
-	protected function convertParamsHook($object)
+	protected function convertParamsHook(&$object)
 	{
 		// Do customisation of the params field here for specific data.
 	}
@@ -662,7 +639,6 @@ class RedMigrator
 	 * Internal function to get the component settings
 	 *
 	 * @return	an object with global settings
-	 *
 	 * @since	0.5.7
 	 */
 	public function getParams()
@@ -682,22 +658,23 @@ class RedMigrator
 	}
 
 	/**
-	 * @return  string	The table name
+	 * @return  string	The table name  
 	 *
 	 * @since   3.0
 	 */
 	public function getSourceTable()
 	{
-		return '#__' . $this->_step->source;
+		return '#__'.$this->_step->source;
 	}
 
 	/**
-	 * @return  string	The table name
+	 * @return  string	The table name  
 	 *
 	 * @since   3.0
 	 */
 	public function getDestinationTable()
 	{
-		return '#__' . $this->_step->destination;
+		return '#__'.$this->_step->destination;
 	}
-} // End class
+
+} // end class
