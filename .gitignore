@@ -26,12 +26,35 @@ Desktop.ini
 *~.nib
 *~
 
-# Build config
+# Phing
 build.properties
+phing-latest.phar
+
+# Github pages and Jekyll files
+/_site/
+/Gemfile
+/Gemfile.lock
+
+# phpunit
+tests/unit/phpunit.xml
+
+# composer
+composer.lock
+composer.phar
+vendor/*
+
+# LESS Transpiler
+npm-debug.log
+
+# Test related files
+/tests/system/servers/configdef.php
+/tests/system/webdriver/tests/logs/
+/tests/acceptance.suite.yml
+codecept.phar
+tests/*/*Tester.php
+
 
 # Never ignore
 !.gitignore
 !index.html
 !index.php
-
-/redCORE/

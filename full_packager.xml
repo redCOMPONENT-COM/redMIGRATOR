@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- ==================================================================  -->
-<!-- redMIGRATOR packager                                                -->
-<!-- This PHING build file generates the redMIGRATOR Plugins package     -->
-<!-- To use in your environment do the following steps:                  -->
+<!-- redMIGRATOR full packager                                           -->
+<!-- This PHING build file generates the redMIGRATOR extension package   -->
+<!-- including all extra extensions: plugins                             -->
 <!--    Change the following variables in build.properties file          -->
 <!--            (copy variables from build.properties.dist )             -->
 <!--    - change the version in variable comp.version                    -->
 <!--    - change the package folder path in variable package.dir         -->
 <!--    - execute this PHING build file                                  -->
 <!-- ==================================================================  -->
-
-<project name="plugins_packager" basedir="." default="pack">
+<project name="redmigrator_full_packager" default="pack">
     <!-- ============================================  -->
     <!-- Create packages folder                        -->
     <!-- ============================================  -->
@@ -40,7 +39,7 @@
         <!-- Temp dir to create packages -->
         <property
                 name="tmpdir"
-                value=".tmp"
+                value=".dist"
                 override="true"/>
 
         <!-- Check if the temp folder exists. If not, create it -->
@@ -55,73 +54,29 @@
         <mkdir dir="${tmpdir}"/>
     </target>
 
-    <!-- ============================================  -->
-    <!-- Target: build                                 -->
-    <!-- ============================================  -->
-    <!-- Loops through folders creating plugins packages -->
-
     <target name="build" depends="prepare">
-		<!-- Loop through plugins groups -->
-		<foreach param="group_name" target="plugin_loop">
-			<fileset dir="${extpath}/plugins">
-				<type type="dir" />
-				<depth max="0" min="0" />
-			</fileset>
-		</foreach>
+        <phing phingfile="${project.basedir}/component_packager.xml" target="autopack"
+               haltonfailure="true">
+            <property name="package.delete" value="false" />
+        </phing>
+        <phing phingfile="${project.basedir}/plugins_packager.xml" target="autopack"
+               haltonfailure="true">
+            <property name="package.delete" value="false" />
+        </phing>
 
-		<if>
-			<available file="${package.dir}/${extension}-${version}-plugins" type="dir" />
-			<then>
-		        <delete dir="${package.dir}/${extension}-${version}-plugins"/>
-			</then>
-		</if>
-
-        <copy todir="${package.dir}/${extension}-${version}-plugins">
+        <echo msg="Creating full ZIP package..." />
+        <zip destfile="${package.dir}/${extension}-v${version}_fullpackage-unzipfirst.zip">
             <fileset dir="${tmpdir}">
                 <include name="**" />
+                <exclude name=".*" />
             </fileset>
-        </copy>
-	</target>
-
-	<target name="plugin_loop" description="Loops through plugins folders inside groups">
-		<mkdir dir="${tmpdir}/${group_name}" />
-
-		<!-- Loop through plugins -->
-		<foreach param="plugin_name" target="plugin_packager">
-			<fileset dir="${extpath}/plugins/${group_name}">
-				<type type="dir" />
-				<depth max="0" min="0" />
-			</fileset>
-		</foreach>
-	</target>
-
-	<target name="plugin_packager" description="Packages the extension for delivery">
-        <xmlproperty file="${extpath}/plugins/${group_name}/${plugin_name}/${plugin_name}.xml" prefix="pluginmanifest" keepRoot="false" />
-        <property
-                name="plugin_version"
-                value="${pluginmanifest.version}"
-                override="true"/>
-
-        <zip
-				destfile="${tmpdir}/${group_name}/${group_name}_${plugin_name}_${plugin_version}.zip"
-				basedir="${extpath}/plugins/${group_name}/${plugin_name}">
-			<fileset dir="${extpath}/plugins/${group_name}/${plugin_name}">
-				<include name="**" />
-				<exclude name=".*" />
-			</fileset>
-		</zip>
-	</target>
-
-    <target name="clean-tmp">
-        <delete dir="${tmpdir}"/>
+        </zip>
+        <delete dir="${tmpdir}/${extension}-${version}-plugins"  />
+        <delete file="${tmpdir}/${extension}-v${version}_${joomla.version}.zip"  />
     </target>
 
-    <target name="compress-clean" depends="clean-tmp">
-        <!-- needed for external cleaning and compressing -->
-    </target>
-
-    <target name="dist" depends="build, compress-clean">
-        <echo msg="Modules build successful!"/>
+    <target name="dist" depends="build">
+        <echo msg="Build successful!"/>
     </target>
 
     <target name="pack">
@@ -158,19 +113,11 @@
 
         <property
                 name="joomla.version"
-                value="3"
+                value="j3"
                 override="true"/>
 
-        <property
-                name="package.delete"
-                value="true"
-                override="false"/>
-
         <if>
-            <and>
-                <available file="${package.dir}" type="dir"/>
-                <equals arg1="${package.delete}" arg2="1" />
-            </and>
+            <available file="${package.dir}" type="dir"/>
             <then>
                 <echo msg="Removing old autopack folder"/>
                 <delete dir="${package.dir}"/>

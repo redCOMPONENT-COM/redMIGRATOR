@@ -7,73 +7,75 @@
 <!-- Joomla Installer => install from folder => choose this repo as folder -->
 <!-- ==================================================================    -->
 <project name="redmigrator" default="site" basedir=".">
-
-    <import file="./redCORE/build.xml"/>
-    <target name="site" depends="init, redCORE-submodule, component" description="Do a full build"/>
-
     <!-- Do initialization stuff -->
-    <target name="init">
-        <property file="build.properties" override="true"/>
-        <property name="src" value="./"/>
+    <target name="prepare" >
+        <property file="build.properties"  override="true"/>
         <if>
-            <equals arg1="${extension}" arg2=""/>
+            <equals arg1="${extension}" arg2="" />
             <then>
-                <fail message="Extension not specified, use -Dextension=EXTENSION"/>
+                <fail message="Extension not specified, use -Dextension=EXTENSION" />
             </then>
             <else>
-                <!--<property file="${extension}.properties" override="true"/>-->
+                <!--<property file="${extension}.properties"  override="true"/>-->
             </else>
         </if>
     </target>
 
-    <target name="component" description="Copies files to a existing joomla site">
-        <echo message="---------------- || COMPONENT || ----------------"/>
+    <property name="src" value="./" />
+
+    <target name="redcore">
+        <phing inheritAll="false" phingfile="${project.basedir}/redCORE/build.xml" target="site" dir="${project.basedir}/redCORE">
+            <property name="comp.name" value="redcore" />
+            <property name="www.dir" value="${www.dir}" />
+        </phing>
+    </target>
+
+    <target name="site" description="Copies files to a existing joomla site" depends="prepare, redcore">
+        <echo message="Copying administrator component..." />
 
         <!-- Manifest & install script -->
-        <echo message="Copying manifest..."/>
-        <copy file="${src}/com_${comp.name}.xml"
-              tofile="${www.dir}/administrator/components/com_${comp.name}/${comp.name}.xml" overwrite="true">
+        <echo message="Copying manifest..." />
+        <copy file="${src}/${comp.name}.xml"
+            tofile="${www.dir}/administrator/components/com_${comp.name}/${comp.name}.xml" overwrite="true">
             <!-- trick to replace extension folders in the manifest-->
             <filterchain>
-                <replacetokens begintoken="comp" endtoken="/admin">
-                    <token key="onent" value="administrator/components/${comp.name}"/>
-                </replacetokens>
-                <replacetokens begintoken="comp" endtoken="/site">
-                    <token key="onent" value="components/${comp.name}"/>
-                </replacetokens>
+              <replacetokens begintoken="comp" endtoken="/admin">
+                <token key="onent" value="administrator/components/${comp.name}" />
+              </replacetokens>
+              <replacetokens begintoken="comp" endtoken="/site">
+                <token key="onent" value="components/${comp.name}" />
+              </replacetokens>
             </filterchain>
         </copy>
-        <copy file="${src}/install.php"
-              tofile="${www.dir}/administrator/components/com_${comp.name}/install.php" overwrite="true"/>
 
         <!-- Backend component -->
         <copy todir="${www.dir}/administrator/components/com_${comp.name}" overwrite="true">
             <fileset dir="${src}/component/admin">
-                <include name="**"/>
-                <!-- Exclude the manifest to avoid overwriting the previously copied -->
-                <exclude name="${comp.name}.xml"/>
+                <include name="**" />
+                <exclude name="${comp.name}.xml" />
+                <exclude name="install.php" />
             </fileset>
         </copy>
 
         <!-- Backend languages -->
         <copy todir="${www.dir}/administrator/language" overwrite="true">
             <fileset dir="${src}/component/admin/language">
-                <include name="**"/>
+                <include name="**" />
             </fileset>
+        </copy>
+
+        <!-- Frontend component -->
+        <echo message="Copying frontend component..." />
+        <copy todir="${www.dir}/components/com_${comp.name}" overwrite="true">
+            <fileset dir="${src}/component/site" />
         </copy>
 
         <!-- Plugins -->
         <copy todir="${www.dir}/plugins" overwrite="true">
             <fileset dir="${src}/plugins">
-                <include name="**"/>
-            </fileset>
-        </copy>
-
-        <!-- redMIGRATOR plugin language -->
-        <copy todir="${www.dir}/administrator/language" overwrite="true">
-            <fileset dir="${src}/plugins/system/redmigrator/language">
-                <include name="**"/>
+                <include name="**" />
             </fileset>
         </copy>
     </target>
+
 </project>

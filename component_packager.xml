@@ -6,125 +6,219 @@
 <!--    Change the following variables in build.properties file          -->
 <!--            (copy variables from build.properties.dist )             -->
 <!--    - change the version in variable comp.version                    -->
-<!--    - change the source folder path in variable repo.dir             -->
 <!--    - change the package folder path in variable package.dir         -->
 <!--    - execute this PHING build file                                  -->
 <!-- ==================================================================  -->
-<project name="com_redmigrator" default="dist">
-	<!-- Do initialization stuff -->
-	<property file="build.properties" override="true" />
+<project name="com_redmigrator" default="pack">
+    <!-- ============================================  -->
+    <!-- Create packages folder                        -->
+    <!-- ============================================  -->
+    <target name="prepare">
+        <if>
+            <not>
+                <isset property="package.dir" />
+            </not>
+            <then>
+                <fail msg="package.dir not specified, specify package.dir in build.properties file" />
+            </then>
+        </if>
 
-	<!-- Name of extension -->
-	<property name="extension" value="${comp.name}" override="true"/>
+        <!-- Folder where the redMIGRATOR repository is located  -->
+        <property
+                name="extpath"
+                value="."
+                override="true"/>
 
-	<!-- Folder where the redMIGRATOR repository is located  -->
-	<property name="extpath" value="${repo.dir}" override="true"/>
+        <xmlproperty file="${extpath}/${extension}.xml" prefix="extensionDetails" keepRoot="false" />
+        <xmlproperty file="${extpath}/redCORE/redcore.xml" prefix="redCOREDetails" keepRoot="false" />
 
-	<!-- Load extension property in XML file -->
-    <xmlproperty file="${extpath}/${extension}.xml" prefix="extensionDetails" keepRoot="false" />
+        <property
+                name="version"
+                value="${extensionDetails.version}"
+                override="true"/>
 
-    <!-- Get extension version from XML -->
-	<property
-			name="version"
-			value="${extensionDetails.version}"
-			override="true"/>
+        <property
+                name="redCOREVersion"
+                value="${redCOREDetails.version}"
+                override="true"/>
 
-	<!-- Target dir where packages will be created  -->
-	<property name="targetdir" value="${package.dir}/package-${extension}-${version}" override="true"/>
+        <!-- Temp dir to create packages -->
+        <property
+                name="tmpdir"
+                value=".tmp"
+                override="true"/>
 
-	<!-- Target dir where packages will be created  -->
-	<property name="targetdir" value="${package.dir}/com_${extension}-${version}" override="true" />
+        <!-- Check if the temp folder exists. If not, create it -->
+        <if>
+            <available file="${tmpdir}" type="dir"/>
+            <then>
+                <echo msg="Removing old ${tmpdir}"/>
+                <delete dir="${tmpdir}"/>
+            </then>
+        </if>
+        <echo msg="Making directory to store the temporary packages at ${tmpdir}"/>
+        <mkdir dir="${tmpdir}"/>
+    </target>
 
-	<!-- ============================================  -->
-	<!-- Create packages folder                        -->
-	<!-- ============================================  -->
-	<target name="prepare">
-		<!-- Check if the target folder exists. If not, create it -->
-		<if>
-			<available file="${targetdir}" type="dir" property="dir.Exist" />
-			<then>
-				<echo msg="Removing old ${targetdir}" />
-				<delete dir="${targetdir}" />
-			</then>
-		</if>
+    <!-- ============================================  -->
+    <!-- Target: build                                 -->
+    <!-- ============================================  -->
+    <!-- Copy the source files to the target folder -->
 
-		<!-- remove old packaged file -->
-		<echo msg="Removing old package ${package.dir}/${extension}-${version}.zip" />
-		<delete file="${package.dir}/${extension}-${version}.zip" />
+    <target name="build" depends="prepare, copyredcore">
 
-		<echo msg="Making directory to store the packages at ${targetdir}" />
-		<mkdir dir="${targetdir}" />
+        <echo msg="Copying INSTALLER files to build directory..." />
+        <copy todir="${tmpdir}/${extension}">
+            <fileset dir="${extpath}/">
+                <include name="LICENSE.txt" />
+                <include name="redmigrator.xml" />
+                <include name="install.php" />
+            </fileset>
+        </copy>
 
-	</target>
+        <echo msg="Copying COMPONENT folder to build directory..." />
+        <copy todir="${tmpdir}/${extension}/component">
+            <fileset dir="${extpath}/component">
+                <include name="**" />
+                <exclude name=".*" />
+            </fileset>
+        </copy>
+    </target>
 
-	<!-- ============================================  -->
-	<!-- Target: build                                 -->
-	<!-- ============================================  -->
-	<!-- Copy the source files to the target folder -->
+    <!-- ============================================  -->
+    <!-- (redCORE)  Target: copyredcore                -->
+    <!-- ============================================  -->
+    <target name="copyredcore">
+        <phing phingfile="${project.basedir}/redCORE/redcore_copy_mandatory.xml"
+               target="copyframework"
+               haltonfailure="true">
+            <property name="redcoretargetdir" value="${tmpdir}/${extension}/redCORE" />
+            <property name="redcorepath" value="${project.basedir}/redCORE" />
+        </phing>
+    </target>
 
-	<target name="build" depends="prepare">
+    <target name="compress">
+        <echo msg="Creating ZIP archive..."/>
 
-		<echo msg="Copying INSTALLER files to build directory..."/>
-		<copy todir="${targetdir}">
-			<fileset dir="${extpath}/">
-				<include name="LICENSE.txt"/>
-				<include name="redmigrator.xml"/>
-				<include name="install.php"/>
-			</fileset>
-		</copy>
+        <!-- Extension ZIP packaging -->
+        <if>
+            <available file="${package.dir}/${extension}-v${version}_${joomla.version}.zip" property="test_zip_exists" value="Yes"/>
+            <then>
+                <echo msg="Removing old ZIP"/>
+                <delete file="${package.dir}/${extension}-v${version}_${joomla.version}.zip" />
+            </then>
+        </if>
 
-		<echo msg="Copying COMPONENT folder to build directory..."/>
-		<copy todir="${targetdir}/component">
-			<fileset dir="${extpath}/component">
-				<include name="**"/>
-				<exclude name=".*"/>
-			</fileset>
-		</copy>
+        <if>
+            <available file="${tmpdir}/${extension}-v${version}_${joomla.version}.zip" property="test_zip_exists" value="Yes"/>
+            <then>
+                <delete file="${tmpdir}/${extension}-v${version}_${joomla.version}.zip" />
+            </then>
+        </if>
 
-		<echo msg="Copying MEDIA folder to build directory..."/>
-		<copy todir="${targetdir}/media/com_redmigrator">
-			<fileset dir="${extpath}/media/com_redmigrator">
-				<include name="**"/>
-				<exclude name=".*"/>
-			</fileset>
-		</copy>
+        <zip destfile="${tmpdir}/${extension}-v${version}_${joomla.version}.zip">
+            <fileset dir="${tmpdir}/${extension}">
+                <include name="**"/>
+                <exclude name=".*"/>
+            </fileset>
+        </zip>
 
-		<echo msg="Copying redCORE LIBRARIES folder to build directory..."/>
-		<copy todir="${targetdir}/redCORE">
-			<fileset dir="${extpath}/redCORE">
-				<include name="**"/>
-				<exclude name=".*"/>
-				<exclude name="build.*"/>
-				<exclude name="*.md"/>
-				<!-- reduce redCORE package -->
-				<exclude name="media/redcore/js/lib/jquery-ui/jquery-ui.js"/>
-				<exclude name="media/redcore/css/lib/bootstrap/css/bootstrap.css"/>
-			</fileset>
-		</copy>
+        <copy file="${tmpdir}/${extension}-v${version}_${joomla.version}.zip" tofile="${package.dir}/${extension}-v${version}_${joomla.version}.zip" />
 
-		<echo message="Copying libraries..."/>
-		<copy todir="${targetdir}/libraries/redmigrator" overwrite="true">
-			<fileset dir="${extpath}/libraries/redmigrator">
-				<include name="**"/>
-			</fileset>
-		</copy>
-	</target>
+        <!-- redCORE ZIP packaging -->
+        <if>
+            <available file="${package.dir}/redCORE-v${redCOREVersion}.zip" property="test_zip_exists" value="Yes"/>
+            <then>
+                <echo msg="Removing old ZIP"/>
+                <delete file="${package.dir}/redCORE-v${redCOREVersion}.zip" />
+            </then>
+        </if>
 
-	<!-- ============================================  -->
-	<!-- (DEFAULT)  Target: dist                       -->
-	<!-- ============================================  -->
-	<target name="dist" depends="build">
-		<echo msg="Creating ZIP archive..."/>
+        <if>
+            <available file="${tmpdir}/${extension}/redCORE-v${redCOREVersion}.zip" property="test_zip_exists" value="Yes"/>
+            <then>
+                <delete file="${tmpdir}/${extension}/redCORE-v${redCOREVersion}.zip" />
+            </then>
+        </if>
 
-		<zip destfile="${targetdir}/../${extension}-${version}.zip">
-			<fileset dir="${targetdir}">
-				<include name="**"/>
-				<exclude name=".*"/>
-			</fileset>
-		</zip>
+        <zip destfile="${tmpdir}/${extension}/redCORE-v${redCOREVersion}.zip">
+            <fileset dir="${tmpdir}/${extension}/redCORE">
+                <include name="**"/>
+                <exclude name=".*"/>
+            </fileset>
+        </zip>
 
-		<echo msg="Files copied and compressed in build directory OK!"/>
+        <copy file="${tmpdir}/${extension}/redCORE-v${redCOREVersion}.zip" tofile="${package.dir}/redCORE-v${redCOREVersion}.zip" />
 
-		<delete dir="${targetdir}" />
-	</target>
+        <echo msg="Files copied and compressed in build directory OK!"/>
+    </target>
+
+    <target name="clean-tmp">
+        <delete dir="${tmpdir}"/>
+    </target>
+
+    <target name="compress-clean" depends="compress, clean-tmp">
+        <!-- needed for external cleaning and compressing -->
+    </target>
+
+    <target name="dist" depends="build, compress-clean">
+        <echo msg="Build successful!"/>
+    </target>
+
+    <target name="pack">
+        <!-- Do initialization stuff -->
+        <if>
+            <not>
+                <available file="build.properties" type="file" />
+            </not>
+            <then>
+                <fail msg="File not found: build.properties" />
+            </then>
+        </if>
+
+        <property file="build.properties" override="true"/>
+
+        <property
+                name="extension"
+                value="${comp.name}"
+                override="true"/>
+
+        <phingcall target="dist" />
+    </target>
+
+    <target name="autopack">
+        <property
+                name="package.dir"
+                value=".dist"
+                override="true"/>
+
+        <property
+                name="extension"
+                value="redmigrator"
+                override="true"/>
+
+        <property
+                name="joomla.version"
+                value="j3"
+                override="true"/>
+
+        <property
+                name="package.delete"
+                value="true"
+                override="false"/>
+
+        <if>
+            <and>
+                <available file="${package.dir}" type="dir"/>
+                <equals arg1="${package.delete}" arg2="1" />
+            </and>
+            <then>
+                <echo msg="Removing old autopack folder"/>
+                <delete dir="${package.dir}"/>
+            </then>
+        </if>
+
+        <phingcall target="dist" />
+    </target>
+
 </project>
