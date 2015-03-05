@@ -281,7 +281,7 @@
         <field
                 name="skip_core_weblinks"
                 type="radio"
-                default="0"
+                default="1"
                 label="Skip weblinks"
                 description=""
                 class="btn-group"
