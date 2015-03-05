@@ -30,16 +30,10 @@
                 override="true"/>
 
         <xmlproperty file="${extpath}/${extension}.xml" prefix="extensionDetails" keepRoot="false" />
-        <xmlproperty file="${extpath}/redCORE/redcore.xml" prefix="redCOREDetails" keepRoot="false" />
 
         <property
                 name="version"
                 value="${extensionDetails.version}"
-                override="true"/>
-
-        <property
-                name="redCOREVersion"
-                value="${redCOREDetails.version}"
                 override="true"/>
 
         <!-- Temp dir to create packages -->
@@ -124,31 +118,6 @@
         </zip>
 
         <copy file="${tmpdir}/${extension}-v${version}_${joomla.version}.zip" tofile="${package.dir}/${extension}-v${version}_${joomla.version}.zip" />
-
-        <!-- redCORE ZIP packaging -->
-        <if>
-            <available file="${package.dir}/redCORE-v${redCOREVersion}.zip" property="test_zip_exists" value="Yes"/>
-            <then>
-                <echo msg="Removing old ZIP"/>
-                <delete file="${package.dir}/redCORE-v${redCOREVersion}.zip" />
-            </then>
-        </if>
-
-        <if>
-            <available file="${tmpdir}/${extension}/redCORE-v${redCOREVersion}.zip" property="test_zip_exists" value="Yes"/>
-            <then>
-                <delete file="${tmpdir}/${extension}/redCORE-v${redCOREVersion}.zip" />
-            </then>
-        </if>
-
-        <zip destfile="${tmpdir}/${extension}/redCORE-v${redCOREVersion}.zip">
-            <fileset dir="${tmpdir}/${extension}/redCORE">
-                <include name="**"/>
-                <exclude name=".*"/>
-            </fileset>
-        </zip>
-
-        <copy file="${tmpdir}/${extension}/redCORE-v${redCOREVersion}.zip" tofile="${package.dir}/redCORE-v${redCOREVersion}.zip" />
 
         <echo msg="Files copied and compressed in build directory OK!"/>
     </target>

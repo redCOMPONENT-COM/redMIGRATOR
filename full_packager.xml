@@ -79,7 +79,6 @@
         </zip>
         <delete dir="${tmpdir}/${extension}-${version}-plugins"  />
         <delete file="${tmpdir}/${extension}-v${version}_${joomla.version}.zip"  />
-        <delete file="${tmpdir}/redCORE-v${redCOREVersion}.zip"  />
     </target>
 
     <target name="dist" depends="build">
