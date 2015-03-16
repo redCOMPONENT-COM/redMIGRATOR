@@ -84,32 +84,42 @@
 	</target>
 
 	<target name="plugin_loop" description="Loops through plugins folders inside groups">
-		<mkdir dir="${tmpdir}/${group_name}" />
+        <if>
+            <equals arg1="${group_name}" arg2="system" />
+            <then>
+        		<mkdir dir="${tmpdir}/${group_name}" />
 
-		<!-- Loop through plugins -->
-		<foreach param="plugin_name" target="plugin_packager">
-			<fileset dir="${extpath}/plugins/${group_name}">
-				<type type="dir" />
-				<depth max="0" min="0" />
-			</fileset>
-		</foreach>
+        		<!-- Loop through plugins -->
+        		<foreach param="plugin_name" target="plugin_packager">
+        			<fileset dir="${extpath}/plugins/${group_name}">
+        				<type type="dir" />
+        				<depth max="0" min="0" />
+        			</fileset>
+        		</foreach>
+            </then>
+        </if>
 	</target>
 
 	<target name="plugin_packager" description="Packages the extension for delivery">
-        <xmlproperty file="${extpath}/plugins/${group_name}/${plugin_name}/${plugin_name}.xml" prefix="pluginmanifest" keepRoot="false" />
-        <property
-                name="plugin_version"
-                value="${pluginmanifest.version}"
-                override="true"/>
+        <if>
+            <equals arg1="${group_name}" arg2="system" />
+            <then>
+                <xmlproperty file="${extpath}/plugins/${group_name}/${plugin_name}/${plugin_name}.xml" prefix="pluginmanifest" keepRoot="false" />
+                <property
+                        name="plugin_version"
+                        value="${pluginmanifest.version}"
+                        override="true"/>
 
-        <zip
-				destfile="${tmpdir}/${group_name}/${group_name}_${plugin_name}_${plugin_version}.zip"
-				basedir="${extpath}/plugins/${group_name}/${plugin_name}">
-			<fileset dir="${extpath}/plugins/${group_name}/${plugin_name}">
-				<include name="**" />
-				<exclude name=".*" />
-			</fileset>
-		</zip>
+                <zip
+        				destfile="${tmpdir}/${group_name}/${group_name}_${plugin_name}_${plugin_version}.zip"
+        				basedir="${extpath}/plugins/${group_name}/${plugin_name}">
+        			<fileset dir="${extpath}/plugins/${group_name}/${plugin_name}">
+        				<include name="**" />
+        				<exclude name=".*" />
+        			</fileset>
+        		</zip>
+            </then>
+        </if>
 	</target>
 
     <target name="clean-tmp">
